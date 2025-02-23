@@ -11,6 +11,7 @@ import {
 } from '../Adapters'
 import { database_logiflow } from '../config'
 import { collections } from 'logiflowerp-sdk'
+import { BuildSystemOptionService } from '../Services'
 
 export const containerModule = new ContainerModule(bind => {
     bind(SHARED_TYPES.AdapterToken).to(AdapterToken).inSingletonScope()
@@ -20,8 +21,10 @@ export const containerModule = new ContainerModule(bind => {
     bind(SHARED_TYPES.AdapterMail).to(AdapterMail).inSingletonScope()
     bind(SHARED_TYPES.AdapterApiRequest).to(AdapterApiRequest).inSingletonScope()
     bind(SHARED_TYPES.AdapterRabbitMQ).to(AdapterRabbitMQ).inSingletonScope()
+    bind(SHARED_TYPES.BuildSystemOptionService).to(BuildSystemOptionService)
     bind(SHARED_TYPES.database_logiflow).toConstantValue(database_logiflow)
     bind(SHARED_TYPES.collection_endpoint).toConstantValue(collections.endpoints)
+    bind(SHARED_TYPES.collection_products).toConstantValue(collections.products)
     bind(SHARED_TYPES.collection_systemOptions).toConstantValue(collections.systemOptions)
-    bind(Worker).to(Worker).inSingletonScope()
+    // bind(Worker).to(Worker).inSingletonScope()
 })

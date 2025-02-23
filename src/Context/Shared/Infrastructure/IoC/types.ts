@@ -9,4 +9,6 @@ export const SHARED_TYPES = {
     database_logiflow: Symbol.for('database_logiflow'),
     collection_endpoint: Symbol.for('collection_endpoint'),
     collection_systemOptions: Symbol.for('collection_systemOptions'),
+    collection_products: Symbol.for('collection_products'),
+    BuildSystemOptionService: Symbol.for('BuildSystemOptionService'),
 }

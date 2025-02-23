@@ -3,7 +3,7 @@ import { Channel, connect, Connection, ConsumeMessage } from 'amqplib'
 import { env } from '@Config'
 import { IParamsPublish, IParamsSubscribe } from '@Shared/Domain'
 import { AdapterMail } from './Mail'
-import { SHARED_TYPES } from '../IoC'
+import { SHARED_TYPES } from '../IoC/types'
 import { isJSON } from 'logiflowerp-sdk'
 
 @injectable()
