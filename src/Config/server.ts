@@ -1,0 +1,199 @@
+import {
+    Application,
+    ErrorRequestHandler,
+    json,
+    NextFunction,
+    Request,
+    Response,
+    text,
+    urlencoded
+} from 'express'
+import cookieParser from 'cookie-parser'
+import { env } from './env'
+import helmet from 'helmet'
+import compression from 'compression'
+import cors from 'cors'
+import {
+    BadRequestException,
+    BaseException,
+    ForbiddenException,
+    InternalServerException,
+    UnauthorizedException
+} from './exception'
+import { ContainerGlobal } from './inversify'
+import { AdapterToken } from '@Shared/Infrastructure/Adapters'
+import crypto from 'crypto'
+import { convertDates } from 'logiflowerp-sdk'
+import { SHARED_TYPES } from '@Shared/Infrastructure/IoC'
+
+const ALGORITHM = 'aes-256-cbc'
+const SECRET_KEY = Buffer.from(env.ENCRYPTION_KEY, 'utf8')
+
+export async function serverConfig(app: Application) {
+
+    app.use(customLogger)
+    app.use(cookieParser())
+    app.use(helmet())
+    app.use(compression())
+
+    if (env.REQUIRE_AUTH) {
+        authMiddleware(app)
+    }
+
+    app.disable('x-powered-by')
+
+    const whitelist = env.DOMAINS
+
+    app.use(cors({
+        origin: (origin, callback) => {
+            if (!origin && env.NODE_ENV !== 'production') {
+                return callback(null, true)
+            }
+            if (whitelist.some(org => org.toLowerCase() === origin?.toLowerCase())) {
+                return callback(null, true)
+            }
+            callback(new Error('Not allowed by CORS'))
+        },
+        credentials: true
+    }))
+
+    app.use(json({ limit: '10mb' }))
+    app.use(text({ limit: '10mb' }))
+    app.use(urlencoded({ limit: '10mb', extended: true }))
+
+    if (env.REQUIRE_ENCRYPTION) {
+        app.use(decryptMiddleware)
+        app.use(encryptResponse)
+    }
+
+    app.use(convertDatesMiddleware)
+
+}
+
+export function serverErrorConfig(app: Application) {
+
+    const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
+
+        console.error(err)
+
+        if (err instanceof BaseException) {
+            res.status(err.statusCode).json(err)
+            return
+        }
+
+        res.status(500).json(new InternalServerException('Ocurrió un error inesperado'))
+
+    }
+
+    app.use(errorHandler)
+
+}
+
+function customLogger(req: Request, res: Response, next: NextFunction) {
+
+    const start = Date.now()
+
+    res.on('finish', () => {
+        const duration = Date.now() - start
+        const status = res.statusCode;
+
+        let color = '\x1b[32m%s\x1b[0m'
+        if (status >= 400 && status < 500) color = '\x1b[33m%s\x1b[0m'
+        if (status >= 500) color = '\x1b[31m%s\x1b[0m'
+
+        console.log(color, `[${new Date().toISOString()}] ${req.method} ${req.originalUrl} ${res.statusCode} - ${duration}ms`)
+    })
+
+    next()
+
+}
+
+function authMiddleware(app: Application) {
+    app.use(async (req, _res, next) => {
+        try {
+            let serviceNoAuth: boolean = true
+
+            if (req.originalUrl.toLowerCase().includes('/login')) {
+                serviceNoAuth = false
+            }
+
+            if (!serviceNoAuth) next()
+
+            const token = req.cookies.auth
+
+            if (!token) {
+                next(new UnauthorizedException('No autorizado, token faltante'))
+            }
+
+            const adapterToken = ContainerGlobal.get<AdapterToken>(SHARED_TYPES.AdapterToken)
+            const decoded = await adapterToken.verify(token)
+
+            if (!decoded) {
+                next(new ForbiddenException('Token inválido o expirado'))
+            }
+
+            req.user = decoded
+
+            next()
+        } catch (error) {
+            next(error)
+        }
+    })
+}
+
+function convertDatesMiddleware(req: Request, _res: Response, next: NextFunction) {
+    convertDates(req.body)
+    next()
+}
+
+function decryptMiddleware(req: Request, _res: Response, next: NextFunction) {
+    try {
+        const { iv, encryptedData } = req.body
+        if (iv === undefined || encryptedData === undefined) {
+            throw new BadRequestException('Datos inválidos: IV o datos cifrados faltantes')
+        }
+        req.body = decryptData(iv, encryptedData)
+        next()
+    } catch (error) {
+        next(new BadRequestException(`No se pudo descifrar la data: ${(error as Error).message}`))
+    }
+}
+
+function encryptResponse(_req: Request, res: Response, next: NextFunction) {
+    const oldSend = res.send
+    res.send = function (data) {
+        try {
+            data = encryptData(data)
+            return oldSend.call(res, data)
+        } catch (error) {
+            return oldSend.call(res, { error: 'Error al encriptar la respuesta' })
+        }
+    }
+    next()
+}
+
+function encryptData(data: any) {
+    const iv = crypto.randomBytes(16)
+
+    const cipher = crypto.createCipheriv(ALGORITHM, SECRET_KEY, iv)
+    let encrypted = cipher.update(JSON.stringify(data), 'utf8', 'hex')
+    encrypted += cipher.final('hex')
+
+    return JSON.stringify({
+        iv: iv.toString('hex'),
+        encryptedData: encrypted,
+    })
+}
+
+function decryptData(iv: string, encryptedData: string) {
+    const decipher = crypto.createDecipheriv(ALGORITHM, SECRET_KEY, Buffer.from(iv, 'hex'))
+
+    let decrypted = decipher.update(encryptedData, 'hex', 'utf8')
+    decrypted += decipher.final('utf8')
+
+    try {
+        return JSON.parse(decrypted)
+    } catch (parseError) {
+        throw new BadRequestException('Datos descifrados no son un JSON válido')
+    }
+}
