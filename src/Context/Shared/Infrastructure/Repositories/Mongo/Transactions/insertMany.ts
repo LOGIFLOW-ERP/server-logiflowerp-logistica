@@ -28,7 +28,7 @@ export async function _insertMany<T extends Document>(params: IParamsTransaction
     const logDocument: LogEntity<T> = {
         db: col.dbName,
         col: col.collectionName,
-        operacion: 'INSERT',
+        operacion: 'INSERT MANY',
         antiguoValor: null,
         nuevoValor: newsDocuments,
         fecha: new Date(),

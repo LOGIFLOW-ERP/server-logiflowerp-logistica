@@ -4,7 +4,7 @@ import { SHARED_TYPES } from '@Shared/Infrastructure/IoC'
 import { AdapterMongoDB, AdapterRedis, } from '@Shared/Infrastructure/Adapters'
 import { Request, Response } from 'express'
 import { Document, Filter, OptionalUnlessRequiredId, UpdateFilter } from 'mongodb'
-import { _deleteMany, _find, _insertMany, _insertOne, _select, _updateOne } from './Transactions'
+import { _deleteMany, _deleteOne, _find, _insertMany, _insertOne, _select, _updateOne } from './Transactions'
 
 export class MongoRepository<T extends Document> implements IMongoRepository<T> {
 
@@ -31,13 +31,9 @@ export class MongoRepository<T extends Document> implements IMongoRepository<T> 
     }
 
     async select<ReturnType extends Document = T>(pipeline: Document[], collection: string = this.collection, database: string = this.database) {
-        try {
-            const client = await this.adapterMongo.connection()
-            const col = client.db(database).collection(collection)
-            return await _select<ReturnType>({ collection: col, pipeline })
-        } finally {
-            // await this.adapterMongo.closeConnection()
-        }
+        const client = await this.adapterMongo.connection()
+        const col = client.db(database).collection(collection)
+        return await _select<ReturnType>({ collection: col, pipeline })
     }
 
     async insertOne(doc: OptionalUnlessRequiredId<T>) {
@@ -55,7 +51,6 @@ export class MongoRepository<T extends Document> implements IMongoRepository<T> 
             throw error
         } finally {
             await this.adapterMongo.closeSession(session)
-            // await this.adapterMongo.closeConnection()
         }
     }
 
@@ -74,7 +69,6 @@ export class MongoRepository<T extends Document> implements IMongoRepository<T> 
             throw error
         } finally {
             await this.adapterMongo.closeSession(session)
-            // await this.adapterMongo.closeConnection()
         }
     }
 
@@ -93,7 +87,6 @@ export class MongoRepository<T extends Document> implements IMongoRepository<T> 
             throw error
         } finally {
             await this.adapterMongo.closeSession(session)
-            // await this.adapterMongo.closeConnection()
         }
     }
 
@@ -112,7 +105,24 @@ export class MongoRepository<T extends Document> implements IMongoRepository<T> 
             throw error
         } finally {
             await this.adapterMongo.closeSession(session)
-            // await this.adapterMongo.closeConnection()
+        }
+    }
+
+    async deleteOne(filter: Filter<T>) {
+        const client = await this.adapterMongo.connection()
+        const session = await this.adapterMongo.openSession(client)
+        try {
+            const col = client.db(this.database).collection<T>(this.collection)
+            await this.adapterMongo.openTransaction(session)
+            const result = await _deleteOne<T>({ client, col, session, filter, adapterMongo: this.adapterMongo })
+            await this.adapterRedis.deleteKeysCollection(col)
+            await this.adapterMongo.commitTransaction(session)
+            return result
+        } catch (error) {
+            await this.adapterMongo.rollbackTransaction(session)
+            throw error
+        } finally {
+            await this.adapterMongo.closeSession(session)
         }
     }
 

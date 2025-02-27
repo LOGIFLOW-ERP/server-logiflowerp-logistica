@@ -27,7 +27,7 @@ export async function _deleteMany<T extends Document>(params: IParamsTransaction
     const logDocument: LogEntity<T> = {
         db: col.dbName,
         col: col.collectionName,
-        operacion: 'INSERT',
+        operacion: 'DELETE MANY',
         antiguoValor: documents,
         nuevoValor: null,
         fecha: new Date(),

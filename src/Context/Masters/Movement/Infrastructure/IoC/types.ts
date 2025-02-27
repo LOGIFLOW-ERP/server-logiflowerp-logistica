@@ -4,4 +4,5 @@ export const MOVEMENT_TYPES = {
     UseCaseGetAll: Symbol.for(`${__dirname}UseCaseGetAll`),
     UseCaseInsertOne: Symbol.for(`${__dirname}UseCaseInsertOne`),
     UseCaseUpdateOne: Symbol.for(`${__dirname}UseCaseUpdateOne`),
+    UseCaseDeleteOne: Symbol.for(`${__dirname}UseCaseDeleteOne`),
 }
