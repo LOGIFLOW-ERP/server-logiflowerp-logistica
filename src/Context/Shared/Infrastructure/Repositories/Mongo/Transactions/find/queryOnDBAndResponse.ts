@@ -35,6 +35,8 @@ export function queryOnDBAndResponse<T extends Document>(params: IFind) {
         res.end(JSON.stringify(new InternalServerException('Error leyendo del cursor')))
     })
     res.on('close', () => {
+        console.log('Cliente cerró la conexión')
         cursor.destroy()
+        stream.end()
     })
 }

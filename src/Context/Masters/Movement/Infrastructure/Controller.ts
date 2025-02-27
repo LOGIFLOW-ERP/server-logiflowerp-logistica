@@ -5,16 +5,29 @@ import {
     BaseHttpController,
     httpGet,
     httpPost,
+    httpPut,
     request,
     response
 } from 'inversify-express-utils'
-import { UseCaseFind, UseCaseGetAll } from '../Application'
+import {
+    MovementENTITY,
+    validateRequestBody as VRB
+} from 'logiflowerp-sdk'
+import { BadRequestException as BRE } from '@Config'
+import {
+    UseCaseFind,
+    UseCaseGetAll,
+    UseCaseInsertOne,
+    UseCaseUpdateOne
+} from '../Application'
 
 export class MovementController extends BaseHttpController {
 
     constructor(
         @inject(MOVEMENT_TYPES.UseCaseFind) private readonly useCaseFind: UseCaseFind,
         @inject(MOVEMENT_TYPES.UseCaseGetAll) private readonly useCaseGetAll: UseCaseGetAll,
+        @inject(MOVEMENT_TYPES.UseCaseInsertOne) private readonly useCaseInsertOne: UseCaseInsertOne,
+        @inject(MOVEMENT_TYPES.UseCaseUpdateOne) private readonly useCaseUpdateOne: UseCaseUpdateOne,
     ) {
         super()
     }
@@ -27,6 +40,18 @@ export class MovementController extends BaseHttpController {
     @httpGet('')
     async findAll(@request() req: Request, @response() res: Response) {
         await this.useCaseGetAll.exec(req, res)
+    }
+
+    @httpPost('', VRB.bind(null, MovementENTITY, BRE))
+    async saveOne(@request() req: Request, @response() res: Response) {
+        const newDoc = await this.useCaseInsertOne.exec(req.body)
+        res.status(201).json(newDoc)
+    }
+
+    @httpPut(':_id', VRB.bind(null, MovementENTITY, BRE))
+    async updateOne(@request() req: Request, @response() res: Response) {
+        const updatedDoc = await this.useCaseUpdateOne.exec(req.params._id, req.body)
+        res.status(200).json(updatedDoc)
     }
 
 }

@@ -29,11 +29,11 @@ export class ProductController extends BaseHttpController {
         await this.useCaseFind.exec(req, res)
     }
 
-    @httpPost('update-one/:id', VUUID.bind(null, BRE), VRB.bind(null, UpdateUserDTO, BRE))
-    async updateOne(@request() req: Request<any, any, UserENTITY>, @response() res: Response) {
-        console.log(req.originalUrl)
-        // const updatedDoc = await this.useCaseUpdateOne.exec(req.params.id, req.body)
-        // res.json(updatedDoc)
-    }
+    // @httpPost('update-one/:id', VUUID.bind(null, BRE), VRB.bind(null, UpdateUserDTO, BRE))
+    // async updateOne(@request() req: Request<any, any, UserENTITY>, @response() res: Response) {
+    //     console.log(req.originalUrl)
+    //     // const updatedDoc = await this.useCaseUpdateOne.exec(req.params.id, req.body)
+    //     // res.json(updatedDoc)
+    // }
 
 }
