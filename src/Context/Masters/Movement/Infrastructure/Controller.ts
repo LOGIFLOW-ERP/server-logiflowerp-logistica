@@ -58,9 +58,9 @@ export class MovementController extends BaseHttpController {
         res.status(200).json(updatedDoc)
     }
 
-    @httpDelete(':id', VUUID.bind(null, BRE), VRB.bind(null, MovementENTITY, BRE))
+    @httpDelete(':id', VUUID.bind(null, BRE))
     async deleteOne(@request() req: Request, @response() res: Response) {
-        const updatedDoc = await this.useCaseUpdateOne.exec(req.params.id, req.body)
+        const updatedDoc = await this.useCaseDeleteOne.exec(req.params.id)
         res.status(200).json(updatedDoc)
     }
 
