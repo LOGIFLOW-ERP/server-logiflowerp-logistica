@@ -53,15 +53,15 @@ export class ProductGroupController extends BaseHttpController {
         res.status(201).json(newDoc)
     }
 
-    @httpPut(':id', VUUID.bind(null, BRE), VRB.bind(null, UpdateProductGroupDTO, BRE))
+    @httpPut(':_id', VUUID.bind(null, BRE), VRB.bind(null, UpdateProductGroupDTO, BRE))
     async updateOne(@request() req: Request, @response() res: Response) {
-        const updatedDoc = await this.useCaseUpdateOne.exec(req.params.id, req.body)
+        const updatedDoc = await this.useCaseUpdateOne.exec(req.params._id, req.body)
         res.status(200).json(updatedDoc)
     }
 
-    @httpDelete(':id', VUUID.bind(null, BRE))
+    @httpDelete(':_id', VUUID.bind(null, BRE))
     async deleteOne(@request() req: Request, @response() res: Response) {
-        const updatedDoc = await this.useCaseDeleteOne.exec(req.params.id)
+        const updatedDoc = await this.useCaseDeleteOne.exec(req.params._id)
         res.status(200).json(updatedDoc)
     }
 

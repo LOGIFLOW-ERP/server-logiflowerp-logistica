@@ -1,7 +1,8 @@
 import { inject, injectable } from 'inversify';
 import { MOVEMENT_TYPES } from '../Infrastructure/IoC';
 import { IMovementMongoRepository } from '../Domain';
-import { CreateMovementDTO, MovementENTITY } from 'logiflowerp-sdk';
+import { CreateMovementDTO, MovementENTITY, validateCustom } from 'logiflowerp-sdk';
+import { UnprocessableEntityException } from '@Config/exception';
 
 @injectable()
 export class UseCaseInsertOne {
@@ -11,8 +12,9 @@ export class UseCaseInsertOne {
     ) { }
 
     async exec(dto: CreateMovementDTO) {
-        const entity = new MovementENTITY()
-        entity.set(dto)
+        const _entity = new MovementENTITY()
+        _entity.set(dto)
+        const entity = await validateCustom(_entity, MovementENTITY, UnprocessableEntityException)
         return this.repository.insertOne(entity)
     }
 

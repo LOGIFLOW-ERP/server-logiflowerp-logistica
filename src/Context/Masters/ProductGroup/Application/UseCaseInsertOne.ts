@@ -1,7 +1,8 @@
 import { inject, injectable } from 'inversify';
 import { PRODUCT_GROUP_TYPES } from '../Infrastructure/IoC';
 import { IProductGroupMongoRepository } from '../Domain';
-import { CreateProductGroupDTO, ProductGroupENTITY } from 'logiflowerp-sdk';
+import { CreateProductGroupDTO, ProductGroupENTITY, validateCustom } from 'logiflowerp-sdk';
+import { UnprocessableEntityException } from '@Config/exception';
 
 @injectable()
 export class UseCaseInsertOne {
@@ -11,8 +12,9 @@ export class UseCaseInsertOne {
     ) { }
 
     async exec(dto: CreateProductGroupDTO) {
-        const entity = new ProductGroupENTITY()
-        entity.set(dto)
+        const _entity = new ProductGroupENTITY()
+        _entity.set(dto)
+        const entity = await validateCustom(_entity, ProductGroupENTITY, UnprocessableEntityException)
         return this.repository.insertOne(entity)
     }
 
