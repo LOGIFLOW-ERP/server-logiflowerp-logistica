@@ -1,7 +1,7 @@
 import { Response, Request } from 'express'
 import { inject, injectable } from 'inversify'
 import { IMovementMongoRepository } from '../Domain'
-import { MOVEMENT_TYPES } from '../Infrastructure/IoC/types'
+import { MOVEMENT_TYPES } from '../Infrastructure/IoC'
 
 @injectable()
 export class UseCaseFind {

@@ -1,7 +1,7 @@
 import { Response, Request } from 'express'
 import { inject, injectable } from 'inversify'
 import { IProductMongoRepository } from '../Domain'
-import { PRODUCT_TYPES } from '../Infrastructure/IoC/types'
+import { PRODUCT_TYPES } from '../Infrastructure/IoC'
 
 @injectable()
 export class UseCaseFind {
