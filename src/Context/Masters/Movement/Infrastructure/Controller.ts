@@ -11,7 +11,8 @@ import {
     response
 } from 'inversify-express-utils'
 import {
-    MovementENTITY,
+    CreateMovementDTO,
+    UpdateMovementDTO,
     validateRequestBody as VRB,
     validateUUIDv4Param as VUUID,
 } from 'logiflowerp-sdk'
@@ -46,13 +47,13 @@ export class MovementController extends BaseHttpController {
         await this.useCaseGetAll.exec(req, res)
     }
 
-    @httpPost('', VRB.bind(null, MovementENTITY, BRE))
+    @httpPost('', VRB.bind(null, CreateMovementDTO, BRE))
     async saveOne(@request() req: Request, @response() res: Response) {
         const newDoc = await this.useCaseInsertOne.exec(req.body)
         res.status(201).json(newDoc)
     }
 
-    @httpPut(':id', VUUID.bind(null, BRE), VRB.bind(null, MovementENTITY, BRE))
+    @httpPut(':id', VUUID.bind(null, BRE), VRB.bind(null, UpdateMovementDTO, BRE))
     async updateOne(@request() req: Request, @response() res: Response) {
         const updatedDoc = await this.useCaseUpdateOne.exec(req.params.id, req.body)
         res.status(200).json(updatedDoc)

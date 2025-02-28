@@ -11,7 +11,8 @@ import {
     response
 } from 'inversify-express-utils'
 import {
-    ProductGroupENTITY,
+    CreateProductGroupDTO,
+    UpdateProductGroupDTO,
     validateRequestBody as VRB,
     validateUUIDv4Param as VUUID,
 } from 'logiflowerp-sdk'
@@ -46,13 +47,13 @@ export class ProductGroupController extends BaseHttpController {
         await this.useCaseGetAll.exec(req, res)
     }
 
-    @httpPost('', VRB.bind(null, ProductGroupENTITY, BRE))
+    @httpPost('', VRB.bind(null, CreateProductGroupDTO, BRE))
     async saveOne(@request() req: Request, @response() res: Response) {
         const newDoc = await this.useCaseInsertOne.exec(req.body)
         res.status(201).json(newDoc)
     }
 
-    @httpPut(':id', VUUID.bind(null, BRE), VRB.bind(null, ProductGroupENTITY, BRE))
+    @httpPut(':id', VUUID.bind(null, BRE), VRB.bind(null, UpdateProductGroupDTO, BRE))
     async updateOne(@request() req: Request, @response() res: Response) {
         const updatedDoc = await this.useCaseUpdateOne.exec(req.params.id, req.body)
         res.status(200).json(updatedDoc)
