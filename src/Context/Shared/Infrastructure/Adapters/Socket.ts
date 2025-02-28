@@ -1,7 +1,7 @@
 import { injectable } from 'inversify'
 import { Server as HttpServer } from 'http'
 import { Server, Socket } from 'socket.io'
-import { InternalServerException } from '@Config'
+import { InternalServerException } from '@Config/exception'
 
 @injectable()
 export class AdapterSocket {

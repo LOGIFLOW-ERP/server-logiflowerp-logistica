@@ -1,4 +1,4 @@
-import { ContainerGlobal } from '@Config'
+import { ContainerGlobal } from '@Config/inversify'
 import { IndexEntity } from '@Shared/Domain'
 import { AdapterMongoDB } from '@Shared/Infrastructure/Adapters'
 import { SHARED_TYPES } from '@Shared/Infrastructure/IoC'

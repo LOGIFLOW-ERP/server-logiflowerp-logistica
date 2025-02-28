@@ -1,4 +1,4 @@
-import { BadRequestException, InternalServerException, UnprocessableEntityException } from '@Config'
+import { BadRequestException, InternalServerException, UnprocessableEntityException } from '@Config/exception'
 import { IParamsTransaction, LogEntity } from '@Shared/Domain'
 import { Document } from 'mongodb'
 

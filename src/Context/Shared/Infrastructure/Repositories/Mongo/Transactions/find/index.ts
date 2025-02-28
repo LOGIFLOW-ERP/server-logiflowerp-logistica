@@ -2,7 +2,7 @@ import { IFind } from '@Shared/Domain'
 import { AdapterRedis } from '@Shared/Infrastructure/Adapters'
 import { SHARED_TYPES } from '@Shared/Infrastructure/IoC/types'
 import { queryOnDBAndResponse } from './queryOnDBAndResponse'
-import { ContainerGlobal } from '@Config'
+import { ContainerGlobal } from '@Config/inversify'
 import { queryOnRedis_AndResponse } from './queryOnRedis_AndResponse'
 import { queryOnDB_WriteRedis_AndResponse } from './queryOnDB_WriteRedis_AndResponse'
 

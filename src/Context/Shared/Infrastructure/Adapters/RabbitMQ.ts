@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify'
 import { Channel, connect, Connection, ConsumeMessage } from 'amqplib'
-import { env } from '@Config'
+import { env } from '@Config/env'
 import { IParamsPublish, IParamsSubscribe } from '@Shared/Domain'
 import { AdapterMail } from './Mail'
 import { SHARED_TYPES } from '../IoC/types'

@@ -1,4 +1,5 @@
-import { ContainerGlobal, InternalServerException } from '@Config'
+import { ContainerGlobal } from '@Config/inversify'
+import { InternalServerException } from '@Config/exception'
 import { IFind } from '@Shared/Domain'
 import { Document } from 'mongodb'
 import { AdapterMongoDB } from '@Shared/Infrastructure/Adapters'

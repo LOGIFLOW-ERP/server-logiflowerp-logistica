@@ -1,4 +1,4 @@
-import { MongoRepository } from '@Shared/Infrastructure/Repositories'
+import { MongoRepository } from '@Shared/Infrastructure/Repositories/Mongo'
 import { IProductMongoRepository } from '../Domain'
 import { inject, injectable } from 'inversify'
 import { ProductENTITY } from 'logiflowerp-sdk'

@@ -1,4 +1,4 @@
-import { env } from '@Config'
+import { env } from '@Config/env'
 import { injectable } from 'inversify'
 import { Collection, Document } from 'mongodb'
 import { createClient, RedisClientType } from 'redis'

@@ -1,8 +1,8 @@
 import { inject, injectable } from 'inversify'
 import { SHARED_TYPES } from '../IoC/types'
-import { MongoRepository } from '../Repositories'
+import { MongoRepository } from '../Repositories/Mongo'
 import { builSystemOption, SystemOptionENTITY } from 'logiflowerp-sdk'
-import { UnprocessableEntityException } from '@Config'
+import { UnprocessableEntityException } from '@Config/exception'
 import { RouteInfo } from 'inversify-express-utils'
 
 @injectable()

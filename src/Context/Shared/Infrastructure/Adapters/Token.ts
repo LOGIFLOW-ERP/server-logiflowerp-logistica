@@ -1,4 +1,5 @@
-import { env, UnprocessableEntityException } from '@Config'
+import { env } from '@Config/env'
+import { UnprocessableEntityException } from '@Config/exception'
 import { injectable } from 'inversify'
 import JWT from 'jsonwebtoken'
 import { TokenPayloadDTO, validateCustom } from 'logiflowerp-sdk'

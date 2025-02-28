@@ -27,8 +27,8 @@
 		// "moduleResolution": "node10",                     /* Specify how TypeScript looks up a file from a given module specifier. */
 		"baseUrl": "./",                                  /* Specify the base directory to resolve non-relative module names. */
 		"paths": {
-			"@Config": [
-				"src/Config/index.ts"
+			"@Config/*": [
+				"src/Config/*"
 			],
 			"@Shared/*": [
 				"src/Context/Shared/*"

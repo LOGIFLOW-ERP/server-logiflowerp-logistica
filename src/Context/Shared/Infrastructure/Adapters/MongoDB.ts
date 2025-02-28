@@ -1,4 +1,5 @@
-import { env, InternalServerException } from '@Config'
+import { InternalServerException } from '@Config/exception'
+import { env } from '@Config/env'
 import { LogEntity } from '@Shared/Domain'
 import { info } from 'console'
 import { injectable } from 'inversify'

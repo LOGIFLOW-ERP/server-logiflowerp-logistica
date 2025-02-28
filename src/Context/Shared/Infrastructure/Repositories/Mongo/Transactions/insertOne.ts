@@ -2,7 +2,7 @@ import {
     BadRequestException,
     InternalServerException,
     UnprocessableEntityException
-} from '@Config'
+} from '@Config/exception'
 import { IParamsTransaction, LogEntity } from '@Shared/Domain'
 import { Document, Filter } from 'mongodb'
 

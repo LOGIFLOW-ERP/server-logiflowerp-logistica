@@ -15,7 +15,7 @@ import {
     validateRequestBody as VRB,
     validateUUIDv4Param as VUUID,
 } from 'logiflowerp-sdk'
-import { BadRequestException as BRE } from '@Config'
+import { BadRequestException as BRE } from '@Config/exception'
 import {
     UseCaseDeleteOne,
     UseCaseFind,

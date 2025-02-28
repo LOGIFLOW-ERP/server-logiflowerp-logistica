@@ -2,18 +2,16 @@ import 'dotenv/config'
 import 'reflect-metadata'
 import express from 'express'
 import { InversifyExpressServer } from 'inversify-express-utils'
-import {
-    env,
-    ContainerGlobal,
-    serverConfig,
-    serverErrorConfig,
-    initController,
-    registerContainer,
-    initCollections,
-    initSocket,
-    registerRoutes,
-    subscribeRabbitMQ
-} from '@Config'
+import { env } from '@Config/env'
+import { ContainerGlobal } from '@Config/inversify'
+import { serverConfig } from '@Config/server'
+import { serverErrorConfig } from '@Config/server'
+import { initController } from '@Config/controller'
+import { registerContainer } from '@Config/inversify'
+import { initCollections } from '@Config/collections'
+import { initSocket } from '@Config/socket'
+import { registerRoutes } from '@Config/registerRoutes'
+import { subscribeRabbitMQ } from '@Config/subscribeRabbitMQ'
 
 const Bootstrap = async () => {
 

@@ -1,4 +1,5 @@
-import { BadRequestException, ContainerGlobal } from '@Config'
+import { ContainerGlobal } from '@Config/inversify'
+import { BadRequestException } from '@Config/exception'
 import { IFind } from '@Shared/Domain'
 import { AdapterMongoDB, AdapterRedis } from '@Shared/Infrastructure/Adapters'
 import { SHARED_TYPES } from '@Shared/Infrastructure/IoC/types'
