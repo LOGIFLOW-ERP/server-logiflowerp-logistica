@@ -16,6 +16,7 @@ import cors from 'cors'
 import {
     BadRequestException,
     BaseException,
+    ConflictException,
     ForbiddenException,
     InternalServerException,
     UnauthorizedException
@@ -25,6 +26,7 @@ import { AdapterToken } from '@Shared/Infrastructure/Adapters'
 import crypto from 'crypto'
 import { convertDates } from 'logiflowerp-sdk'
 import { SHARED_TYPES } from '@Shared/Infrastructure/IoC'
+import { MongoServerError } from 'mongodb'
 
 const ALGORITHM = 'aes-256-cbc'
 const SECRET_KEY = Buffer.from(env.ENCRYPTION_KEY, 'utf8')
@@ -75,6 +77,15 @@ export function serverErrorConfig(app: Application) {
     const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
 
         console.error(err)
+
+        if (err instanceof MongoServerError) {
+            console.log(err.errorResponse)
+            if (err.code === 11000) {
+                const msg = `El recurso ya existe (clave duplicada: ${JSON.stringify(err.errorResponse.keyValue)})`
+                res.status(409).send(new ConflictException(msg, true))
+                return
+            }
+        }
 
         if (err instanceof BaseException) {
             res.status(err.statusCode).json(err)
