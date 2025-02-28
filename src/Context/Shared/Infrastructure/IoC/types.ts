@@ -8,6 +8,7 @@ export const SHARED_TYPES = {
     AdapterRabbitMQ: Symbol.for('AdapterRabbitMQ'),
     database_logiflow: Symbol.for('database_logiflow'),
     collection_movements: Symbol.for('collection_movements'),
+    collection_productGroups: Symbol.for('collection_productGroups'),
     collection_endpoint: Symbol.for('collection_endpoint'),
     collection_systemOptions: Symbol.for('collection_systemOptions'),
     collection_products: Symbol.for('collection_products'),
