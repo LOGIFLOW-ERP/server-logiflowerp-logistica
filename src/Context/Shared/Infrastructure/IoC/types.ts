@@ -13,4 +13,5 @@ export const SHARED_TYPES = {
     collection_systemOptions: Symbol.for('collection_systemOptions'),
     collection_products: Symbol.for('collection_products'),
     BuildSystemOptionService: Symbol.for('BuildSystemOptionService'),
+    collection_productPrices: Symbol.for('collection_productPrices'),
 }

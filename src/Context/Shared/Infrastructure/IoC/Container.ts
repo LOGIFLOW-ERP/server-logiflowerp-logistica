@@ -28,5 +28,6 @@ export const containerModule = new ContainerModule(bind => {
     bind(SHARED_TYPES.collection_systemOptions).toConstantValue(collections.systemOptions)
     bind(SHARED_TYPES.collection_movements).toConstantValue(collections.movements)
     bind(SHARED_TYPES.collection_productGroups).toConstantValue(collections.productGroups)
+    bind(SHARED_TYPES.collection_productPrices).toConstantValue(collections.productPrices)
     // bind(Worker).to(Worker).inSingletonScope()
 })
