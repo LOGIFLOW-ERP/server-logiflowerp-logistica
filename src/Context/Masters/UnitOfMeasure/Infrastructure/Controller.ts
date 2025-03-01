@@ -1,16 +1,18 @@
 import { inject } from 'inversify'
-import { MOVEMENT_TYPES } from './IoC'
+import { UNIT_OF_MEASURE_TYPES } from './IoC'
 import { Request, Response } from 'express'
 import {
     BaseHttpController,
     httpDelete,
     httpGet,
     httpPost,
+    httpPut,
     request,
     response
 } from 'inversify-express-utils'
 import {
-    CreateMovementDTO,
+    CreateUnitOfMeasureDTO,
+    UpdateUnitOfMeasureDTO,
     validateRequestBody as VRB,
     validateUUIDv4Param as VUUID,
 } from 'logiflowerp-sdk'
@@ -20,15 +22,17 @@ import {
     UseCaseFind,
     UseCaseGetAll,
     UseCaseInsertOne,
+    UseCaseUpdateOne
 } from '../Application'
 
-export class MovementController extends BaseHttpController {
+export class UnitOfMeasuresController extends BaseHttpController {
 
     constructor(
-        @inject(MOVEMENT_TYPES.UseCaseFind) private readonly useCaseFind: UseCaseFind,
-        @inject(MOVEMENT_TYPES.UseCaseGetAll) private readonly useCaseGetAll: UseCaseGetAll,
-        @inject(MOVEMENT_TYPES.UseCaseInsertOne) private readonly useCaseInsertOne: UseCaseInsertOne,
-        @inject(MOVEMENT_TYPES.UseCaseDeleteOne) private readonly useCaseDeleteOne: UseCaseDeleteOne,
+        @inject(UNIT_OF_MEASURE_TYPES.UseCaseFind) private readonly useCaseFind: UseCaseFind,
+        @inject(UNIT_OF_MEASURE_TYPES.UseCaseGetAll) private readonly useCaseGetAll: UseCaseGetAll,
+        @inject(UNIT_OF_MEASURE_TYPES.UseCaseInsertOne) private readonly useCaseInsertOne: UseCaseInsertOne,
+        @inject(UNIT_OF_MEASURE_TYPES.UseCaseUpdateOne) private readonly useCaseUpdateOne: UseCaseUpdateOne,
+        @inject(UNIT_OF_MEASURE_TYPES.UseCaseDeleteOne) private readonly useCaseDeleteOne: UseCaseDeleteOne,
     ) {
         super()
     }
@@ -43,10 +47,16 @@ export class MovementController extends BaseHttpController {
         await this.useCaseGetAll.exec(req, res)
     }
 
-    @httpPost('', VRB.bind(null, CreateMovementDTO, BRE))
+    @httpPost('', VRB.bind(null, CreateUnitOfMeasureDTO, BRE))
     async saveOne(@request() req: Request, @response() res: Response) {
         const newDoc = await this.useCaseInsertOne.exec(req.body)
         res.status(201).json(newDoc)
+    }
+
+    @httpPut(':_id', VUUID.bind(null, BRE), VRB.bind(null, UpdateUnitOfMeasureDTO, BRE))
+    async updateOne(@request() req: Request, @response() res: Response) {
+        const updatedDoc = await this.useCaseUpdateOne.exec(req.params._id, req.body)
+        res.status(200).json(updatedDoc)
     }
 
     @httpDelete(':_id', VUUID.bind(null, BRE))
