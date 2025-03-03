@@ -1,5 +1,5 @@
 import { inject } from 'inversify'
-import { UNIT_OF_MEASURE_TYPES } from './IoC'
+import { STORE_TYPESENTITY } from './IoC'
 import { Request, Response } from 'express'
 import {
     BaseHttpController,
@@ -11,8 +11,8 @@ import {
     response
 } from 'inversify-express-utils'
 import {
-    CreateUnitOfMeasureDTO,
-    UpdateUnitOfMeasureDTO,
+    CreateStoreDTO,
+    UpdateStoreDTO,
     validateRequestBody as VRB,
     validateUUIDv4Param as VUUID,
 } from 'logiflowerp-sdk'
@@ -25,14 +25,14 @@ import {
     UseCaseUpdateOne
 } from '../Application'
 
-export class UnitOfMeasureController extends BaseHttpController {
+export class StoreController extends BaseHttpController {
 
     constructor(
-        @inject(UNIT_OF_MEASURE_TYPES.UseCaseFind) private readonly useCaseFind: UseCaseFind,
-        @inject(UNIT_OF_MEASURE_TYPES.UseCaseGetAll) private readonly useCaseGetAll: UseCaseGetAll,
-        @inject(UNIT_OF_MEASURE_TYPES.UseCaseInsertOne) private readonly useCaseInsertOne: UseCaseInsertOne,
-        @inject(UNIT_OF_MEASURE_TYPES.UseCaseUpdateOne) private readonly useCaseUpdateOne: UseCaseUpdateOne,
-        @inject(UNIT_OF_MEASURE_TYPES.UseCaseDeleteOne) private readonly useCaseDeleteOne: UseCaseDeleteOne,
+        @inject(STORE_TYPESENTITY.UseCaseFind) private readonly useCaseFind: UseCaseFind,
+        @inject(STORE_TYPESENTITY.UseCaseGetAll) private readonly useCaseGetAll: UseCaseGetAll,
+        @inject(STORE_TYPESENTITY.UseCaseInsertOne) private readonly useCaseInsertOne: UseCaseInsertOne,
+        @inject(STORE_TYPESENTITY.UseCaseUpdateOne) private readonly useCaseUpdateOne: UseCaseUpdateOne,
+        @inject(STORE_TYPESENTITY.UseCaseDeleteOne) private readonly useCaseDeleteOne: UseCaseDeleteOne,
     ) {
         super()
     }
@@ -47,13 +47,13 @@ export class UnitOfMeasureController extends BaseHttpController {
         await this.useCaseGetAll.exec(req, res)
     }
 
-    @httpPost('', VRB.bind(null, CreateUnitOfMeasureDTO, BRE))
+    @httpPost('', VRB.bind(null, CreateStoreDTO, BRE))
     async saveOne(@request() req: Request, @response() res: Response) {
         const newDoc = await this.useCaseInsertOne.exec(req.body)
         res.status(201).json(newDoc)
     }
 
-    @httpPut(':_id', VUUID.bind(null, BRE), VRB.bind(null, UpdateUnitOfMeasureDTO, BRE))
+    @httpPut(':_id', VUUID.bind(null, BRE), VRB.bind(null, UpdateStoreDTO, BRE))
     async updateOne(@request() req: Request, @response() res: Response) {
         const updatedDoc = await this.useCaseUpdateOne.exec(req.params._id, req.body)
         res.status(200).json(updatedDoc)
