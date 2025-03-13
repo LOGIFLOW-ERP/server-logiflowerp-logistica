@@ -49,6 +49,7 @@ export class StoreController extends BaseHttpController {
 
     @httpPost('', VRB.bind(null, CreateStoreDTO, BRE))
     async saveOne(@request() req: Request, @response() res: Response) {
+        console.log(req.user)
         const newDoc = await this.useCaseInsertOne.exec(req.body)
         res.status(201).json(newDoc)
     }

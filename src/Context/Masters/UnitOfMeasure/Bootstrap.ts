@@ -1,12 +1,10 @@
 import { IndexEntity } from '@Shared/Domain'
 import { collection, database } from './Infrastructure/config'
 import { Bootstraping } from '@Shared/Bootstraping'
+import { RootCompanyENTITY } from 'logiflowerp-sdk'
 
 export class ManagerEntity {
 
-    private bootstrap: Bootstraping
-    private database = database
-    private collection = collection
     private indexes: IndexEntity[] = [
         {
             campos: [{ nombre: 'uomCode', direccion: 1 }],
@@ -14,14 +12,15 @@ export class ManagerEntity {
         }
     ]
 
-    constructor() {
-        this.bootstrap = new Bootstraping(this.database, this.collection, this.indexes)
-    }
-
-    async exec() {
-        console.info(`➽  Configurando ${this.collection} en ${this.database} ...`)
-        await this.bootstrap.exec()
-        console.info(`➽  Configuración de ${this.collection} en ${this.database} completada`)
+    async exec(rootCompanies: RootCompanyENTITY[]) {
+        for (const company of rootCompanies) {
+            const db = database
+            const col = `${company.code}_${collection}`
+            const bootstrap = new Bootstraping(db, col, this.indexes)
+            console.info(`➽  Configurando ${col} en ${db} ...`)
+            await bootstrap.exec()
+            console.info(`➽  Configuración de ${col} en ${db} completada`)
+        }
     }
 
 }

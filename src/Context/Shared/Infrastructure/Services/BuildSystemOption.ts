@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify'
 import { SHARED_TYPES } from '../IoC/types'
 import { MongoRepository } from '../Repositories/Mongo'
-import { builSystemOption, SystemOptionENTITY } from 'logiflowerp-sdk'
+import { builSystemOption, collections, SystemOptionENTITY } from 'logiflowerp-sdk'
 import { UnprocessableEntityException } from '@Config/exception'
 import { RouteInfo } from 'inversify-express-utils'
 
@@ -11,18 +11,18 @@ export class BuildSystemOptionService {
     private mongoRepository: MongoRepository<SystemOptionENTITY>
 
     constructor(
-        @inject(SHARED_TYPES.collection_systemOptions) private readonly col_systemOptions: string,
-        @inject(SHARED_TYPES.database_logiflow) private readonly db_logiflow: string,
+        @inject(SHARED_TYPES.prefix_col_root) private readonly prefix_col_root: string
     ) {
-        this.mongoRepository = new MongoRepository(this.db_logiflow, this.col_systemOptions)
+        this.mongoRepository = new MongoRepository(`${this.prefix_col_root}_${collections.systemOptions}`)
     }
 
     async exec(rawData: RouteInfo[], rootPath: string, prefix: string) {
-        const dataDB = await this.mongoRepository.select([{ $match: { prefix } }])
+        const dataDB = await this.mongoRepository.select([{ $match: { prefix, root: false } }])
+        const rawDataAux = rawData.filter(e => !e.controller.startsWith('Root'))
         const { _ids, newData } = await builSystemOption({
             dataDB,
             prefix,
-            rawData,
+            rawData: rawDataAux,
             rootPath,
             UnprocessableEntityException
         })

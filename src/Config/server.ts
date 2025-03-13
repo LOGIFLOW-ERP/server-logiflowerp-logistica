@@ -38,10 +38,6 @@ export async function serverConfig(app: Application) {
     app.use(helmet())
     app.use(compression())
 
-    if (env.REQUIRE_AUTH) {
-        authMiddleware(app)
-    }
-
     app.disable('x-powered-by')
 
     const whitelist = env.DOMAINS
@@ -58,6 +54,10 @@ export async function serverConfig(app: Application) {
         },
         credentials: true
     }))
+
+    if (env.REQUIRE_AUTH) {
+        authMiddleware(app)
+    }
 
     app.use(json({ limit: '10mb' }))
     app.use(text({ limit: '10mb' }))
@@ -128,22 +128,23 @@ function authMiddleware(app: Application) {
                 serviceNoAuth = false
             }
 
-            if (!serviceNoAuth) next()
+            if (!serviceNoAuth) return next()
 
-            const token = req.cookies.auth
+            const token = req.cookies.authToken
 
             if (!token) {
-                next(new UnauthorizedException('No autorizado, token faltante'))
+                return next(new UnauthorizedException('No autorizado, token faltante'))
             }
 
             const adapterToken = ContainerGlobal.get<AdapterToken>(SHARED_TYPES.AdapterToken)
             const decoded = await adapterToken.verify(token)
 
             if (!decoded) {
-                next(new ForbiddenException('Token inválido o expirado'))
+                return next(new ForbiddenException('Token inválido o expirado'))
             }
 
-            req.user = decoded
+            req.payloadToken = decoded
+            req.user = decoded.user
 
             next()
         } catch (error) {

@@ -1,9 +1,11 @@
 import * as Express from 'express'
+import { AuthUserDTO, TokenPayloadDTO } from 'logiflowerp-sdk'
 
 declare global {
     namespace Express {
         interface Request {
-            user: any
+            payloadToken: TokenPayloadDTO
+            user: AuthUserDTO
         }
     }
 }

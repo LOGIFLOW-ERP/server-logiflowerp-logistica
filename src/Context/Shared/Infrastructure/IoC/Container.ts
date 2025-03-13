@@ -10,7 +10,7 @@ import {
     AdapterToken
 } from '../Adapters'
 import { database_logiflow } from '../config'
-import { collections } from 'logiflowerp-sdk'
+import { prefix_col_root } from 'logiflowerp-sdk'
 import { BuildSystemOptionService } from '../Services'
 
 export const containerModule = new ContainerModule(bind => {
@@ -23,13 +23,6 @@ export const containerModule = new ContainerModule(bind => {
     bind(SHARED_TYPES.AdapterRabbitMQ).to(AdapterRabbitMQ).inSingletonScope()
     bind(SHARED_TYPES.BuildSystemOptionService).to(BuildSystemOptionService)
     bind(SHARED_TYPES.database_logiflow).toConstantValue(database_logiflow)
-    bind(SHARED_TYPES.collection_endpoint).toConstantValue(collections.endpoints)
-    bind(SHARED_TYPES.collection_products).toConstantValue(collections.products)
-    bind(SHARED_TYPES.collection_systemOptions).toConstantValue(collections.systemOptions)
-    bind(SHARED_TYPES.collection_movements).toConstantValue(collections.movements)
-    bind(SHARED_TYPES.collection_productGroups).toConstantValue(collections.productGroups)
-    bind(SHARED_TYPES.collection_productPrices).toConstantValue(collections.productPrices)
-    bind(SHARED_TYPES.collection_unitOfMeasures).toConstantValue(collections.unitOfMeasures)
-    bind(SHARED_TYPES.collection_stores).toConstantValue(collections.stores)
+    bind(SHARED_TYPES.prefix_col_root).toConstantValue(prefix_col_root)
     // bind(Worker).to(Worker).inSingletonScope()
 })
