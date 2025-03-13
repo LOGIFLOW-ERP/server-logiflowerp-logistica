@@ -1,5 +1,3 @@
-import { inject } from 'inversify'
-import { PRODUCT_TYPES } from './IoC'
 import { Request, Response } from 'express'
 import { BadRequestException as BRE } from '@Config/exception'
 import {
@@ -15,18 +13,14 @@ import {
     validateUUIDv4Param as VUUID,
     validateRequestBody as VRB
 } from 'logiflowerp-sdk'
+import { ProductMongoRepository } from './MongoRepository'
 
 export class ProductController extends BaseHttpController {
 
-    constructor(
-        @inject(PRODUCT_TYPES.UseCaseFind) private readonly useCaseFind: UseCaseFind
-    ) {
-        super()
-    }
-
     @httpPost('find')
     async find(@request() req: Request, @response() res: Response) {
-        await this.useCaseFind.exec(req, res)
+        const repository = new ProductMongoRepository(req.user.company.code)
+        await new UseCaseFind(repository).exec(req, res)
     }
 
     // @httpPost('update-one/:id', VUUID.bind(null, BRE), VRB.bind(null, UpdateUserDTO, BRE))

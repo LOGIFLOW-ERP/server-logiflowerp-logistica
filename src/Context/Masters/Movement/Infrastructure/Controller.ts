@@ -1,5 +1,3 @@
-import { inject } from 'inversify'
-import { MOVEMENT_TYPES } from './IoC'
 import { Request, Response } from 'express'
 import {
     BaseHttpController,
@@ -21,37 +19,33 @@ import {
     UseCaseGetAll,
     UseCaseInsertOne,
 } from '../Application'
+import { MovementMongoRepository } from './MongoRepository'
 
 export class MovementController extends BaseHttpController {
 
-    constructor(
-        @inject(MOVEMENT_TYPES.UseCaseFind) private readonly useCaseFind: UseCaseFind,
-        @inject(MOVEMENT_TYPES.UseCaseGetAll) private readonly useCaseGetAll: UseCaseGetAll,
-        @inject(MOVEMENT_TYPES.UseCaseInsertOne) private readonly useCaseInsertOne: UseCaseInsertOne,
-        @inject(MOVEMENT_TYPES.UseCaseDeleteOne) private readonly useCaseDeleteOne: UseCaseDeleteOne,
-    ) {
-        super()
-    }
-
     @httpPost('find')
     async find(@request() req: Request, @response() res: Response) {
-        await this.useCaseFind.exec(req, res)
+        const repository = new MovementMongoRepository(req.user.company.code)
+        await new UseCaseFind(repository).exec(req, res)
     }
 
     @httpGet('')
     async findAll(@request() req: Request, @response() res: Response) {
-        await this.useCaseGetAll.exec(req, res)
+        const repository = new MovementMongoRepository(req.user.company.code)
+        await new UseCaseGetAll(repository).exec(req, res)
     }
 
     @httpPost('', VRB.bind(null, CreateMovementDTO, BRE))
     async saveOne(@request() req: Request, @response() res: Response) {
-        const newDoc = await this.useCaseInsertOne.exec(req.body)
+        const repository = new MovementMongoRepository(req.user.company.code)
+        const newDoc = await new UseCaseInsertOne(repository).exec(req.body)
         res.status(201).json(newDoc)
     }
 
     @httpDelete(':_id', VUUID.bind(null, BRE))
     async deleteOne(@request() req: Request, @response() res: Response) {
-        const updatedDoc = await this.useCaseDeleteOne.exec(req.params._id)
+        const repository = new MovementMongoRepository(req.user.company.code)
+        const updatedDoc = await new UseCaseDeleteOne(repository).exec(req.params._id)
         res.status(200).json(updatedDoc)
     }
 

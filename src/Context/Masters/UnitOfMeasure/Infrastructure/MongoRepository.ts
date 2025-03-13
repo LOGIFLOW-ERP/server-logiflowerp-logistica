@@ -1,17 +1,12 @@
 import { MongoRepository } from '@Shared/Infrastructure/Repositories/Mongo'
 import { IUnitOfMeasureMongoRepository } from '../Domain'
-import { inject, injectable } from 'inversify'
 import { UnitOfMeasureENTITY } from 'logiflowerp-sdk'
-import { SHARED_TYPES } from '@Shared/Infrastructure/IoC'
+import { collection } from './config'
 
-@injectable()
 export class UnitOfMeasureMongoRepository extends MongoRepository<UnitOfMeasureENTITY> implements IUnitOfMeasureMongoRepository {
 
-    constructor(
-        @inject(SHARED_TYPES.database_logiflow) database: string,
-        @inject(SHARED_TYPES.collection_unitOfMeasures) collection: string,
-    ) {
-        super(database, collection)
+    constructor(companyCode: string) {
+        super(`${companyCode}_${collection}`)
     }
 
 }

@@ -1,5 +1,3 @@
-import { inject } from 'inversify'
-import { STORE_TYPESENTITY } from './IoC'
 import { Request, Response } from 'express'
 import {
     BaseHttpController,
@@ -24,45 +22,40 @@ import {
     UseCaseInsertOne,
     UseCaseUpdateOne
 } from '../Application'
+import { StoreMongoRepository } from './MongoRepository'
 
 export class StoreController extends BaseHttpController {
 
-    constructor(
-        @inject(STORE_TYPESENTITY.UseCaseFind) private readonly useCaseFind: UseCaseFind,
-        @inject(STORE_TYPESENTITY.UseCaseGetAll) private readonly useCaseGetAll: UseCaseGetAll,
-        @inject(STORE_TYPESENTITY.UseCaseInsertOne) private readonly useCaseInsertOne: UseCaseInsertOne,
-        @inject(STORE_TYPESENTITY.UseCaseUpdateOne) private readonly useCaseUpdateOne: UseCaseUpdateOne,
-        @inject(STORE_TYPESENTITY.UseCaseDeleteOne) private readonly useCaseDeleteOne: UseCaseDeleteOne,
-    ) {
-        super()
-    }
-
     @httpPost('find')
     async find(@request() req: Request, @response() res: Response) {
-        await this.useCaseFind.exec(req, res)
+        const repository = new StoreMongoRepository(req.user.company.code)
+        await new UseCaseFind(repository).exec(req, res)
     }
 
     @httpGet('')
     async findAll(@request() req: Request, @response() res: Response) {
-        await this.useCaseGetAll.exec(req, res)
+        const repository = new StoreMongoRepository(req.user.company.code)
+        await new UseCaseGetAll(repository).exec(req, res)
     }
 
     @httpPost('', VRB.bind(null, CreateStoreDTO, BRE))
     async saveOne(@request() req: Request, @response() res: Response) {
-        console.log(req.user)
-        const newDoc = await this.useCaseInsertOne.exec(req.body)
+        const repository = new StoreMongoRepository(req.user.company.code)
+        const newDoc = await new UseCaseInsertOne(repository).exec(req.body)
         res.status(201).json(newDoc)
     }
 
     @httpPut(':_id', VUUID.bind(null, BRE), VRB.bind(null, UpdateStoreDTO, BRE))
     async updateOne(@request() req: Request, @response() res: Response) {
-        const updatedDoc = await this.useCaseUpdateOne.exec(req.params._id, req.body)
+        const repository = new StoreMongoRepository(req.user.company.code)
+        const updatedDoc = await new UseCaseUpdateOne(repository).exec(req.params._id, req.body)
         res.status(200).json(updatedDoc)
     }
 
     @httpDelete(':_id', VUUID.bind(null, BRE))
     async deleteOne(@request() req: Request, @response() res: Response) {
-        const updatedDoc = await this.useCaseDeleteOne.exec(req.params._id)
+        const repository = new StoreMongoRepository(req.user.company.code)
+        const updatedDoc = await new UseCaseDeleteOne(repository).exec(req.params._id)
         res.status(200).json(updatedDoc)
     }
 
