@@ -1,11 +1,14 @@
 import { IMovementMongoRepository } from '../Domain';
 import { CreateMovementDTO, MovementENTITY, validateCustom } from 'logiflowerp-sdk';
 import { UnprocessableEntityException } from '@Config/exception';
+import { MOVEMENT_TYPES } from '../Infrastructure/IoC';
+import { inject, injectable } from 'inversify';
 
+@injectable()
 export class UseCaseInsertOne {
 
     constructor(
-        private readonly repository: IMovementMongoRepository,
+        @inject(MOVEMENT_TYPES.RepositoryMongo) private readonly repository: IMovementMongoRepository,
     ) { }
 
     async exec(dto: CreateMovementDTO) {

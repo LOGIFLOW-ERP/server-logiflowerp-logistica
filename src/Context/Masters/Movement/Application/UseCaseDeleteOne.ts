@@ -1,9 +1,12 @@
+import { inject, injectable } from 'inversify'
 import { IMovementMongoRepository } from '../Domain'
+import { MOVEMENT_TYPES } from '../Infrastructure/IoC'
 
+@injectable()
 export class UseCaseDeleteOne {
 
     constructor(
-        private readonly repository: IMovementMongoRepository,
+        @inject(MOVEMENT_TYPES.RepositoryMongo) private readonly repository: IMovementMongoRepository,
     ) { }
 
     async exec(_id: string) {

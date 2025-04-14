@@ -1,10 +1,13 @@
 import { Response, Request } from 'express'
 import { IProductPriceMongoRepository } from '../Domain'
+import { inject, injectable } from 'inversify'
+import { PRODUCT_PRICE_TYPES } from '../Infrastructure/IoC'
 
+@injectable()
 export class UseCaseGetAll {
 
 	constructor(
-		private readonly repository: IProductPriceMongoRepository,
+		@inject(PRODUCT_PRICE_TYPES.RepositoryMongo) private readonly repository: IProductPriceMongoRepository,
 	) { }
 
 	async exec(req: Request, res: Response) {

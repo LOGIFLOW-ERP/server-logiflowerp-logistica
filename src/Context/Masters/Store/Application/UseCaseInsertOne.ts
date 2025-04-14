@@ -1,11 +1,14 @@
 import { IStoreMongoRepository } from '../Domain';
 import { CreateStoreDTO, StoreENTITY, validateCustom } from 'logiflowerp-sdk';
 import { UnprocessableEntityException } from '@Config/exception';
+import { STORE_TYPES } from '../Infrastructure/IoC';
+import { inject, injectable } from 'inversify';
 
+@injectable()
 export class UseCaseInsertOne {
 
     constructor(
-        private readonly repository: IStoreMongoRepository,
+        @inject(STORE_TYPES.RepositoryMongo) private readonly repository: IStoreMongoRepository,
     ) { }
 
     async exec(dto: CreateStoreDTO) {
