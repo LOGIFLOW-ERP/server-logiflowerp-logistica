@@ -1,16 +1,16 @@
 import { IndexEntity } from '@Shared/Domain'
 import { collection } from './Infrastructure/config'
 import { Bootstraping } from '@Shared/Bootstraping'
-import { RootCompanyENTITY, UnitOfMeasureENTITY } from 'logiflowerp-sdk'
-import { inject } from 'inversify'
+import { ProductENTITY, RootCompanyENTITY } from 'logiflowerp-sdk'
 import { SHARED_TYPES } from '@Shared/Infrastructure/IoC'
+import { inject } from 'inversify'
 
 export class ManagerEntity {
 
-    private indexes: IndexEntity<UnitOfMeasureENTITY>[] = [
+    private indexes: IndexEntity<ProductENTITY>[] = [
         {
-            campos: { uomCode: 1 },
-            opciones: { name: 'idx_uomCode', unique: true }
+            campos: { itemCode: 1 },
+            opciones: { name: 'idx_itemCode', unique: true }
         }
     ]
 

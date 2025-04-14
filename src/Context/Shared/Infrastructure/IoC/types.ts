@@ -7,5 +7,6 @@ export const SHARED_TYPES = {
     AdapterApiRequest: Symbol.for('AdapterApiRequest'),
     AdapterRabbitMQ: Symbol.for('AdapterRabbitMQ'),
     BuildSystemOptionService: Symbol.for('BuildSystemOptionService'),
+    Bootstraping: Symbol.for('Bootstraping'),
     BootstrapingDatabaseMongo: Symbol.for('BootstrapingDatabaseMongo'),
 }

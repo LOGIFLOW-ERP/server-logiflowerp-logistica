@@ -10,6 +10,8 @@ import {
     AdapterToken
 } from '../Adapters'
 import { BuildSystemOptionService } from '../Services'
+import { Bootstraping } from '@Shared/Bootstraping'
+import { BootstrapingDatabaseMongo } from '@Shared/Bootstraping/database'
 
 export const containerModule = new ContainerModule(bind => {
     bind(SHARED_TYPES.AdapterToken).to(AdapterToken).inSingletonScope()
@@ -20,4 +22,6 @@ export const containerModule = new ContainerModule(bind => {
     bind(SHARED_TYPES.AdapterApiRequest).to(AdapterApiRequest).inSingletonScope()
     bind(SHARED_TYPES.AdapterRabbitMQ).to(AdapterRabbitMQ).inSingletonScope()
     bind(SHARED_TYPES.BuildSystemOptionService).to(BuildSystemOptionService)
+    bind(SHARED_TYPES.BootstrapingDatabaseMongo).to(BootstrapingDatabaseMongo)
+    bind(SHARED_TYPES.Bootstraping).to(Bootstraping)
 })
