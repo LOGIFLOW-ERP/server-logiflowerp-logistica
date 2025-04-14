@@ -1,12 +1,16 @@
 import { MongoRepository } from '@Shared/Infrastructure/Repositories/Mongo'
 import { IProductGroupMongoRepository } from '../Domain'
 import { ProductGroupENTITY } from 'logiflowerp-sdk'
-import { collection } from './config'
+import { inject, injectable } from 'inversify'
 
+@injectable()
 export class ProductGroupMongoRepository extends MongoRepository<ProductGroupENTITY> implements IProductGroupMongoRepository {
 
-    constructor(companyCode: string) {
-        super(`${companyCode}_${collection}`)
+    constructor(
+        @inject('collection') protected readonly collection: string,
+        @inject('database') protected readonly database: string,
+    ) {
+        super(database, collection)
     }
 
 }

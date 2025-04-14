@@ -1,12 +1,16 @@
 import { MongoRepository } from '@Shared/Infrastructure/Repositories/Mongo'
 import { IMovementMongoRepository } from '../Domain'
 import { MovementENTITY } from 'logiflowerp-sdk'
-import { collection } from './config'
+import { inject, injectable } from 'inversify'
 
+@injectable()
 export class MovementMongoRepository extends MongoRepository<MovementENTITY> implements IMovementMongoRepository {
 
-    constructor(companyCode: string) {
-        super(`${companyCode}_${collection}`)
+    constructor(
+        @inject('collection') protected readonly collection: string,
+        @inject('database') protected readonly database: string,
+    ) {
+        super(database, collection)
     }
 
 }
