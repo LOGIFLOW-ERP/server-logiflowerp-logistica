@@ -1,10 +1,10 @@
 import { inject, injectable } from 'inversify'
 import { Channel, connect, Connection, ConsumeMessage } from 'amqplib'
-import { env } from '@Config/env'
 import { IParamsPublish, IParamsSubscribe } from '@Shared/Domain'
 import { AdapterMail } from './Mail'
 import { SHARED_TYPES } from '../IoC/types'
 import { isJSON } from 'logiflowerp-sdk'
+import { CONFIG_TYPES } from '@Config/types'
 
 @injectable()
 export class AdapterRabbitMQ {
@@ -14,9 +14,10 @@ export class AdapterRabbitMQ {
 
     constructor(
         @inject(SHARED_TYPES.AdapterMail) private readonly adapterMail: AdapterMail,
+        @inject(CONFIG_TYPES.Env) private readonly env: Env,
     ) { }
 
-    private async connect(url: string = env.RABBITMQ_URL) {
+    private async connect(url: string = this.env.RABBITMQ_URL) {
         try {
             if (!this.connection || !this.channel) {
                 this.connection = await connect(url)
@@ -75,7 +76,7 @@ export class AdapterRabbitMQ {
         } catch (error) {
             try {
                 await this.adapterMail.send(
-                    env.DEVELOPERS_MAILS,
+                    this.env.DEVELOPERS_MAILS,
                     `Error al ejecutar onMessage`,
                     undefined,
                     `Se produjo un error al ejecutar onMessage en queue ${queue}`

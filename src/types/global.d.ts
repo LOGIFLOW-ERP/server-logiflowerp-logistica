@@ -27,5 +27,6 @@ declare global {
         filter?: Filter<T>
         update?: T[] | UpdateFilter<T>
     }
+    type CountryConfig = Map<string, { dto: new () => object; symbolUseCase: symbol, constructorUseCase: interfaces.Newable<unknown> }>
     type Env = typeEnv
 }

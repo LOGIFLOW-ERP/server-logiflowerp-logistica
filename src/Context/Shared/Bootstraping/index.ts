@@ -1,16 +1,17 @@
 import { IndexEntity } from '@Shared/Domain'
 import { BootstrapingDatabaseMongo } from './database'
+import { inject, injectable } from 'inversify'
+import { SHARED_TYPES } from '@Shared/Infrastructure/IoC'
 
+@injectable()
 export class Bootstraping {
 
-    databaseBootstrap: BootstrapingDatabaseMongo
+    constructor(
+        @inject(SHARED_TYPES.BootstrapingDatabaseMongo) private databaseBootstrap: BootstrapingDatabaseMongo
+    ) { }
 
-    constructor(database: string, collection: string, indexes: IndexEntity[]) {
-        this.databaseBootstrap = new BootstrapingDatabaseMongo(database, collection, indexes)
-    }
-
-    async exec() {
-        await this.databaseBootstrap.exec()
+    async exec(database: string, collection: string, indexes: IndexEntity<Document>[]) {
+        await this.databaseBootstrap.exec(database, collection, indexes)
     }
 
 }

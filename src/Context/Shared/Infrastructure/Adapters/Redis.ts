@@ -1,5 +1,5 @@
-import { env } from '@Config/env'
-import { injectable } from 'inversify'
+import { CONFIG_TYPES } from '@Config/types'
+import { inject, injectable } from 'inversify'
 import { Collection, Document } from 'mongodb'
 import { createClient, RedisClientType } from 'redis'
 
@@ -8,7 +8,9 @@ export class AdapterRedis {
 
     private _client: RedisClientType
 
-    constructor() {
+    constructor(
+        @inject(CONFIG_TYPES.Env) private readonly env: Env,
+    ) {
         this._client = createClient({ url: env.REDIS_URL })
 
         this._client.on('connect', () => console.log('\x1b[36m%s\x1b[0m', '>>> Redis conectado'))

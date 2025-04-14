@@ -1,22 +1,27 @@
-import { env } from '@Config/env'
 import { UnprocessableEntityException } from '@Config/exception'
-import { injectable } from 'inversify'
+import { CONFIG_TYPES } from '@Config/types'
+import { inject, injectable } from 'inversify'
 import JWT from 'jsonwebtoken'
 import { TokenPayloadDTO, validateCustom } from 'logiflowerp-sdk'
 
 @injectable()
 export class AdapterToken {
 
-    async create(payload: TokenPayloadDTO, secretOrPrivateKey: string = env.JWT_KEY, expiresIn?: number) {
+    constructor(
+        @inject(CONFIG_TYPES.Env) private readonly env: Env,
+    ) { }
+
+    async create(payload: TokenPayloadDTO, secretOrPrivateKey: string = this.env.JWT_KEY, expiresIn?: number) {
         const _payload = await validateCustom(payload, TokenPayloadDTO, UnprocessableEntityException)
         return JWT.sign(JSON.parse(JSON.stringify(_payload)), secretOrPrivateKey, expiresIn ? { expiresIn } : {})
     }
 
-    async verify(token: string, secretOrPublicKey: string = env.JWT_KEY) {
+    async verify(token: string, secretOrPublicKey: string = this.env.JWT_KEY) {
         try {
             const res = JWT.verify(token, secretOrPublicKey) as TokenPayloadDTO
-            return validateCustom(res, TokenPayloadDTO, UnprocessableEntityException)
+            return await validateCustom(res, TokenPayloadDTO, UnprocessableEntityException)
         } catch (error) {
+            console.error(error)
             return null
         }
     }

@@ -5,6 +5,7 @@ import { InternalServerException } from '@Config/exception'
 
 @injectable()
 export class AdapterSocket {
+
     private io!: Server
 
     initialize(httpServer: HttpServer) {

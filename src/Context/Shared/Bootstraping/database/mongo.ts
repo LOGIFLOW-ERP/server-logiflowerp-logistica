@@ -1,63 +1,93 @@
-import { ContainerGlobal } from '@Config/inversify'
-import { IndexEntity } from '@Shared/Domain'
+import { IndexEntity, IndexesEntity } from '@Shared/Domain'
 import { AdapterMongoDB } from '@Shared/Infrastructure/Adapters'
 import { SHARED_TYPES } from '@Shared/Infrastructure/IoC'
-import { CreateIndexesOptions, IndexSpecification } from 'mongodb'
+import { inject, injectable } from 'inversify'
+import { IndexDescription } from 'mongodb'
 
+@injectable()
 export class BootstrapingDatabaseMongo {
 
-    // private uri: string
-    private database: string
-    private collection: string
-    private indexes: { value: IndexSpecification, opt: CreateIndexesOptions }[]
-    private adapterMongo: AdapterMongoDB
+    private indexes: IndexesEntity[] = []
 
-    constructor(/*_uri: string,*/ _database: string, _collection: string, indexes: IndexEntity[]) {
-        // this.uri = _uri
-        this.database = _database
-        this.collection = _collection
-        this.indexes = []
+    constructor(
+        @inject(SHARED_TYPES.AdapterMongoDB) private adapterMongo: AdapterMongoDB
+    ) { }
+
+    async exec(database: string, collection: string, indexes: IndexEntity<Document>[]) {
+        await this.createCollection(database, collection)
         this.generateIndexes(indexes)
-        this.adapterMongo = ContainerGlobal.get(SHARED_TYPES.AdapterMongoDB)
+        await this.createIndexes(database, collection)
     }
 
-    async exec() {
-        await this.createCollection()
-        await this.createIndexes()
-    }
-
-    private async createCollection() {
+    private async createCollection(database: string, collection: string) {
         const client = await this.adapterMongo.connection()
-        const db = client.db(this.database)
+        const db = client.db(database)
         const collections = await db.listCollections().toArray()
-        if (!collections.some(col => col.name === this.collection)) {
-            await db.createCollection(this.collection)
+        if (!collections.some(col => col.name === collection)) {
+            await db.createCollection(collection)
         }
-        // await this.adapterMongo.closeConnection()
     }
 
-    private async createIndexes() {
+    private async createIndexes(database: string, collection: string) {
         const client = await this.adapterMongo.connection()
-        const db = client.db(this.database)
-        const col = db.collection(this.collection)
-        const indexesExists = await col.listIndexes().toArray()
-        for (const index of indexesExists) {
-            if (index.name.includes('_id')) {
-                continue
+        const db = client.db(database)
+        const col = db.collection(collection)
+
+        const existingIndexes: IndexDescription[] = await col.listIndexes().toArray()
+        const existingIndexMap = new Map<string, any>()
+
+        for (const index of existingIndexes) {
+            if (!index.name) continue
+            if (index.name !== '_id_') {
+                existingIndexMap.set(index.name, index)
             }
-            await col.dropIndex(index.name)
         }
+
+        if (this.indexes.length === 0) {
+            for (const indexName of existingIndexMap.keys()) {
+                console.log(`Eliminando índice: ${indexName}`)
+                await col.dropIndex(indexName)
+            }
+            return
+        }
+
+        const newIndexNames = new Set(this.indexes.map(i => i.opt.name))
+
+        for (const indexName of existingIndexMap.keys()) {
+            if (!newIndexNames.has(indexName)) {
+                console.log(`Índice eliminado: ${indexName}`)
+                await col.dropIndex(indexName)
+            }
+        }
+
         for (const row of this.indexes) {
-            await col.createIndex(row.value, row.opt)
+
+            if (!row.opt.name) continue
+
+            const existingIndex = existingIndexMap.get(row.opt.name)
+
+            if (existingIndex) {
+                if (
+                    JSON.stringify(existingIndex.key) !== JSON.stringify(row.value) ||
+                    existingIndex.unique !== row.opt.unique
+                ) {
+                    console.log(`Índice cambiado: ${row.opt.name}, eliminando y recreando...`)
+                    await col.dropIndex(row.opt.name)
+                    await col.createIndex(row.value, row.opt)
+                }
+            } else {
+                console.log(`Índice nuevo: ${row.opt.name}, creándolo...`);
+                await col.createIndex(row.value, row.opt)
+            }
         }
-        // await this.adapterMongo.closeConnection()
+
     }
 
-    private generateIndexes(indexes: IndexEntity[]) {
+    private generateIndexes(indexes: IndexEntity<Document>[]) {
         for (const row of indexes) {
             this.indexes.push({
                 opt: row.opciones,
-                value: row.campos.map(el => ({ [el.nombre]: el.direccion }))
+                value: row.campos
             })
         }
     }

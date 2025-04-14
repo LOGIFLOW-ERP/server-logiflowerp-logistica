@@ -1,5 +1,5 @@
-import { env } from '@Config/env'
-import { injectable } from 'inversify'
+import { CONFIG_TYPES } from '@Config/types'
+import { inject, injectable } from 'inversify'
 import { createTransport, Transporter, } from 'nodemailer'
 
 @injectable()
@@ -7,19 +7,20 @@ export class AdapterMail {
 
     private transporter: Transporter
 
-    constructor() {
+    constructor(
+        @inject(CONFIG_TYPES.Env) private readonly env: Env,
+    ) {
         this.transporter = this.createTransporter()
-        // console.log(this.transporter)
     }
 
     private createTransporter() {
         return createTransport({
-            host: env.SMTP_HOST,
-            port: env.SMTP_PORT,
-            secure: env.SMTP_SECURE,
+            host: this.env.SMTP_HOST,
+            port: this.env.SMTP_PORT,
+            secure: this.env.SMTP_SECURE,
             auth: {
-                user: env.EMAIL_USER,
-                pass: env.EMAIL_PASS
+                user: this.env.EMAIL_USER,
+                pass: this.env.EMAIL_PASS
             }
         })
     }
@@ -32,7 +33,7 @@ export class AdapterMail {
     ) {
         try {
             const info = await this.transporter.sendMail({
-                from: `"Logiflow ERP" <${env.EMAIL_USER}>`,
+                from: `"Logiflow ERP" <${this.env.EMAIL_USER}>`,
                 to: recipients,
                 subject,
                 text: plaintextMessage,

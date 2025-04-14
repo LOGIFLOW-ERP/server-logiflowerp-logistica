@@ -1,11 +1,6 @@
 import { CreateIndexesOptions } from 'mongodb'
 
-export interface IndexEntity {
-    campos: ICampos[]
+export interface IndexEntity<T> {
+    campos: Partial<Record<keyof T, number>> & Record<string, number>
     opciones: CreateIndexesOptions
-}
-
-interface ICampos {
-    nombre: string
-    direccion: number
 }
