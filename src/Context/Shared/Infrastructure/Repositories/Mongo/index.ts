@@ -5,7 +5,6 @@ import { AdapterMongoDB, AdapterRedis, } from '@Shared/Infrastructure/Adapters'
 import { Request, Response } from 'express'
 import { Document, Filter, OptionalUnlessRequiredId, UpdateFilter } from 'mongodb'
 import { _deleteMany, _deleteOne, _find, _insertMany, _insertOne, _select, _updateOne } from './Transactions'
-import { database_logiflow } from '@Shared/Infrastructure/config'
 
 export class MongoRepository<T extends Document> implements IMongoRepository<T> {
 
@@ -14,7 +13,7 @@ export class MongoRepository<T extends Document> implements IMongoRepository<T> 
     protected adapterMongo: AdapterMongoDB
     protected adapterRedis: AdapterRedis
 
-    constructor(collection: string, database: string = database_logiflow) {
+    constructor(collection: string, database: string) {
         this.database = database
         this.collection = collection
         this.adapterMongo = ContainerGlobal.get(SHARED_TYPES.AdapterMongoDB)

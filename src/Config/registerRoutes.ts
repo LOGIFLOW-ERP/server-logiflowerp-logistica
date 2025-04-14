@@ -5,9 +5,8 @@ import { BuildSystemOptionService } from '@Shared/Infrastructure/Services'
 import { SHARED_TYPES } from '@Shared/Infrastructure/IoC'
 
 export async function registerRoutes(rootPath: string) {
+    const routes = getRouteInfo(ContainerGlobal)
     try {
-        const routes = getRouteInfo(ContainerGlobal)
-        // await ContainerGlobal.get<UseCaseSaveRoutes>(ENDPOINT_TYPES.UseCaseSaveRoutes).exec(routes, rootPath)
         await ContainerGlobal.get<BuildSystemOptionService>(SHARED_TYPES.BuildSystemOptionService).exec(routes, rootPath, env.PREFIX)
     } catch (error) {
         console.error(error)

@@ -6,6 +6,7 @@ export const env = {
     DOMAINS: get('DOMAINS').required().asArray(),
     NODE_ENV: get('NODE_ENV').required().asEnum(['development', 'qa', 'production']),
     MONGO_URI: get('MONGO_URI').required().asUrlString(),
+    DB_ROOT: get('DB_ROOT').required().asString(),
     RABBITMQ_URL: get('RABBITMQ_URL').required().asUrlString(),
     REDIS_URL: get('REDIS_URL').required().asUrlString(),
     FRONTEND_URL: get('FRONTEND_URL').required().asUrlString(),
@@ -18,8 +19,8 @@ export const env = {
     SMTP_HOST: get('SMTP_HOST').required().asString(),
     SMTP_PORT: get('SMTP_PORT').required().asInt(),
     SMTP_SECURE: get('SMTP_SECURE').required().asBool(),
-    // DNI_LOOKUP_API_URL: get('DNI_LOOKUP_API_URL').required().asUrlString(),
-    // DNI_LOOKUP_API_TOKEN: get('DNI_LOOKUP_API_TOKEN').required().asString(),
     DEVELOPERS_MAILS: get('DEVELOPERS_MAILS').required().asArray(),
     ADMINISTRATOR_EMAILS: get('ADMINISTRATOR_EMAILS').required().asArray(),
 }
+
+export type typeEnv = typeof env

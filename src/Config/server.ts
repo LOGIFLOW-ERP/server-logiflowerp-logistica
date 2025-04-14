@@ -124,7 +124,10 @@ function authMiddleware(app: Application) {
         try {
             let serviceNoAuth: boolean = true
 
-            if (req.originalUrl.toLowerCase().includes('/login')) {
+            const publicRoutes: string[] = []
+            const url = req.originalUrl.toLowerCase()
+
+            if (publicRoutes.some(route => route.toLowerCase() === url)) {
                 serviceNoAuth = false
             }
 
@@ -145,6 +148,8 @@ function authMiddleware(app: Application) {
 
             req.payloadToken = decoded
             req.user = decoded.user
+            req.userRoot = decoded.root
+            req.rootCompany = decoded.rootCompany
 
             next()
         } catch (error) {

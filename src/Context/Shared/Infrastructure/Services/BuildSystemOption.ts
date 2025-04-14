@@ -1,9 +1,9 @@
 import { inject, injectable } from 'inversify'
-import { SHARED_TYPES } from '../IoC/types'
 import { MongoRepository } from '../Repositories/Mongo'
 import { builSystemOption, collections, SystemOptionENTITY } from 'logiflowerp-sdk'
 import { UnprocessableEntityException } from '@Config/exception'
 import { RouteInfo } from 'inversify-express-utils'
+import { CONFIG_TYPES } from '@Config/types'
 
 @injectable()
 export class BuildSystemOptionService {
@@ -11,9 +11,9 @@ export class BuildSystemOptionService {
     private mongoRepository: MongoRepository<SystemOptionENTITY>
 
     constructor(
-        @inject(SHARED_TYPES.prefix_col_root) private readonly prefix_col_root: string
+        @inject(CONFIG_TYPES.Env) private readonly env: Env
     ) {
-        this.mongoRepository = new MongoRepository(`${this.prefix_col_root}_${collections.systemOptions}`)
+        this.mongoRepository = new MongoRepository(collections.systemOptions, env.DB_ROOT)
     }
 
     async exec(rawData: RouteInfo[], rootPath: string, prefix: string) {

@@ -15,7 +15,7 @@ async function merge(paths: Dirent[]) {
 }
 
 export const registerContainer = async () => {
-    const cwd = resolve(__dirname, '../Context')
+    const cwd = resolve(__dirname, '../../src')
     const paths = globSync(['**/Container.ts', '**/Container.js'], { withFileTypes: true, cwd })
     ContainerGlobal = await merge(paths)
 }
