@@ -1,26 +1,19 @@
 import { Request, Response } from 'express'
-import { BadRequestException as BRE } from '@Config/exception'
 import {
     BaseHttpController,
     httpPost,
     request,
     response
 } from 'inversify-express-utils'
-import { UseCaseFind } from '../Application'
-import {
-    UpdateUserDTO,
-    UserENTITY,
-    validateUUIDv4Param as VUUID,
-    validateRequestBody as VRB
-} from 'logiflowerp-sdk'
-import { ProductMongoRepository } from './MongoRepository'
+import { resolveCompanyFind } from './decorators'
+import { authorizeRoute } from '@Shared/Infrastructure/Middlewares'
 
 export class ProductController extends BaseHttpController {
 
-    @httpPost('find')
+    @httpPost('find', authorizeRoute)
+    @resolveCompanyFind
     async find(@request() req: Request, @response() res: Response) {
-        const repository = new ProductMongoRepository(req.user.company.code)
-        await new UseCaseFind(repository).exec(req, res)
+        await req.useCase.exec(req, res)
     }
 
     // @httpPost('update-one/:id', VUUID.bind(null, BRE), VRB.bind(null, UpdateUserDTO, BRE))

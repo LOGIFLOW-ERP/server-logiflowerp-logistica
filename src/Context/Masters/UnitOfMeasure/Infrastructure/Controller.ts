@@ -15,48 +15,48 @@ import {
     validateUUIDv4Param as VUUID,
 } from 'logiflowerp-sdk'
 import { BadRequestException as BRE } from '@Config/exception'
+import { authorizeRoute } from '@Shared/Infrastructure/Middlewares'
 import {
-    UseCaseDeleteOne,
-    UseCaseFind,
-    UseCaseGetAll,
-    UseCaseInsertOne,
-    UseCaseUpdateOne
-} from '../Application'
-import { UnitOfMeasureMongoRepository } from './MongoRepository'
+    resolveCompanyDeleteOne,
+    resolveCompanyFind,
+    resolveCompanyGetAll,
+    resolveCompanyInsertOne,
+    resolveCompanyUpdateOne
+} from './decorators'
 
 export class UnitOfMeasureController extends BaseHttpController {
 
-    @httpPost('find')
+    @httpPost('find', authorizeRoute)
+    @resolveCompanyFind
     async find(@request() req: Request, @response() res: Response) {
-        const repository = new UnitOfMeasureMongoRepository(req.user.company.code)
-        await new UseCaseFind(repository).exec(req, res)
+        await req.useCase.exec(req, res)
     }
 
-    @httpGet('')
+    @httpGet('', authorizeRoute)
+    @resolveCompanyGetAll
     async findAll(@request() req: Request, @response() res: Response) {
-        const repository = new UnitOfMeasureMongoRepository(req.user.company.code)
-        await new UseCaseGetAll(repository).exec(req, res)
+        await req.useCase.exec(req, res)
     }
 
-    @httpPost('', VRB.bind(null, CreateUnitOfMeasureDTO, BRE))
+    @httpPost('', authorizeRoute, VRB.bind(null, CreateUnitOfMeasureDTO, BRE))
+    @resolveCompanyInsertOne
     async saveOne(@request() req: Request, @response() res: Response) {
-        const repository = new UnitOfMeasureMongoRepository(req.user.company.code)
-        const newDoc = await new UseCaseInsertOne(repository).exec(req.body)
-        res.status(201).json(newDoc)
+        await req.useCase.exec(req.body)
+        res.sendStatus(204)
     }
 
-    @httpPut(':_id', VUUID.bind(null, BRE), VRB.bind(null, UpdateUnitOfMeasureDTO, BRE))
+    @httpPut(':_id', authorizeRoute, VUUID.bind(null, BRE), VRB.bind(null, UpdateUnitOfMeasureDTO, BRE))
+    @resolveCompanyUpdateOne
     async updateOne(@request() req: Request, @response() res: Response) {
-        const repository = new UnitOfMeasureMongoRepository(req.user.company.code)
-        const updatedDoc = await new UseCaseUpdateOne(repository).exec(req.params._id, req.body)
-        res.status(200).json(updatedDoc)
+        await req.useCase.exec(req.params._id, req.body)
+        res.sendStatus(204)
     }
 
-    @httpDelete(':_id', VUUID.bind(null, BRE))
+    @httpDelete(':_id', authorizeRoute, VUUID.bind(null, BRE))
+    @resolveCompanyDeleteOne
     async deleteOne(@request() req: Request, @response() res: Response) {
-        const repository = new UnitOfMeasureMongoRepository(req.user.company.code)
-        const updatedDoc = await new UseCaseDeleteOne(repository).exec(req.params._id)
-        res.status(200).json(updatedDoc)
+        await req.useCase.exec(req.params._id)
+        res.sendStatus(204)
     }
 
 }
