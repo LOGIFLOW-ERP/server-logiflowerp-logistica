@@ -28,7 +28,7 @@ export async function _insertOne<T extends Document>(params: IParamsTransaction<
     const logDocument: LogEntity<T> = {
         db: col.dbName,
         col: col.collectionName,
-        operacion: 'INSERT',
+        operacion: 'INSERT ONE',
         antiguoValor: null,
         nuevoValor: newDocument,
         fecha: new Date(),

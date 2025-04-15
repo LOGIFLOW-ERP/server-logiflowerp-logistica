@@ -27,7 +27,7 @@ export async function _deleteOne<T extends Document>(params: IParamsTransaction<
     const logDocument: LogEntity<T> = {
         db: col.dbName,
         col: col.collectionName,
-        operacion: 'DELETE',
+        operacion: 'DELETE ONE',
         antiguoValor: oldDocument,
         nuevoValor: null,
         fecha: new Date(),

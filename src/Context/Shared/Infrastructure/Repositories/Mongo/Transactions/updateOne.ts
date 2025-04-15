@@ -32,7 +32,7 @@ export async function _updateOne<T extends Document>(params: IParamsTransaction<
     const logDocument: LogEntity<T> = {
         db: col.dbName,
         col: col.collectionName,
-        operacion: 'UPDATE',
+        operacion: 'UPDATE ONE',
         antiguoValor: oldDocument,
         nuevoValor: newDocument,
         fecha: new Date(),
