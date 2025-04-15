@@ -1,6 +1,6 @@
 import { IndexEntity, IndexesEntity } from '@Shared/Domain'
 import { AdapterMongoDB } from '@Shared/Infrastructure/Adapters'
-import { SHARED_TYPES } from '@Shared/Infrastructure/IoC'
+import { SHARED_TYPES } from '@Shared/Infrastructure/IoC/types'
 import { inject, injectable } from 'inversify'
 import { IndexDescription } from 'mongodb'
 

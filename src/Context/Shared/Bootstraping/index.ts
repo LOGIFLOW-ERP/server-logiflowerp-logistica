@@ -1,7 +1,7 @@
 import { IndexEntity } from '@Shared/Domain'
 import { BootstrapingDatabaseMongo } from './database'
 import { inject, injectable } from 'inversify'
-import { SHARED_TYPES } from '@Shared/Infrastructure/IoC'
+import { SHARED_TYPES } from '@Shared/Infrastructure/IoC/types'
 
 @injectable()
 export class Bootstraping {

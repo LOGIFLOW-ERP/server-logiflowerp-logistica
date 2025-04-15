@@ -1,3 +1,3 @@
 export * from './Container';
-export * from './types';
+export { SHARED_TYPES } from './types';
 export { createTenantScopedContainer } from './createTenantScopedContainer';
