@@ -1,4 +1,4 @@
-import { UnauthorizedException } from '@Config/exception'
+import { ForbiddenException } from '@Config/exception'
 import { NextFunction, Request, Response } from 'express'
 
 export function authRootCompanyMiddleware(req: Request, _res: Response, next: NextFunction) {
@@ -6,7 +6,7 @@ export function authRootCompanyMiddleware(req: Request, _res: Response, next: Ne
         if (req.userRoot || req.user.root) {
             return next()
         }
-        next(new UnauthorizedException('No autorizado'))
+        next(new ForbiddenException('No autorizado'))
     } catch (error) {
         next(error)
     }

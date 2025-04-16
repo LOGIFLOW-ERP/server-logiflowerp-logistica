@@ -1,4 +1,4 @@
-import { UnauthorizedException } from '@Config/exception'
+import { ForbiddenException } from '@Config/exception'
 import { NextFunction, Request, Response } from 'express'
 
 export function authorizeRoute(req: Request, _res: Response, next: NextFunction) {
@@ -26,7 +26,7 @@ export function authorizeRoute(req: Request, _res: Response, next: NextFunction)
 
         if (exist) return next()
 
-        next(new UnauthorizedException('No autorizado: Esta acción no está permitida según tus permisos', true))
+        next(new ForbiddenException('No autorizado: Esta acción no está permitida según tus permisos', true))
     } catch (error) {
         next(error)
     }
