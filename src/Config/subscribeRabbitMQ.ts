@@ -6,7 +6,7 @@ async function init(paths: Dirent[]) {
     for (const rute of paths) {
         const newPath = path.join('../', `${rute.parentPath.split('src')[1]}/${rute.name}`.replace('.js', ''))
         const { Worker } = await import(newPath)
-        await ContainerGlobal.get<any>(Worker).exec()
+        await ContainerGlobal.resolve<any>(Worker).exec()
     }
 }
 

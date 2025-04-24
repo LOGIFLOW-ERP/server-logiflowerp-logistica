@@ -1,18 +1,17 @@
 import { MongoRepository } from '@Shared/Infrastructure/Repositories/Mongo'
 import { Dirent, globSync } from 'fs'
-import { collections, State } from 'logiflowerp-sdk'
+import { collections, RootCompanyENTITY, State } from 'logiflowerp-sdk'
 import path from 'path'
 import { env } from './env'
 import { ContainerGlobal } from './inversify'
 
 async function getRootCompanies() {
-    const repository = new MongoRepository(collections.companies, env.DB_ROOT)
+    const repository = new MongoRepository<RootCompanyENTITY>(collections.companies, env.DB_ROOT)
     const pipeline = [{ $match: { state: State.ACTIVO } }]
     return repository.select(pipeline)
 }
 
-async function initcollection(paths: Dirent[]) {
-    const rootCompanies = await getRootCompanies()
+async function initcollection(paths: Dirent[], rootCompanies: RootCompanyENTITY[]) {
     for (let rute of paths) {
         const newPath = path.join('../', `${rute.parentPath.split('src')[1]}/${rute.name}`)
         const { ManagerEntity } = await import(newPath)
@@ -21,8 +20,9 @@ async function initcollection(paths: Dirent[]) {
     }
 }
 
-export const initCollections = async () => {
+export const initCollections = async (rootCompanies?: RootCompanyENTITY[]) => {
     const cwd = path.resolve(__dirname, '../Context')
     const paths = globSync(['**/Bootstrap.js', '**/Bootstrap.ts'], { withFileTypes: true, cwd })
-    await initcollection(paths)
+    const _rootCompanies = rootCompanies ? rootCompanies : await getRootCompanies()
+    await initcollection(paths, _rootCompanies)
 }
