@@ -5,3 +5,9 @@ export interface IParamsPublish {
     message: any
     user?: TokenPayloadDTO
 }
+
+export interface IParamsPublishFanout {
+    exchange: string
+    message: any
+    user?: TokenPayloadDTO
+}

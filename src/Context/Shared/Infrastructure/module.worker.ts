@@ -2,7 +2,7 @@ import { inject, injectable } from 'inversify'
 import { SHARED_TYPES } from './IoC/types';
 import { AdapterRabbitMQ } from './Adapters';
 import { initCollections } from '@Config/collections';
-import { getQueueNameInitializationCollections } from 'logiflowerp-sdk';
+import { getExchangeNameInitializationCollections } from 'logiflowerp-sdk';
 import { CONFIG_TYPES } from '@Config/types';
 
 @injectable()
@@ -14,8 +14,8 @@ export class Worker {
     ) { }
 
     async exec() {
-        await this.adapterRabbitMQ.subscribe({
-            queue: getQueueNameInitializationCollections({ NODE_ENV: this.env.NODE_ENV }),
+        await this.adapterRabbitMQ.subscribeFanout({
+            exchange: getExchangeNameInitializationCollections({ NODE_ENV: this.env.NODE_ENV }),
             onMessage: async ({ message, user }) => {
                 await initCollections(message)
                 return 'Colecciones inicializadas'
