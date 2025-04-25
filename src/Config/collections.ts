@@ -6,7 +6,7 @@ import { env } from './env'
 import { ContainerGlobal } from './inversify'
 
 async function getRootCompanies() {
-    const repository = new MongoRepository<RootCompanyENTITY>(collections.companies, env.DB_ROOT)
+    const repository = new MongoRepository<RootCompanyENTITY>(collections.company, env.DB_ROOT)
     const pipeline = [{ $match: { state: State.ACTIVO } }]
     return repository.select(pipeline)
 }

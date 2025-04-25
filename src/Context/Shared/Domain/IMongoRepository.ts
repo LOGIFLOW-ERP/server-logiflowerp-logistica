@@ -15,4 +15,5 @@ export interface IMongoRepository<T extends Document> {
     insertMany(objs: OptionalUnlessRequiredId<T>[]): Promise<WithId<T>[]>
     deleteMany(filter: Filter<T>): Promise<WithId<T>[]>
     deleteOne(filter: Filter<T>): Promise<WithId<T>>
+    executeTransactionBatch<R>(transactions: ITransaction<T>[]): Promise<R[]>
 }

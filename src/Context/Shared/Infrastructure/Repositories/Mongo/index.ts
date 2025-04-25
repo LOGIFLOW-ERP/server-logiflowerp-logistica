@@ -1,10 +1,11 @@
 import { ContainerGlobal } from '@Config/inversify'
-import { IMongoRepository } from '@Shared/Domain'
+import { IMapTransaction, IMongoRepository } from '@Shared/Domain'
 import { SHARED_TYPES } from '@Shared/Infrastructure/IoC'
 import { AdapterMongoDB, AdapterRedis, } from '@Shared/Infrastructure/Adapters'
 import { Request, Response } from 'express'
 import { Document, Filter, OptionalUnlessRequiredId, UpdateFilter } from 'mongodb'
 import { _deleteMany, _deleteOne, _find, _insertMany, _insertOne, _select, _updateOne } from './Transactions'
+import { BadRequestException } from '@Config/exception'
 
 export class MongoRepository<T extends Document> implements IMongoRepository<T> {
 
@@ -118,6 +119,51 @@ export class MongoRepository<T extends Document> implements IMongoRepository<T> 
             await this.adapterRedis.deleteKeysCollection(col)
             await this.adapterMongo.commitTransaction(session)
             return result
+        } catch (error) {
+            await this.adapterMongo.rollbackTransaction(session)
+            throw error
+        } finally {
+            await this.adapterMongo.closeSession(session)
+        }
+    }
+
+    async executeTransactionBatch(transactions: ITransaction<T>[]) {
+        if (!transactions.length) throw new BadRequestException('El lote de transacciones no puede estar vacío')
+        const client = await this.adapterMongo.connection()
+        const session = await this.adapterMongo.openSession(client)
+        const response: any[] = []
+        const keys: string[] = []
+        try {
+            await this.adapterMongo.openTransaction(session)
+            const mapTransaction: IMapTransaction = {
+                insertOne: _insertOne,
+                updateOne: _updateOne
+            }
+            for (const transaction of transactions) {
+                if (!mapTransaction[transaction.transaction]) {
+                    throw new BadRequestException(`Invalid transaction type: ${transaction.transaction}`)
+                }
+                const database = transaction.database ? transaction.database : this.database
+                const collection = transaction.collection ? transaction.collection : this.collection
+                const col = client.db(database).collection<T>(collection)
+                const result = await mapTransaction[transaction.transaction]({
+                    adapterMongo: this.adapterMongo,
+                    client,
+                    col,
+                    session,
+                    doc: transaction.doc,
+                    filter: transaction.filter,
+                    update: transaction.update
+                })
+                const _keys = await this.adapterRedis.getKeysCollection(col)
+                keys.push(..._keys)
+                response.push(result)
+            }
+            await this.adapterMongo.commitTransaction(session)
+            if (keys.length) {
+                await this.adapterRedis.client.del(keys)
+            }
+            return response
         } catch (error) {
             await this.adapterMongo.rollbackTransaction(session)
             throw error

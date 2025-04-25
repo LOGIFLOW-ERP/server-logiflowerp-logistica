@@ -13,7 +13,7 @@ export class BuildSystemOptionService {
     constructor(
         @inject(CONFIG_TYPES.Env) private readonly env: Env
     ) {
-        this.mongoRepository = new MongoRepository(collections.systemOptions, env.DB_ROOT)
+        this.mongoRepository = new MongoRepository(collections.systemOption, env.DB_ROOT)
     }
 
     async exec(rawData: RouteInfo[], rootPath: string, prefix: string) {
