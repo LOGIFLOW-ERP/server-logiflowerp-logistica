@@ -4,8 +4,9 @@ import { SHARED_TYPES } from '@Shared/Infrastructure/IoC'
 import { AdapterMongoDB, AdapterRedis, } from '@Shared/Infrastructure/Adapters'
 import { Request, Response } from 'express'
 import { Document, Filter, OptionalUnlessRequiredId, UpdateFilter } from 'mongodb'
-import { _deleteMany, _deleteOne, _find, _insertMany, _insertOne, _select, _updateOne } from './Transactions'
+import { _deleteMany, _deleteOne, _find, _insertMany, _insertOne, _select, _selectOne, _updateOne } from './Transactions'
 import { BadRequestException } from '@Config/exception'
+import { AuthUserDTO } from 'logiflowerp-sdk'
 
 export class MongoRepository<T extends Document> implements IMongoRepository<T> {
 
@@ -13,10 +14,12 @@ export class MongoRepository<T extends Document> implements IMongoRepository<T> 
     protected collection: string
     protected adapterMongo: AdapterMongoDB
     protected adapterRedis: AdapterRedis
+    protected user: AuthUserDTO
 
-    constructor(collection: string, database: string) {
+    constructor(collection: string, database: string, user: AuthUserDTO) {
         this.database = database
         this.collection = collection
+        this.user = user
         this.adapterMongo = ContainerGlobal.get(SHARED_TYPES.AdapterMongoDB)
         this.adapterRedis = ContainerGlobal.get(SHARED_TYPES.AdapterRedis)
     }
@@ -34,7 +37,13 @@ export class MongoRepository<T extends Document> implements IMongoRepository<T> 
     async select<ReturnType extends Document = T>(pipeline: Document[], collection: string = this.collection, database: string = this.database) {
         const client = await this.adapterMongo.connection()
         const col = client.db(database).collection(collection)
-        return await _select<ReturnType>({ collection: col, pipeline })
+        return _select<ReturnType>({ collection: col, pipeline })
+    }
+
+    async selectOne<ReturnType extends Document = T>(pipeline: Document[], collection: string = this.collection, database: string = this.database) {
+        const client = await this.adapterMongo.connection()
+        const col = client.db(database).collection(collection)
+        return _selectOne<ReturnType>({ collection: col, pipeline })
     }
 
     async insertOne(doc: OptionalUnlessRequiredId<T>) {
@@ -43,7 +52,7 @@ export class MongoRepository<T extends Document> implements IMongoRepository<T> 
         try {
             const col = client.db(this.database).collection<T>(this.collection)
             await this.adapterMongo.openTransaction(session)
-            const result = await _insertOne<T>({ client, col, session, doc, adapterMongo: this.adapterMongo })
+            const result = await _insertOne<T>({ client, col, session, doc, adapterMongo: this.adapterMongo, user: this.user })
             await this.adapterRedis.deleteKeysCollection(col)
             await this.adapterMongo.commitTransaction(session)
             return result
@@ -61,7 +70,7 @@ export class MongoRepository<T extends Document> implements IMongoRepository<T> 
         try {
             const col = client.db(this.database).collection<T>(this.collection)
             await this.adapterMongo.openTransaction(session)
-            const result = await _insertMany<T>({ client, col, session, docs, adapterMongo: this.adapterMongo })
+            const result = await _insertMany<T>({ client, col, session, docs, adapterMongo: this.adapterMongo, user: this.user })
             await this.adapterRedis.deleteKeysCollection(col)
             await this.adapterMongo.commitTransaction(session)
             return result
@@ -79,7 +88,7 @@ export class MongoRepository<T extends Document> implements IMongoRepository<T> 
         try {
             const col = client.db(this.database).collection<T>(this.collection)
             await this.adapterMongo.openTransaction(session)
-            const result = await _deleteMany<T>({ client, col, session, filter, adapterMongo: this.adapterMongo })
+            const result = await _deleteMany<T>({ client, col, session, filter, adapterMongo: this.adapterMongo, user: this.user })
             await this.adapterRedis.deleteKeysCollection(col)
             await this.adapterMongo.commitTransaction(session)
             return result
@@ -97,7 +106,7 @@ export class MongoRepository<T extends Document> implements IMongoRepository<T> 
         try {
             const col = client.db(this.database).collection<T>(this.collection)
             await this.adapterMongo.openTransaction(session)
-            const result = await _updateOne<T>({ client, col, session, filter, update, adapterMongo: this.adapterMongo })
+            const result = await _updateOne<T>({ client, col, session, filter, update, adapterMongo: this.adapterMongo, user: this.user })
             await this.adapterRedis.deleteKeysCollection(col)
             await this.adapterMongo.commitTransaction(session)
             return result
@@ -115,7 +124,7 @@ export class MongoRepository<T extends Document> implements IMongoRepository<T> 
         try {
             const col = client.db(this.database).collection<T>(this.collection)
             await this.adapterMongo.openTransaction(session)
-            const result = await _deleteOne<T>({ client, col, session, filter, adapterMongo: this.adapterMongo })
+            const result = await _deleteOne<T>({ client, col, session, filter, adapterMongo: this.adapterMongo, user: this.user })
             await this.adapterRedis.deleteKeysCollection(col)
             await this.adapterMongo.commitTransaction(session)
             return result
@@ -153,7 +162,8 @@ export class MongoRepository<T extends Document> implements IMongoRepository<T> 
                     session,
                     doc: transaction.doc,
                     filter: transaction.filter,
-                    update: transaction.update
+                    update: transaction.update,
+                    user: this.user
                 })
                 const _keys = await this.adapterRedis.getKeysCollection(col)
                 keys.push(..._keys)

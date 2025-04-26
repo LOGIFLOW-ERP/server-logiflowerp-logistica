@@ -8,7 +8,7 @@ import { Document, Filter } from 'mongodb'
 
 export async function _insertOne<T extends Document>(params: IParamsTransaction<T>) {
 
-    const { session, client, col, doc, adapterMongo } = params
+    const { session, client, col, doc, adapterMongo, user } = params
 
     if (!doc) {
         throw new BadRequestException('Se requiere parámetro doc')
@@ -32,7 +32,7 @@ export async function _insertOne<T extends Document>(params: IParamsTransaction<
         antiguoValor: null,
         nuevoValor: newDocument,
         fecha: new Date(),
-        idUsuario: ''
+        idUsuario: user._id
     }
 
     await adapterMongo.insertLog<T>(logDocument, session, client)

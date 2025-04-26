@@ -1,4 +1,5 @@
 import { AdapterMongoDB } from '@Shared/Infrastructure/Adapters'
+import { AuthUserDTO } from 'logiflowerp-sdk'
 import {
     ClientSession,
     Collection,
@@ -18,4 +19,5 @@ export interface IParamsTransaction<T extends Document> {
     filter?: Filter<T>
     update?: T[] | UpdateFilter<T>
     adapterMongo: AdapterMongoDB
+    user: AuthUserDTO
 }

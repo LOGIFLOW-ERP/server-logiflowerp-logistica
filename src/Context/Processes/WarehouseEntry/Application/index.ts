@@ -1,3 +1,4 @@
+export * from './UseCaseAddDetail';
 export * from './UseCaseDeleteOne';
 export * from './UseCaseFind';
 export * from './UseCaseGetAll';

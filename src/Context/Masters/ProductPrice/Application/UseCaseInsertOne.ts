@@ -14,6 +14,7 @@ export class UseCaseInsertOne {
     async exec(dto: CreateProductPriceDTO) {
         const _entity = new ProductPriceENTITY()
         _entity.set(dto)
+        _entity.priceMax = _entity.price
         const entity = await validateCustom(_entity, ProductPriceENTITY, UnprocessableEntityException)
         return this.repository.insertOne(entity)
     }

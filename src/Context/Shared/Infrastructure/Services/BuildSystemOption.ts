@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify'
 import { MongoRepository } from '../Repositories/Mongo'
-import { builSystemOption, collections, SystemOptionENTITY } from 'logiflowerp-sdk'
+import { AuthUserDTO, builSystemOption, collections, SystemOptionENTITY } from 'logiflowerp-sdk'
 import { UnprocessableEntityException } from '@Config/exception'
 import { RouteInfo } from 'inversify-express-utils'
 import { CONFIG_TYPES } from '@Config/types'
@@ -13,7 +13,7 @@ export class BuildSystemOptionService {
     constructor(
         @inject(CONFIG_TYPES.Env) private readonly env: Env
     ) {
-        this.mongoRepository = new MongoRepository(collections.systemOption, env.DB_ROOT)
+        this.mongoRepository = new MongoRepository(collections.systemOption, env.DB_ROOT, new AuthUserDTO())
     }
 
     async exec(rawData: RouteInfo[], rootPath: string, prefix: string) {

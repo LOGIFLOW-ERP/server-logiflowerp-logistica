@@ -4,7 +4,7 @@ import { Document, Filter } from 'mongodb'
 
 export async function _insertMany<T extends Document>(params: IParamsTransaction<T>) {
 
-    const { session, client, col, docs, adapterMongo } = params
+    const { session, client, col, docs, adapterMongo, user } = params
 
     if (!docs) {
         throw new BadRequestException('Se requiere parámetro docs')
@@ -32,7 +32,7 @@ export async function _insertMany<T extends Document>(params: IParamsTransaction
         antiguoValor: null,
         nuevoValor: newsDocuments,
         fecha: new Date(),
-        idUsuario: ''
+        idUsuario: user._id
     }
 
     await adapterMongo.insertLog<T>(logDocument, session, client)

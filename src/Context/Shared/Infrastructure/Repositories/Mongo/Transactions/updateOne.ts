@@ -8,7 +8,7 @@ import { Document } from 'mongodb'
 
 export async function _updateOne<T extends Document>(params: IParamsTransaction<T>) {
 
-    const { filter, col, session, update, adapterMongo, client } = params
+    const { filter, col, session, update, adapterMongo, client, user } = params
 
     if (!filter || !update) {
         throw new BadRequestException('Se requieren parámetros filter y update')
@@ -36,7 +36,7 @@ export async function _updateOne<T extends Document>(params: IParamsTransaction<
         antiguoValor: oldDocument,
         nuevoValor: newDocument,
         fecha: new Date(),
-        idUsuario: ''
+        idUsuario: user._id
     }
 
     await adapterMongo.insertLog<T>(logDocument, session, client)

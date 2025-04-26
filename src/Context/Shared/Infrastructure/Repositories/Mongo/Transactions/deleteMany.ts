@@ -4,7 +4,7 @@ import { Document } from 'mongodb'
 
 export async function _deleteMany<T extends Document>(params: IParamsTransaction<T>) {
 
-    const { session, client, col, adapterMongo, filter } = params
+    const { session, client, col, adapterMongo, filter, user } = params
 
     if (!filter) {
         throw new BadRequestException('Se requiere parámetro filter')
@@ -31,7 +31,7 @@ export async function _deleteMany<T extends Document>(params: IParamsTransaction
         antiguoValor: documents,
         nuevoValor: null,
         fecha: new Date(),
-        idUsuario: ''
+        idUsuario: user._id
     }
 
     await adapterMongo.insertLog<T>(logDocument, session, client)

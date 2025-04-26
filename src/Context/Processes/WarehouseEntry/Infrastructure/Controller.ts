@@ -9,6 +9,7 @@ import {
     response
 } from 'inversify-express-utils'
 import {
+    CreateOrderDetailDTO,
     CreateWarehouseEntryDTO,
     validateRequestBody as VRB,
     validateUUIDv4Param as VUUID,
@@ -16,6 +17,7 @@ import {
 import { BadRequestException as BRE } from '@Config/exception'
 import { authorizeRoute } from '@Shared/Infrastructure/Middlewares'
 import {
+    resolveCompanyAddDetail,
     resolveCompanyDeleteOne,
     resolveCompanyFind,
     resolveCompanyGetAll,
@@ -48,6 +50,12 @@ export class WarehouseEntryController extends BaseHttpController {
     @resolveCompanyValidate
     validate(@request() req: Request) {
         return req.useCase.exec(req.params._id, req.user)
+    }
+
+    @httpPut('add-detail/:_id', authorizeRoute, VRB.bind(null, CreateOrderDetailDTO, BRE))
+    @resolveCompanyAddDetail
+    addDetail(@request() req: Request) {
+        return req.useCase.exec(req.params._id, req.body)
     }
 
     @httpDelete(':_id', authorizeRoute, VUUID.bind(null, BRE))

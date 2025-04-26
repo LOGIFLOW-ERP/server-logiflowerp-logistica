@@ -9,4 +9,5 @@ export const SHARED_TYPES = {
     BuildSystemOptionService: Symbol.for('BuildSystemOptionService'),
     Bootstraping: Symbol.for('Bootstraping'),
     BootstrapingDatabaseMongo: Symbol.for('BootstrapingDatabaseMongo'),
+    User: Symbol.for('User'),
 }

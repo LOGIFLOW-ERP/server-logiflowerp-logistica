@@ -24,7 +24,8 @@ export function resolveCompanyDecorator(
                 constructorUseCase,
                 constructorMongoRepository,
                 req.rootCompany.code, // database
-                collection
+                collection,
+                req.user
             )
             const useCase = tenantContainer.get<typeof constructorUseCase>(symbolUseCase)
             req.useCase = useCase
