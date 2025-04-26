@@ -6,4 +6,7 @@ export const WAREHOUSE_ENTRY_TYPES = {
     UseCaseInsertOne: Symbol.for('UseCaseInsertOne'),
     UseCaseValidate: Symbol.for('UseCaseValidate'),
     UseCaseAddDetail: Symbol.for('UseCaseAddDetail'),
+    UseCaseDeleteDetail: Symbol.for('UseCaseDeleteDetail'),
+    UseCaseAddSerial: Symbol.for('UseCaseAddSerial'),
+    UseCaseDeleteSerial: Symbol.for('UseCaseDeleteSerial'),
 }

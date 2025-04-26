@@ -11,6 +11,7 @@ import {
 import {
     CreateOrderDetailDTO,
     CreateWarehouseEntryDTO,
+    StockSerialDTO,
     validateRequestBody as VRB,
     validateUUIDv4Param as VUUID,
 } from 'logiflowerp-sdk'
@@ -18,12 +19,15 @@ import { BadRequestException as BRE } from '@Config/exception'
 import { authorizeRoute } from '@Shared/Infrastructure/Middlewares'
 import {
     resolveCompanyAddDetail,
+    resolveCompanyDeleteDetail,
     resolveCompanyDeleteOne,
     resolveCompanyFind,
     resolveCompanyGetAll,
     resolveCompanyInsertOne,
     resolveCompanyValidate,
 } from './decorators'
+import { resolveCompanyAddSerial } from './decorators/resolveCompanyAddSerial'
+import { resolveCompanyDeleteSerial } from './decorators/resolveCompanyDeleteSerial'
 
 export class WarehouseEntryController extends BaseHttpController {
 
@@ -56,6 +60,24 @@ export class WarehouseEntryController extends BaseHttpController {
     @resolveCompanyAddDetail
     addDetail(@request() req: Request) {
         return req.useCase.exec(req.params._id, req.body)
+    }
+
+    @httpPut('delete-detail/:_id', authorizeRoute)
+    @resolveCompanyDeleteDetail
+    deleteDetail(@request() req: Request) {
+        return req.useCase.exec(req.params._id, req.query.keyDetail)
+    }
+
+    @httpPut('add-serial/:_id', authorizeRoute, VRB.bind(null, StockSerialDTO, BRE))
+    @resolveCompanyAddSerial
+    addSerial(@request() req: Request) {
+        return req.useCase.exec(req.params._id, req.query.keyDetail, req.body)
+    }
+
+    @httpPut('delete-serial/:_id', authorizeRoute)
+    @resolveCompanyDeleteSerial
+    deleteSerial(@request() req: Request) {
+        return req.useCase.exec(req.params._id, req.query)
     }
 
     @httpDelete(':_id', authorizeRoute, VUUID.bind(null, BRE))
