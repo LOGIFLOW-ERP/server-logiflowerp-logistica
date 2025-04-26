@@ -11,7 +11,8 @@ export class UseCaseUpdateOne {
     ) { }
 
     async exec(_id: string, dto: UpdateProductPriceDTO) {
-        return this.repository.updateOne({ _id }, { $set: dto })
+        const document = await this.repository.selectOne([{ $match: { _id } }])
+        return this.repository.updateOne({ _id }, { $set: { ...dto, priceMax: Math.max(document.priceMax, dto.price) } })
     }
 
 }

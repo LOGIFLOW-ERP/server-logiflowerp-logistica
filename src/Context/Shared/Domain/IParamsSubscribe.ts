@@ -5,6 +5,11 @@ export interface IParamsSubscribe {
     onMessage: (params: IParamsOnMessage) => Promise<string>
 }
 
+export interface IParamsSubscribeFanout {
+    exchange: string
+    onMessage: (params: IParamsOnMessage) => Promise<string>
+}
+
 interface IParamsOnMessage {
     message: any
     user: TokenPayloadDTO | null

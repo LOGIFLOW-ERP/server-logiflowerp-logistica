@@ -1,4 +1,5 @@
 import { typeEnv } from '@Config/env'
+import { IMapTransaction } from '@Shared/Domain'
 import * as Express from 'express'
 import { AuthUserDTO, TokenPayloadDTO } from 'logiflowerp-sdk'
 import { Document, Filter, OptionalUnlessRequiredId, UpdateFilter } from 'mongodb'

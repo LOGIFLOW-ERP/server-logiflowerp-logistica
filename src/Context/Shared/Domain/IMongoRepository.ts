@@ -9,10 +9,24 @@ import {
 
 export interface IMongoRepository<T extends Document> {
     find(pipeline: Document[], req: Request, res: Response): Promise<void>
+    /**
+     * Ejecuta una consulta y devuelve los documentos encontrados.
+     * @param query - Pipeline de agregación o consulta.
+     * @param collection - Nombre de la colección (opcional).
+     * @param database - Nombre de la base de datos (opcional).
+     * @returns Arreglo de documentos encontrados.
+     */
     select<ReturnType extends Document = T>(query: Document[], collection?: string, database?: string): Promise<ReturnType[]>
+    /**
+     * Ejecuta una consulta y espera encontrar exactamente un documento.
+     * Lanza error si no encuentra ninguno o si encuentra más de uno.
+     * @returns El documento encontrado.
+     */
+    selectOne<ReturnType extends Document = T>(query: Document[], collection?: string, database?: string): Promise<ReturnType>
     insertOne(doc: OptionalUnlessRequiredId<T>): Promise<WithId<T>>
     updateOne(filter: Filter<T>, update: T[] | UpdateFilter<T>): Promise<WithId<T>>
     insertMany(objs: OptionalUnlessRequiredId<T>[]): Promise<WithId<T>[]>
     deleteMany(filter: Filter<T>): Promise<WithId<T>[]>
     deleteOne(filter: Filter<T>): Promise<WithId<T>>
+    executeTransactionBatch<R>(transactions: ITransaction<T>[]): Promise<R[]>
 }

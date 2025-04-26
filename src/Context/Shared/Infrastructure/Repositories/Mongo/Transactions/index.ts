@@ -1,6 +1,7 @@
 export * from './find'
 export * from './insertOne'
 export * from './select'
+export * from './selectOne'
 export * from './updateOne'
 export * from './insertMany'
 export * from './deleteMany'

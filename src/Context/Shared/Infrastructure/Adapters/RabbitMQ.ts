@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify'
 import { Channel, connect, Connection, ConsumeMessage } from 'amqplib'
-import { IParamsPublish, IParamsSubscribe } from '@Shared/Domain'
+import { IParamsPublish, IParamsPublishFanout, IParamsSubscribe, IParamsSubscribeFanout } from '@Shared/Domain'
 import { AdapterMail } from './Mail'
 import { SHARED_TYPES } from '../IoC/types'
 import { isJSON } from 'logiflowerp-sdk'
@@ -22,7 +22,7 @@ export class AdapterRabbitMQ {
             if (!this.connection || !this.channel) {
                 this.connection = await connect(url)
                 this.channel = await this.connection.createChannel()
-                this.channel.prefetch(1)
+                await this.channel.prefetch(1)
                 console.log('\x1b[36m%s\x1b[0m', '>>> Conectado a RabbitMQ')
             }
         } catch (error) {
@@ -47,11 +47,37 @@ export class AdapterRabbitMQ {
         }
     }
 
+    async publishFanout(params: IParamsPublishFanout) {
+        const { exchange, message, user } = params
+        await this.channel.assertExchange(exchange, 'fanout', { durable: true })
+        const result = this.channel.publish(
+            exchange,
+            '',
+            Buffer.from(JSON.stringify(message)),
+            {
+                persistent: true,
+                headers: { user }
+            }
+        )
+        if (!result) {
+            throw new Error(`Error al publicar en RabbitMQ (fanout: ${exchange})`)
+        }
+    }
+
     async subscribe(params: IParamsSubscribe) {
         await this.connect()
         const { queue } = params
         await this.channel.assertQueue(queue, { durable: true })
         this.channel.consume(queue, this.onMessage.bind(this, params))
+    }
+
+    async subscribeFanout(params: IParamsSubscribeFanout) {
+        await this.connect()
+        const { exchange } = params
+        await this.channel.assertExchange(exchange, 'fanout', { durable: true })
+        const { queue } = await this.channel.assertQueue('', { exclusive: true });
+        await this.channel.bindQueue(queue, exchange, '');
+        this.channel.consume(queue, this.onMessage.bind(this, { onMessage: params.onMessage, queue }))
     }
 
     private async onMessage(params: IParamsSubscribe, msg: ConsumeMessage | null) {
