@@ -3,10 +3,24 @@ import {
     BaseHttpController,
     httpPost,
     request,
+    httpGet,
+    httpPut,
     response
 } from 'inversify-express-utils'
-import { resolveCompanyFind } from './decorators'
+import {
+    CreateProductDTO,
+    UpdateProductDTO,
+    validateRequestBody as VRB,
+    validateUUIDv4Param as VUUID,
+} from 'logiflowerp-sdk'
+import {
+    resolveCompanyFind,
+    resolveCompanyGetAll,
+    resolveCompanyInsertOne,
+    resolveCompanyUpdateOne
+} from './decorators'
 import { authorizeRoute } from '@Shared/Infrastructure/Middlewares'
+import { BadRequestException as BRE } from '@Config/exception'
 
 export class ProductController extends BaseHttpController {
 
@@ -16,11 +30,23 @@ export class ProductController extends BaseHttpController {
         await req.useCase.exec(req, res)
     }
 
-    // @httpPost('update-one/:id', VUUID.bind(null, BRE), VRB.bind(null, UpdateUserDTO, BRE))
-    // async updateOne(@request() req: Request<any, any, UserENTITY>, @response() res: Response) {
-    //     console.log(req.originalUrl)
-    //     // const updatedDoc = await this.useCaseUpdateOne.exec(req.params.id, req.body)
-    //     // res.json(updatedDoc)
-    // }
+    @httpGet('', authorizeRoute)
+    @resolveCompanyGetAll
+    async findAll(@request() req: Request, @response() res: Response) {
+        await req.useCase.exec(req, res)
+    }
 
+    @httpPost('', authorizeRoute, VRB.bind(null, CreateProductDTO, BRE))
+    @resolveCompanyInsertOne
+    async saveOne(@request() req: Request, @response() res: Response) {
+        await req.useCase.exec(req.body)
+        res.sendStatus(204)
+    }
+
+    @httpPut(':_id', authorizeRoute, VUUID.bind(null, BRE), VRB.bind(null, UpdateProductDTO, BRE))
+    @resolveCompanyUpdateOne
+    async updateOne(@request() req: Request, @response() res: Response) {
+        await req.useCase.exec(req.params._id, req.body)
+        res.sendStatus(204)
+    }
 }
