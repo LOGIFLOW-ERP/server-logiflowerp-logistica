@@ -1,12 +1,16 @@
 import { IWarehouseEntryMongoRepository } from '../Domain';
 import {
     AuthUserDTO,
+    EmployeeENTITY,
     ItemWorkflowOrderDTO,
     ProducType,
     ProductPriceDTO,
     ProductPriceENTITY,
+    State,
     StateOrder,
     WarehouseEntryENTITY,
+    WarehouseStockENTITY,
+    WarehouseStockSerialENTITY,
     collections,
     validateCustom
 } from 'logiflowerp-sdk';
@@ -24,6 +28,8 @@ export class UseCaseValidate {
 
     private document!: WarehouseEntryENTITY
     private transactions: ITransaction<any>[] = []
+    private dataWarehouseStock!: WarehouseStockENTITY[]
+    private dataWarehouseStockSerial!: WarehouseStockSerialENTITY[]
 
     constructor(
         @inject(WAREHOUSE_ENTRY_TYPES.RepositoryMongo) private readonly repository: IWarehouseEntryMongoRepository,
@@ -33,6 +39,8 @@ export class UseCaseValidate {
         await this.searchDocument(_id)
         const dataProductPrices = await this.searchProductPrice()
         await this.updateDocument(dataProductPrices, user)
+        await this.searchWarehouseStocks()
+        await this.searchWarehouseStocksSerial()
         await this.createTransactionDocument()
         return this.repository.executeTransactionBatch(this.transactions)
     }
@@ -94,6 +102,26 @@ export class UseCaseValidate {
             }
         }
         this.transactions.push(transaction)
+    }
+
+    private async searchWarehouseStocks() {
+        const keySearch = this.document.detail[0].keySearch
+        const keysDetail = this.document.detail.map(e => e.keyDetail)
+        const pipeline = [{ $match: { keySearch, keyDetail: { $in: keysDetail }, state: State.ACTIVO } }]
+        this.dataWarehouseStock = await this.repository.select<WarehouseStockENTITY>(
+            pipeline,
+            collections.warehouseStock
+        )
+    }
+
+    private async searchWarehouseStocksSerial() {
+        const stock_ids = this.dataWarehouseStock.filter(e => e.item.producType === ProducType.SERIE).map(e => e._id)
+        if (stock_ids.length === 0) return
+        const pipeline = [{ $match: { stock_id: { $in: stock_ids } } }]
+        this.dataWarehouseStockSerial = await this.repository.select<WarehouseStockSerialENTITY>(
+            pipeline,
+            collections.warehouseStockSerial
+        )
     }
 
     //#region Stock almacen
