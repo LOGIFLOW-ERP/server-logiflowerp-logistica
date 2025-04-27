@@ -14,6 +14,7 @@ export class UseCaseInsertOne {
     async exec(dto: CreateProductDTO) {
         const _entity = new ProductENTITY()
         _entity.set(dto)
+        _entity._id = crypto.randomUUID()
         const entity = await validateCustom(_entity, ProductENTITY, UnprocessableEntityException)
         return this.repository.insertOne(entity)
     }
