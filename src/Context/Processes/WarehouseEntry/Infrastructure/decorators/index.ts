@@ -1,7 +1,9 @@
-export { resolveCompanyFind } from './resolveCompanyFind';
-export { resolveCompanyGetAll } from './resolveCompanyGetAll';
-export { resolveCompanyDeleteOne } from './resolveCompanyDeleteOne';
-export { resolveCompanyInsertOne } from './resolveCompanyInsertOne';
-export { resolveCompanyValidate } from './resolveCompanyValidate';
-export { resolveCompanyAddDetail } from './resolveCompanyAddDetail';
-export { resolveCompanyDeleteDetail } from './resolveCompanyDeleteDetail';
+export * from './resolveCompanyAddDetail';
+export * from './resolveCompanyAddSerial';
+export * from './resolveCompanyDeleteDetail';
+export * from './resolveCompanyDeleteOne';
+export * from './resolveCompanyDeleteSerial';
+export * from './resolveCompanyFind';
+export * from './resolveCompanyGetAll';
+export * from './resolveCompanyInsertOne';
+export * from './resolveCompanyValidate';

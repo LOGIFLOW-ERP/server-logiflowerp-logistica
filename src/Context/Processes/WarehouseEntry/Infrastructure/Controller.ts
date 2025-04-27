@@ -19,15 +19,15 @@ import { BadRequestException as BRE } from '@Config/exception'
 import { authorizeRoute } from '@Shared/Infrastructure/Middlewares'
 import {
     resolveCompanyAddDetail,
+    resolveCompanyAddSerial,
     resolveCompanyDeleteDetail,
     resolveCompanyDeleteOne,
+    resolveCompanyDeleteSerial,
     resolveCompanyFind,
     resolveCompanyGetAll,
     resolveCompanyInsertOne,
     resolveCompanyValidate,
 } from './decorators'
-import { resolveCompanyAddSerial } from './decorators/resolveCompanyAddSerial'
-import { resolveCompanyDeleteSerial } from './decorators/resolveCompanyDeleteSerial'
 
 export class WarehouseEntryController extends BaseHttpController {
 

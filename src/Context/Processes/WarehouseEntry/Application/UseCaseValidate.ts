@@ -9,6 +9,7 @@ import {
     State,
     StateOrder,
     StateStockSerialWarehouse,
+    StateWarehouseStock,
     WarehouseEntryENTITY,
     WarehouseStockENTITY,
     WarehouseStockSerialENTITY,
@@ -178,8 +179,11 @@ export class UseCaseValidate {
     }
 
     private updateWarehouseStock(warehouseStock: WarehouseStockENTITY, detail: OrderDetailENTITY) {
-        if (warehouseStock.state === State.INACTIVO) {
+        if (warehouseStock.state === StateWarehouseStock.INACTIVO) {
             throw new BadRequestException(`El stock almacén ${warehouseStock.keyDetail} está inactivo. No se puede realizar la acción.`)
+        }
+        if (warehouseStock.state === StateWarehouseStock.INVENTARIO) {
+            throw new BadRequestException(`El stock almacén ${warehouseStock.keyDetail} está siendo contado. No se puede realizar la acción.`)
         }
         const transaction: ITransaction<WarehouseStockENTITY> = {
             collection: collections.warehouseStock,
