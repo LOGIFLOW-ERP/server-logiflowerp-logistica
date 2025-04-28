@@ -1,6 +1,6 @@
-// export * from './resolveCompanyAddDetail';
+export * from './resolveCompanyAddDetail';
 // export * from './resolveCompanyAddSerial';
-// export * from './resolveCompanyDeleteDetail';
+export * from './resolveCompanyDeleteDetail';
 // export * from './resolveCompanyDeleteOne';
 // export * from './resolveCompanyDeleteSerial';
 export * from './resolveCompanyFind';

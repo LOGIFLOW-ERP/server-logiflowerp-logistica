@@ -9,7 +9,7 @@ import {
     response
 } from 'inversify-express-utils'
 import {
-    CreateOrderDetailDTO,
+    CreateWarehouseExitDetail,
     CreateWarehouseExitDTO,
     StockSerialDTO,
     validateRequestBody as VRB,
@@ -18,7 +18,8 @@ import {
 import { BadRequestException as BRE } from '@Config/exception'
 import { authorizeRoute } from '@Shared/Infrastructure/Middlewares'
 import {
-    // resolveCompanyAddDetail,
+    resolveCompanyAddDetail,
+    resolveCompanyDeleteDetail,
     // resolveCompanyDeleteDetail,
     // resolveCompanyDeleteOne,
     resolveCompanyFind,
@@ -53,17 +54,17 @@ export class WarehouseExitController extends BaseHttpController {
     //     return req.useCase.exec(req.params._id, req.user)
     // }
 
-    // @httpPut('add-detail/:_id', authorizeRoute, VRB.bind(null, CreateOrderDetailDTO, BRE))
-    // @resolveCompanyAddDetail
-    // addDetail(@request() req: Request) {
-    //     return req.useCase.exec(req.params._id, req.body)
-    // }
+    @httpPut('add-detail/:_id', authorizeRoute, VRB.bind(null, CreateWarehouseExitDetail, BRE))
+    @resolveCompanyAddDetail
+    addDetail(@request() req: Request) {
+        return req.useCase.exec(req.params._id, req.body)
+    }
 
-    // @httpPut('delete-detail/:_id', authorizeRoute)
-    // @resolveCompanyDeleteDetail
-    // deleteDetail(@request() req: Request) {
-    //     return req.useCase.exec(req.params._id, req.query.keyDetail)
-    // }
+    @httpPut('delete-detail/:_id', authorizeRoute)
+    @resolveCompanyDeleteDetail
+    deleteDetail(@request() req: Request) {
+        return req.useCase.exec(req.params._id, req.query.keyDetail)
+    }
 
     // @httpPut('add-serial/:_id', authorizeRoute, VRB.bind(null, StockSerialDTO, BRE))
     // @resolveCompanyAddSerial

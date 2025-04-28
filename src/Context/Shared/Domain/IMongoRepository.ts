@@ -29,4 +29,9 @@ export interface IMongoRepository<T extends Document> {
     deleteMany(filter: Filter<T>): Promise<WithId<T>[]>
     deleteOne(filter: Filter<T>): Promise<WithId<T>>
     executeTransactionBatch<R>(transactions: ITransaction<T>[]): Promise<R[]>
+    validateAvailableWarehouseStocks({ pipeline, _ids }: { pipeline?: Document[]; _ids?: string[]; }): Promise<{
+        keySearch: string;
+        keyDetail: string;
+        available: number;
+    }[]>
 }

@@ -11,6 +11,10 @@ export class ManagerEntity {
         {
             campos: { documentNumber: 1 },
             opciones: { name: 'idx_documentNumber', unique: true }
+        },
+        {
+            campos: { 'detail.keySearch': 1, 'detail.keyDetail': 1, state: 1 },
+            opciones: { name: 'idx_detail.keySearch_detail.keyDetail_state' }
         }
     ]
 

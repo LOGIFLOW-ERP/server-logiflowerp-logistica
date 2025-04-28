@@ -4,9 +4,9 @@ import { SHARED_TYPES } from '@Shared/Infrastructure/IoC'
 import { AdapterMongoDB, AdapterRedis, } from '@Shared/Infrastructure/Adapters'
 import { Request, Response } from 'express'
 import { Document, Filter, OptionalUnlessRequiredId, UpdateFilter } from 'mongodb'
-import { _deleteMany, _deleteOne, _find, _insertMany, _insertOne, _select, _selectOne, _updateOne } from './Transactions'
+import { _deleteMany, _deleteOne, _find, _insertMany, _insertOne, _select, _selectOne, _updateOne, _validateAvailableWarehouseStocks } from './Transactions'
 import { BadRequestException } from '@Config/exception'
-import { AuthUserDTO } from 'logiflowerp-sdk'
+import { AuthUserDTO, collections } from 'logiflowerp-sdk'
 
 export class MongoRepository<T extends Document> implements IMongoRepository<T> {
 
@@ -38,6 +38,13 @@ export class MongoRepository<T extends Document> implements IMongoRepository<T> 
         const client = await this.adapterMongo.connection()
         const col = client.db(database).collection(collection)
         return _select<ReturnType>({ collection: col, pipeline })
+    }
+
+    async validateAvailableWarehouseStocks({ pipeline, _ids }: { pipeline?: Document[]; _ids?: string[] }) {
+        const client = await this.adapterMongo.connection()
+        const colWarehouseStock = client.db(this.database).collection(collections.warehouseStock)
+        const colWarehouseExit = client.db(this.database).collection(collections.warehouseExit)
+        return _validateAvailableWarehouseStocks({ colWarehouseStock, colWarehouseExit, pipeline, _ids })
     }
 
     async selectOne<ReturnType extends Document = T>(pipeline: Document[], collection: string = this.collection, database: string = this.database) {
