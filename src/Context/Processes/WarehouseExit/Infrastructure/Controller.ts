@@ -20,8 +20,7 @@ import { authorizeRoute } from '@Shared/Infrastructure/Middlewares'
 import {
     resolveCompanyAddDetail,
     resolveCompanyDeleteDetail,
-    // resolveCompanyDeleteDetail,
-    // resolveCompanyDeleteOne,
+    resolveCompanyDeleteOne,
     resolveCompanyFind,
     resolveCompanyGetAll,
     resolveCompanyInsertOne,
@@ -78,11 +77,11 @@ export class WarehouseExitController extends BaseHttpController {
     //     return req.useCase.exec(req.params._id, req.query)
     // }
 
-    // @httpDelete(':_id', authorizeRoute, VUUID.bind(null, BRE))
-    // @resolveCompanyDeleteOne
-    // async deleteOne(@request() req: Request, @response() res: Response) {
-    //     await req.useCase.exec(req.params._id)
-    //     res.sendStatus(204)
-    // }
+    @httpDelete(':_id', authorizeRoute, VUUID.bind(null, BRE))
+    @resolveCompanyDeleteOne
+    async deleteOne(@request() req: Request, @response() res: Response) {
+        await req.useCase.exec(req.params._id)
+        res.sendStatus(204)
+    }
 
 }

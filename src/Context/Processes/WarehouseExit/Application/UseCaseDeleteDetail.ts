@@ -61,8 +61,17 @@ export class UseCaseDeleteDetail {
             pipeline,
             collections.warehouseStockSerial
         )
+        if (dataWarehouseStockSerial.length !== detail.serials.length) {
+            throw new ConflictException(
+                `Se encontró (${dataWarehouseStockSerial.length}) series de (${detail.serials.length})`
+                , true
+            )
+        }
         if (dataWarehouseStockSerial.some(e => e.state !== StateStockSerialWarehouse.RESERVADO)) {
-            throw new ConflictException(`Hay serie que no está en estado ${StateStockSerialWarehouse.RESERVADO}`, true)
+            throw new ConflictException(
+                `Hay serie que no está en estado ${StateStockSerialWarehouse.RESERVADO}`,
+                true
+            )
         }
         for (const stockSerial of dataWarehouseStockSerial) {
             const transaction: ITransaction<WarehouseStockSerialENTITY> = {
