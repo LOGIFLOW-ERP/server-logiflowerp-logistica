@@ -154,7 +154,8 @@ export class MongoRepository<T extends Document> implements IMongoRepository<T> 
             const mapTransaction: IMapTransaction = {
                 insertOne: _insertOne,
                 updateOne: _updateOne,
-                deleteOne: _deleteOne
+                deleteOne: _deleteOne,
+                insertMany: _insertMany
             }
             for (const transaction of transactions) {
                 if (!mapTransaction[transaction.transaction]) {
@@ -169,6 +170,7 @@ export class MongoRepository<T extends Document> implements IMongoRepository<T> 
                     col,
                     session,
                     doc: transaction.doc,
+                    docs: transaction.docs,
                     filter: transaction.filter,
                     update: transaction.update,
                     user: this.user

@@ -9,7 +9,7 @@ import {
     response
 } from 'inversify-express-utils'
 import {
-    CreateWarehouseExitDetail,
+    CreateWarehouseExitDetailDTO,
     CreateWarehouseExitDTO,
     StockSerialDTO,
     validateRequestBody as VRB,
@@ -26,7 +26,7 @@ import {
     resolveCompanyFind,
     resolveCompanyGetAll,
     resolveCompanyInsertOne,
-    // resolveCompanyValidate,
+    resolveCompanyValidate,
 } from './decorators'
 
 export class WarehouseExitController extends BaseHttpController {
@@ -49,13 +49,13 @@ export class WarehouseExitController extends BaseHttpController {
         return req.useCase.exec(req.body, req.user)
     }
 
-    // @httpPut('validate/:_id', authorizeRoute)
-    // @resolveCompanyValidate
-    // validate(@request() req: Request) {
-    //     return req.useCase.exec(req.params._id, req.user)
-    // }
+    @httpPut('validate/:_id', authorizeRoute)
+    @resolveCompanyValidate
+    validate(@request() req: Request) {
+        return req.useCase.exec(req.params._id, req.user)
+    }
 
-    @httpPut('add-detail/:_id', authorizeRoute, VRB.bind(null, CreateWarehouseExitDetail, BRE))
+    @httpPut('add-detail/:_id', authorizeRoute, VRB.bind(null, CreateWarehouseExitDetailDTO, BRE))
     @resolveCompanyAddDetail
     addDetail(@request() req: Request) {
         return req.useCase.exec(req.params._id, req.body)

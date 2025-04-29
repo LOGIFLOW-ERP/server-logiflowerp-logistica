@@ -1,6 +1,6 @@
 import { IWarehouseExitMongoRepository } from '../Domain'
 import {
-    CreateWarehouseExitDetail,
+    CreateWarehouseExitDetailDTO,
     OrderDetailENTITY,
     ProductPriceENTITY,
     StateOrder,
@@ -26,7 +26,7 @@ export class UseCaseAddDetail {
         @inject(WAREHOUSE_EXIT_TYPES.RepositoryMongo) private readonly repository: IWarehouseExitMongoRepository,
     ) { }
 
-    async exec(_id: string, dto: CreateWarehouseExitDetail) {
+    async exec(_id: string, dto: CreateWarehouseExitDetailDTO) {
         await this.searchDocument(_id)
         const productPrice = await this.searchProductPrice(dto)
         const newDetail = await this.buildDetail(dto, productPrice)
@@ -41,7 +41,7 @@ export class UseCaseAddDetail {
         this.document = await this.repository.selectOne(pipeline)
     }
 
-    private searchProductPrice(dto: CreateWarehouseExitDetail) {
+    private searchProductPrice(dto: CreateWarehouseExitDetailDTO) {
         const pipeline = [{ $match: { itemCode: dto.warehouseStock.item.itemCode } }]
         return this.repository.selectOne<ProductPriceENTITY>(pipeline, collections.productPrice)
     }
@@ -55,7 +55,7 @@ export class UseCaseAddDetail {
         }
     }
 
-    private buildDetail(dto: CreateWarehouseExitDetail, productPrice: ProductPriceENTITY) {
+    private buildDetail(dto: CreateWarehouseExitDetailDTO, productPrice: ProductPriceENTITY) {
         const lastPosition = this.document.detail.reduce((acc, item) => Math.max(acc, item.position), 0)
         const detail = new OrderDetailENTITY()
         detail.set(dto.warehouseStock)

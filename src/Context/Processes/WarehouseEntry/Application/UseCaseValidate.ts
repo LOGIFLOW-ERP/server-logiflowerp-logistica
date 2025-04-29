@@ -6,7 +6,6 @@ import {
     ProducType,
     ProductPriceDTO,
     ProductPriceENTITY,
-    State,
     StateOrder,
     StateStockSerialWarehouse,
     StateWarehouseStock,
@@ -173,6 +172,8 @@ export class UseCaseValidate {
             newStock.serial = serial.serial
             newStock.stock_id = stock._id
             newStock.updatedate = new Date()
+            newStock.keyDetail = stock.keyDetail
+            newStock.keySearch = stock.keySearch
             const entity = await validateCustom(newStock, WarehouseStockSerialENTITY, UnprocessableEntityException)
             this.newDataWarehouseStockSerial.push(entity)
         }
@@ -210,7 +211,11 @@ export class UseCaseValidate {
                     transaction: 'updateOne',
                     filter: { _id: stockSerial._id },
                     update: {
-                        $set: { state: StateStockSerialWarehouse.DISPONIBLE }
+                        $set: {
+                            state: StateStockSerialWarehouse.DISPONIBLE,
+                            documentNumber: this.document.documentNumber,
+                            updatedate: new Date()
+                        }
                     }
                 }
                 this.transactions.push(transaction)
@@ -221,25 +226,21 @@ export class UseCaseValidate {
     }
 
     private createTransactionWarehouseStock() {
-        for (const warehouseStock of this.newDataWarehouseStock) {
-            const transaction: ITransaction<WarehouseStockENTITY> = {
-                collection: collections.warehouseStock,
-                transaction: 'insertOne',
-                doc: warehouseStock
-            }
-            this.transactions.push(transaction)
+        const transaction: ITransaction<WarehouseStockENTITY> = {
+            collection: collections.warehouseStock,
+            transaction: 'insertMany',
+            docs: this.newDataWarehouseStock
         }
+        this.transactions.push(transaction)
     }
 
     private createTransactionWarehouseStockSerial() {
-        for (const warehouseStockSerial of this.newDataWarehouseStockSerial) {
-            const transaction: ITransaction<WarehouseStockSerialENTITY> = {
-                collection: collections.warehouseStockSerial,
-                transaction: 'insertOne',
-                doc: warehouseStockSerial
-            }
-            this.transactions.push(transaction)
+        const transaction: ITransaction<WarehouseStockSerialENTITY> = {
+            collection: collections.warehouseStockSerial,
+            transaction: 'insertMany',
+            docs: this.newDataWarehouseStockSerial
         }
+        this.transactions.push(transaction)
     }
     //#endregion
 
