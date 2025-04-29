@@ -4,7 +4,9 @@ import {
     OrderDetailENTITY,
     ProductPriceENTITY,
     StateOrder,
+    StateWarehouseStock,
     WarehouseExitENTITY,
+    WarehouseStockENTITY,
     collections,
     validateCustom
 } from 'logiflowerp-sdk'
@@ -29,6 +31,7 @@ export class UseCaseAddDetail {
         const productPrice = await this.searchProductPrice(dto)
         const newDetail = await this.buildDetail(dto, productPrice)
         this.validateDetail(newDetail)
+        await this.searchWarehouseStock(newDetail)
         await this.validateAvailableStockWarehouse(dto.warehouseStock._id, newDetail)
         return this.repository.updateOne({ _id }, { $push: { detail: newDetail } })
     }
@@ -61,6 +64,17 @@ export class UseCaseAddDetail {
         detail.position = lastPosition + 1
         detail.price = productPrice
         return validateCustom(detail, OrderDetailENTITY, UnprocessableEntityException)
+    }
+
+    private async searchWarehouseStock(newDetail: OrderDetailENTITY) {
+        const pipeline = [{ $match: { keySearch: newDetail.keySearch, keyDetail: newDetail.keyDetail } }]
+        const warehouseStock = await this.repository.selectOne<WarehouseStockENTITY>(pipeline, collections.warehouseStock)
+        if (warehouseStock.state !== StateWarehouseStock.ACTIVO) {
+            throw new BadRequestException(
+                `El estado del stock almacén ${warehouseStock.keyDetail} es ${warehouseStock.state}. No se puede realizar la acción.`,
+                true
+            )
+        }
     }
 
     private async validateAvailableStockWarehouse(_id: string, newDetail: OrderDetailENTITY) {

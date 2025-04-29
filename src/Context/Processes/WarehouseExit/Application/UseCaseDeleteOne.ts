@@ -3,13 +3,16 @@ import { IWarehouseExitMongoRepository } from '../Domain'
 import { WAREHOUSE_EXIT_TYPES } from '../Infrastructure/IoC'
 import {
     collections,
+    OrderDetailENTITY,
     ProducType,
     StateOrder,
     StateStockSerialWarehouse,
+    StateWarehouseStock,
     WarehouseExitENTITY,
+    WarehouseStockENTITY,
     WarehouseStockSerialENTITY
 } from 'logiflowerp-sdk'
-import { ConflictException } from '@Config/exception'
+import { BadRequestException, ConflictException } from '@Config/exception'
 
 @injectable()
 export class UseCaseDeleteOne {
@@ -37,18 +40,31 @@ export class UseCaseDeleteOne {
         this.transactions.push(transaction)
     }
 
+    private async searchWarehouseStock(detail: OrderDetailENTITY) {
+        const pipeline = [{ $match: { keySearch: detail.keySearch, keyDetail: detail.keyDetail } }]
+        const warehouseStock = await this.repository.selectOne<WarehouseStockENTITY>(pipeline, collections.warehouseStock)
+        if (warehouseStock.state !== StateWarehouseStock.ACTIVO) {
+            throw new BadRequestException(
+                `El estado del stock almacén ${warehouseStock.keyDetail} es ${warehouseStock.state}. No se puede realizar la acción.`,
+                true
+            )
+        }
+        return warehouseStock
+    }
+
     private async updateWarehouseStocksSerial() {
         for (const detail of this.document.detail) {
             if (detail.item.producType !== ProducType.SERIE) return
-            const { keyDetail, keySearch, serials } = detail
-            const pipeline = [{ $match: { keySearch, keyDetail, serial: { $in: serials.map(e => e.serial) } } }]
+            const warehouseStock = await this.searchWarehouseStock(detail)
+            const { serials } = detail
+            const pipeline = [{ $match: { stock_id: warehouseStock._id, serial: { $in: serials.map(e => e.serial) } } }]
             const dataWarehouseStockSerial = await this.repository.select<WarehouseStockSerialENTITY>(
                 pipeline,
                 collections.warehouseStockSerial
             )
-            if (dataWarehouseStockSerial.length !== detail.serials.length) {
+            if (dataWarehouseStockSerial.length !== serials.length) {
                 throw new ConflictException(
-                    `Se encontró (${dataWarehouseStockSerial.length}) series de (${detail.serials.length}) en posición: ${detail.position}`
+                    `Se encontró (${dataWarehouseStockSerial.length}) series de (${serials.length}) en posición: ${detail.position}`
                     , true
                 )
             }
@@ -61,7 +77,11 @@ export class UseCaseDeleteOne {
                     transaction: 'updateOne',
                     filter: { _id: stockSerial._id },
                     update: {
-                        $set: { state: StateStockSerialWarehouse.DISPONIBLE }
+                        $set: {
+                            state: StateStockSerialWarehouse.DISPONIBLE,
+                            documentNumber: this.document.documentNumber,
+                            updatedate: new Date()
+                        }
                     }
                 }
                 this.transactions.push(transaction)

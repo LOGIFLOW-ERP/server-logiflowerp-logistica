@@ -19,8 +19,10 @@ import { BadRequestException as BRE } from '@Config/exception'
 import { authorizeRoute } from '@Shared/Infrastructure/Middlewares'
 import {
     resolveCompanyAddDetail,
+    resolveCompanyAddSerial,
     resolveCompanyDeleteDetail,
     resolveCompanyDeleteOne,
+    resolveCompanyDeleteSerial,
     resolveCompanyFind,
     resolveCompanyGetAll,
     resolveCompanyInsertOne,
@@ -65,17 +67,17 @@ export class WarehouseExitController extends BaseHttpController {
         return req.useCase.exec(req.params._id, req.query.keyDetail)
     }
 
-    // @httpPut('add-serial/:_id', authorizeRoute, VRB.bind(null, StockSerialDTO, BRE))
-    // @resolveCompanyAddSerial
-    // addSerial(@request() req: Request) {
-    //     return req.useCase.exec(req.params._id, req.query.keyDetail, req.body)
-    // }
+    @httpPut('add-serial/:_id', authorizeRoute, VRB.bind(null, StockSerialDTO, BRE))
+    @resolveCompanyAddSerial
+    addSerial(@request() req: Request) {
+        return req.useCase.exec(req.params._id, req.query.keyDetail, req.body)
+    }
 
-    // @httpPut('delete-serial/:_id', authorizeRoute)
-    // @resolveCompanyDeleteSerial
-    // deleteSerial(@request() req: Request) {
-    //     return req.useCase.exec(req.params._id, req.query)
-    // }
+    @httpPut('delete-serial/:_id', authorizeRoute)
+    @resolveCompanyDeleteSerial
+    deleteSerial(@request() req: Request) {
+        return req.useCase.exec(req.params._id, req.query)
+    }
 
     @httpDelete(':_id', authorizeRoute, VUUID.bind(null, BRE))
     @resolveCompanyDeleteOne

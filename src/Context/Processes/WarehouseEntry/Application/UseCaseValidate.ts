@@ -45,7 +45,7 @@ export class UseCaseValidate {
         await this.searchWarehouseStocks()
         await this.searchWarehouseStocksSerial()
         await this.updateDocument(dataProductPrices, user)
-        await this.createTransactionDocument()
+        this.createTransactionDocument()
         this.createTransactionWarehouseStock()
         this.createTransactionWarehouseStockSerial()
         return this.repository.executeTransactionBatch(this.transactions)
@@ -111,7 +111,7 @@ export class UseCaseValidate {
         this.document.workflow.validation = await validateCustom(validation, ItemWorkflowOrderDTO, UnprocessableEntityException)
     }
 
-    private async createTransactionDocument() {
+    private createTransactionDocument() {
         const transaction: ITransaction<WarehouseEntryENTITY> = {
             transaction: 'updateOne',
             filter: { _id: this.document._id },
@@ -179,11 +179,11 @@ export class UseCaseValidate {
     }
 
     private updateWarehouseStock(warehouseStock: WarehouseStockENTITY, detail: OrderDetailENTITY) {
-        if (warehouseStock.state === StateWarehouseStock.INACTIVO) {
-            throw new BadRequestException(`El stock almacén ${warehouseStock.keyDetail} está inactivo. No se puede realizar la acción.`)
-        }
-        if (warehouseStock.state === StateWarehouseStock.INVENTARIO) {
-            throw new BadRequestException(`El stock almacén ${warehouseStock.keyDetail} está siendo contado. No se puede realizar la acción.`)
+        if (warehouseStock.state !== StateWarehouseStock.ACTIVO) {
+            throw new BadRequestException(
+                `El estado del stock almacén ${warehouseStock.keyDetail} es ${warehouseStock.state}. No se puede realizar la acción.`,
+                true
+            )
         }
         const transaction: ITransaction<WarehouseStockENTITY> = {
             collection: collections.warehouseStock,

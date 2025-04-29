@@ -2,10 +2,10 @@ import { IWarehouseExitMongoRepository } from '../Domain';
 import {
     collections,
     OrderDetailENTITY,
-    ProducType,
     StateOrder,
     StateStockSerialWarehouse,
     StateWarehouseStock,
+    StockSerialDTO,
     WarehouseExitENTITY,
     WarehouseStockENTITY,
     WarehouseStockSerialENTITY,
@@ -15,7 +15,7 @@ import { WAREHOUSE_EXIT_TYPES } from '../Infrastructure/IoC';
 import { inject, injectable } from 'inversify';
 
 @injectable()
-export class UseCaseDeleteDetail {
+export class UseCaseAddSerial {
 
     private document!: WarehouseExitENTITY
     private transactions: ITransaction<any>[] = []
@@ -24,12 +24,13 @@ export class UseCaseDeleteDetail {
         @inject(WAREHOUSE_EXIT_TYPES.RepositoryMongo) private readonly repository: IWarehouseExitMongoRepository,
     ) { }
 
-    async exec(_id: string, keyDetail: string) {
+    async exec(_id: string, keyDetail: string, dto: StockSerialDTO) {
         await this.searchDocument(_id)
         const detail = this.validateDetail(keyDetail)
         const warehouseStock = await this.searchWarehouseStock(detail)
-        await this.updateWarehouseStocksSerial(warehouseStock._id, detail)
-        this.createTransactionDocument(keyDetail)
+        const warehouseStockSerial = await this.searchWarehouseStockSerial(warehouseStock._id, dto)
+        this.createTransactionDocument(keyDetail, dto)
+        this.createTransactionWarehouseStockSerial(warehouseStockSerial)
         await this.repository.executeTransactionBatch(this.transactions)
         return this.repository.selectOne([{ $match: { _id: this.document._id } }])
     }
@@ -39,11 +40,18 @@ export class UseCaseDeleteDetail {
         this.document = await this.repository.selectOne(pipeline)
     }
 
-    private createTransactionDocument(keyDetail: string) {
+    private createTransactionDocument(keyDetail: string, dto: StockSerialDTO) {
         const transaction: ITransaction<WarehouseExitENTITY> = {
             transaction: 'updateOne',
-            filter: { _id: this.document._id },
-            update: { $pull: { detail: { keyDetail } } }
+            filter: {
+                _id: this.document._id,
+                'detail.keyDetail': keyDetail
+            },
+            update: {
+                $push: {
+                    'detail.$.serials': dto
+                }
+            }
         }
         this.transactions.push(transaction)
     }
@@ -52,6 +60,9 @@ export class UseCaseDeleteDetail {
         const detail = this.document.detail.find(item => item.keyDetail === keyDetail)
         if (!detail) {
             throw new NotFoundException('Detalle no encontrado o ya eliminado.', true)
+        }
+        if (detail.serials.length >= detail.amount) {
+            throw new ConflictException('Ya se ha alcanzado la cantidad máxima de series permitidas para este detalle.', true)
         }
         return detail
     }
@@ -68,41 +79,32 @@ export class UseCaseDeleteDetail {
         return warehouseStock
     }
 
-    private async updateWarehouseStocksSerial(stock_id: string, detail: OrderDetailENTITY) {
-        if (detail.item.producType !== ProducType.SERIE) return
-        const { serials } = detail
-        const pipeline = [{ $match: { stock_id, serial: { $in: serials.map(e => e.serial) } } }]
-        const dataWarehouseStockSerial = await this.repository.select<WarehouseStockSerialENTITY>(
-            pipeline,
-            collections.warehouseStockSerial
-        )
-        if (dataWarehouseStockSerial.length !== serials.length) {
-            throw new ConflictException(
-                `Se encontró (${dataWarehouseStockSerial.length}) series de (${serials.length})`
-                , true
-            )
-        }
-        if (dataWarehouseStockSerial.some(e => e.state !== StateStockSerialWarehouse.RESERVADO)) {
-            throw new ConflictException(
-                `Hay serie que no está en estado ${StateStockSerialWarehouse.RESERVADO}`,
+    private async searchWarehouseStockSerial(stock_id: string, dto: StockSerialDTO) {
+        const pipeline = [{ $match: { stock_id, serial: dto.serial } }]
+        const warehouseStockSerial = await this.repository.selectOne<WarehouseStockSerialENTITY>(pipeline, collections.warehouseStockSerial)
+        if (warehouseStockSerial.state !== StateStockSerialWarehouse.DISPONIBLE) {
+            throw new BadRequestException(
+                `El estado del equipo es ${warehouseStockSerial.state}. No se puede realizar la acción.`,
                 true
             )
         }
-        for (const stockSerial of dataWarehouseStockSerial) {
-            const transaction: ITransaction<WarehouseStockSerialENTITY> = {
-                collection: collections.warehouseStockSerial,
-                transaction: 'updateOne',
-                filter: { _id: stockSerial._id },
-                update: {
-                    $set: {
-                        state: StateStockSerialWarehouse.DISPONIBLE,
-                        documentNumber: this.document.documentNumber,
-                        updatedate: new Date()
-                    }
+        return warehouseStockSerial
+    }
+
+    private createTransactionWarehouseStockSerial(warehouseStockSerial: WarehouseStockSerialENTITY) {
+        const transaction: ITransaction<WarehouseStockSerialENTITY> = {
+            collection: collections.warehouseStockSerial,
+            transaction: 'updateOne',
+            filter: { _id: warehouseStockSerial._id },
+            update: {
+                $set: {
+                    state: StateStockSerialWarehouse.RESERVADO,
+                    documentNumber: this.document.documentNumber,
+                    updatedate: new Date()
                 }
             }
-            this.transactions.push(transaction)
         }
+        this.transactions.push(transaction)
     }
 
 }
