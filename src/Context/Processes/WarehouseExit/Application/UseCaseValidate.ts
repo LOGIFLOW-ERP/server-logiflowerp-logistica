@@ -50,9 +50,9 @@ export class UseCaseValidate {
         const keySearch = this.document.detail[0].keySearch
         const keysDetail = this.document.detail.map(e => e.keyDetail)
         await this.searchWarehouseStocks(keySearch, keysDetail)
-        await this.searchWarehouseStocksSerial()
+        await this.searchWarehouseStocksSerial(keySearch)
         await this.searchEmployeeStocks(keySearch, keysDetail)
-        await this.searchEmployeeStocksSerial()
+        await this.searchEmployeeStocksSerial(keySearch)
         await this.updateDocument(dataProductPrices, user)
         this.createTransactionDocument()
         this.createTransactionEmployeeStock()
@@ -154,10 +154,15 @@ export class UseCaseValidate {
         )
     }
 
-    private async searchEmployeeStocksSerial() {
-        const stock_ids = this.dataEmployeeStock.filter(e => e.item.producType === ProducType.SERIE).map(e => e._id)
-        if (stock_ids.length === 0) return
-        const pipeline = [{ $match: { stock_id: { $in: stock_ids } } }]
+    private async searchEmployeeStocksSerial(keySearch: string) {
+        const keysDetail = this.dataEmployeeStock.filter(e => e.item.producType === ProducType.SERIE).map(e => e.keyDetail)
+        if (keysDetail.length === 0) return
+        const pipeline = [{
+            $match: {
+                keySearch,
+                keyDetail: { $in: keysDetail }
+            }
+        }]
         this.dataEmployeeStockSerial = await this.repository.select<EmployeeStockSerialENTITY>(
             pipeline,
             collections.employeeStockSerial
@@ -172,10 +177,10 @@ export class UseCaseValidate {
         )
     }
 
-    private async searchWarehouseStocksSerial() {
-        const stock_ids = this.dataWarehouseStock.filter(e => e.item.producType === ProducType.SERIE).map(e => e._id)
-        if (stock_ids.length === 0) return
-        const pipeline = [{ $match: { stock_id: { $in: stock_ids } } }]
+    private async searchWarehouseStocksSerial(keySearch: string) {
+        const keysDetail = this.dataWarehouseStock.filter(e => e.item.producType === ProducType.SERIE).map(e => e.keyDetail)
+        if (keysDetail.length === 0) return
+        const pipeline = [{ $match: { keySearch, keyDetail: { $in: keysDetail } } }]
         this.dataWarehouseStockSerial = await this.repository.select<WarehouseStockSerialENTITY>(
             pipeline,
             collections.warehouseStockSerial
@@ -209,7 +214,7 @@ export class UseCaseValidate {
             newStock.documentNumber = this.document.documentNumber
             newStock.model = serial.model
             newStock.serial = serial.serial
-            newStock.stock_id = stock._id
+            newStock.itemCode = stock.item.itemCode
             newStock.updatedate = new Date()
             newStock.keyDetail = stock.keyDetail
             newStock.keySearch = stock.keySearch
@@ -240,7 +245,9 @@ export class UseCaseValidate {
     private async updateEmployeeStockSerial(employeeStock: EmployeeStockENTITY, detail: OrderDetailENTITY) {
         if (detail.item.producType !== ProducType.SERIE) return
         for (const serial of detail.serials) {
-            const stockSerial = this.dataEmployeeStockSerial.find(e => e.stock_id === employeeStock._id && e.serial === serial.serial)
+            const stockSerial = this.dataEmployeeStockSerial.find(
+                e => e.keySearch === employeeStock.keySearch && e.keyDetail === employeeStock.keyDetail && e.serial === serial.serial
+            )
             if (stockSerial) {
                 const states = [StateStockSerialEmployee.POSESION]
                 if (states.includes(stockSerial.state)) {
@@ -287,7 +294,9 @@ export class UseCaseValidate {
     private updateWarehouseStockSerial(warehouseStock: WarehouseStockENTITY, detail: OrderDetailENTITY) {
         if (detail.item.producType !== ProducType.SERIE) return
         for (const serial of detail.serials) {
-            const stockSerial = this.dataWarehouseStockSerial.find(e => e.stock_id === warehouseStock._id && e.serial === serial.serial)
+            const stockSerial = this.dataWarehouseStockSerial.find(
+                e => e.keyDetail === warehouseStock.keyDetail && e.keySearch === warehouseStock.keySearch && e.serial === serial.serial
+            )
             if (!stockSerial) {
                 throw new NotFoundException(
                     `No se pudo encontrar la serie ${serial.serial} en la posición ${detail.position}.`,

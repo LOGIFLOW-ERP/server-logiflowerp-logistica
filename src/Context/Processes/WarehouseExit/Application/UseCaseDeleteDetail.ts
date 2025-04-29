@@ -28,7 +28,7 @@ export class UseCaseDeleteDetail {
         await this.searchDocument(_id)
         const detail = this.validateDetail(keyDetail)
         const warehouseStock = await this.searchWarehouseStock(detail)
-        await this.updateWarehouseStocksSerial(warehouseStock._id, detail)
+        await this.updateWarehouseStocksSerial(warehouseStock, detail)
         this.createTransactionDocument(keyDetail)
         await this.repository.executeTransactionBatch(this.transactions)
         return this.repository.selectOne([{ $match: { _id: this.document._id } }])
@@ -68,10 +68,16 @@ export class UseCaseDeleteDetail {
         return warehouseStock
     }
 
-    private async updateWarehouseStocksSerial(stock_id: string, detail: OrderDetailENTITY) {
+    private async updateWarehouseStocksSerial(warehouseStock: WarehouseStockENTITY, detail: OrderDetailENTITY) {
         if (detail.item.producType !== ProducType.SERIE) return
         const { serials } = detail
-        const pipeline = [{ $match: { stock_id, serial: { $in: serials.map(e => e.serial) } } }]
+        const pipeline = [{
+            $match: {
+                keySearch: warehouseStock.keySearch,
+                keyDetail: warehouseStock.keyDetail,
+                serial: { $in: serials.map(e => e.serial) }
+            }
+        }]
         const dataWarehouseStockSerial = await this.repository.select<WarehouseStockSerialENTITY>(
             pipeline,
             collections.warehouseStockSerial

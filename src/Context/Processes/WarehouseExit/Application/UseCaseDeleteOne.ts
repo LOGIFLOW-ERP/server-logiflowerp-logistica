@@ -57,7 +57,13 @@ export class UseCaseDeleteOne {
             if (detail.item.producType !== ProducType.SERIE) return
             const warehouseStock = await this.searchWarehouseStock(detail)
             const { serials } = detail
-            const pipeline = [{ $match: { stock_id: warehouseStock._id, serial: { $in: serials.map(e => e.serial) } } }]
+            const pipeline = [{
+                $match: {
+                    keySearch: warehouseStock.keySearch,
+                    keyDetail: warehouseStock.keyDetail,
+                    serial: { $in: serials.map(e => e.serial) }
+                }
+            }]
             const dataWarehouseStockSerial = await this.repository.select<WarehouseStockSerialENTITY>(
                 pipeline,
                 collections.warehouseStockSerial

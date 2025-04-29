@@ -28,7 +28,7 @@ export class UseCaseAddSerial {
         await this.searchDocument(_id)
         const detail = this.validateDetail(keyDetail)
         const warehouseStock = await this.searchWarehouseStock(detail)
-        const warehouseStockSerial = await this.searchWarehouseStockSerial(warehouseStock._id, dto)
+        const warehouseStockSerial = await this.searchWarehouseStockSerial(warehouseStock, dto)
         this.createTransactionDocument(keyDetail, dto)
         this.createTransactionWarehouseStockSerial(warehouseStockSerial)
         await this.repository.executeTransactionBatch(this.transactions)
@@ -79,8 +79,8 @@ export class UseCaseAddSerial {
         return warehouseStock
     }
 
-    private async searchWarehouseStockSerial(stock_id: string, dto: StockSerialDTO) {
-        const pipeline = [{ $match: { stock_id, serial: dto.serial } }]
+    private async searchWarehouseStockSerial(warehouseStock: WarehouseStockENTITY, dto: StockSerialDTO) {
+        const pipeline = [{ $match: { keyDetail: warehouseStock.keyDetail, keySearch: warehouseStock.keySearch, serial: dto.serial } }]
         const warehouseStockSerial = await this.repository.selectOne<WarehouseStockSerialENTITY>(pipeline, collections.warehouseStockSerial)
         if (warehouseStockSerial.state !== StateStockSerialWarehouse.DISPONIBLE) {
             throw new BadRequestException(

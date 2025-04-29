@@ -27,7 +27,7 @@ export class UseCaseDeleteSerial {
         await this.searchDocument(_id)
         const detail = this.validateDetail(keyDetail)
         const warehouseStock = await this.searchWarehouseStock(detail)
-        const warehouseStockSerial = await this.searchWarehouseStockSerial(warehouseStock._id, serial)
+        const warehouseStockSerial = await this.searchWarehouseStockSerial(warehouseStock, serial)
         this.createTransactionDocument(keyDetail, serial)
         this.createTransactionWarehouseStockSerial(warehouseStockSerial)
         await this.repository.executeTransactionBatch(this.transactions)
@@ -77,8 +77,14 @@ export class UseCaseDeleteSerial {
         return warehouseStock
     }
 
-    private async searchWarehouseStockSerial(stock_id: string, serial: string) {
-        const pipeline = [{ $match: { stock_id, serial } }]
+    private async searchWarehouseStockSerial(warehouseStock: WarehouseStockENTITY, serial: string) {
+        const pipeline = [{
+            $match: {
+                keySearch: warehouseStock.keySearch,
+                keyDetail: warehouseStock.keyDetail,
+                serial
+            }
+        }]
         const warehouseStockSerial = await this.repository.selectOne<WarehouseStockSerialENTITY>(pipeline, collections.warehouseStockSerial)
         if (warehouseStockSerial.state !== StateStockSerialWarehouse.RESERVADO) {
             throw new BadRequestException(

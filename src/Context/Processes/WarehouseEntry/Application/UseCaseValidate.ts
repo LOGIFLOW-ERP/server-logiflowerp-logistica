@@ -41,7 +41,9 @@ export class UseCaseValidate {
     async exec(_id: string, user: AuthUserDTO) {
         await this.searchDocument(_id)
         const dataProductPrices = await this.searchProductPrice()
-        await this.searchWarehouseStocks()
+        const keySearch = this.document.detail[0].keySearch
+        const keysDetail = this.document.detail.map(e => e.keyDetail)
+        await this.searchWarehouseStocks(keySearch, keysDetail)
         await this.searchWarehouseStocksSerial()
         await this.updateDocument(dataProductPrices, user)
         this.createTransactionDocument()
@@ -126,9 +128,7 @@ export class UseCaseValidate {
     }
 
     //#region Stock almacen
-    private async searchWarehouseStocks() {
-        const keySearch = this.document.detail[0].keySearch
-        const keysDetail = this.document.detail.map(e => e.keyDetail)
+    private async searchWarehouseStocks(keySearch: string, keysDetail: string[]) {
         const pipeline = [{ $match: { keySearch, keyDetail: { $in: keysDetail } } }]
         this.dataWarehouseStock = await this.repository.select<WarehouseStockENTITY>(
             pipeline,
@@ -137,9 +137,9 @@ export class UseCaseValidate {
     }
 
     private async searchWarehouseStocksSerial() {
-        const stock_ids = this.dataWarehouseStock.filter(e => e.item.producType === ProducType.SERIE).map(e => e._id)
-        if (stock_ids.length === 0) return
-        const pipeline = [{ $match: { stock_id: { $in: stock_ids } } }]
+        const itemsCode = this.dataWarehouseStock.filter(e => e.item.producType === ProducType.SERIE).map(e => e.item.itemCode)
+        if (itemsCode.length === 0) return
+        const pipeline = [{ $match: { itemCode: { $in: itemsCode } } }]
         this.dataWarehouseStockSerial = await this.repository.select<WarehouseStockSerialENTITY>(
             pipeline,
             collections.warehouseStockSerial
@@ -170,7 +170,7 @@ export class UseCaseValidate {
             newStock.documentNumber = this.document.documentNumber
             newStock.model = serial.model
             newStock.serial = serial.serial
-            newStock.stock_id = stock._id
+            newStock.itemCode = detail.item.itemCode
             newStock.updatedate = new Date()
             newStock.keyDetail = stock.keyDetail
             newStock.keySearch = stock.keySearch
@@ -200,12 +200,22 @@ export class UseCaseValidate {
     private async updateWarehouseStockSerial(warehouseStock: WarehouseStockENTITY, detail: OrderDetailENTITY) {
         if (detail.item.producType !== ProducType.SERIE) return
         for (const serial of detail.serials) {
-            const stockSerial = this.dataWarehouseStockSerial.find(e => e.stock_id === warehouseStock._id && e.serial === serial.serial)
+            //#region Validar
+            const states = [StateStockSerialWarehouse.DISPONIBLE, StateStockSerialWarehouse.RESERVADO]
+            const stockSerialValidate = this.dataWarehouseStockSerial.some(
+                e => e.itemCode === warehouseStock.item.itemCode && e.serial === serial.serial && states.includes(e.state)
+            )
+            if (stockSerialValidate) {
+                throw new ConflictException(
+                    `La serie ${serial.serial} en ${warehouseStock.item.itemCode} ya está registrado y no se puede ingresar nuevamente.`,
+                    true
+                )
+            }
+            //#endregion Validar
+            const stockSerial = this.dataWarehouseStockSerial.find(
+                e => e.keySearch === warehouseStock.keySearch && e.keyDetail === warehouseStock.keyDetail && e.serial === serial.serial
+            )
             if (stockSerial) {
-                const states = [StateStockSerialWarehouse.DISPONIBLE, StateStockSerialWarehouse.RESERVADO]
-                if (states.includes(stockSerial.state)) {
-                    throw new ConflictException(`La serie ${serial.serial} en ${detail.item.itemCode} ya está registrada en el almacén y no se puede ingresar nuevamente.`, true)
-                }
                 const transaction: ITransaction<WarehouseStockSerialENTITY> = {
                     collection: collections.warehouseStockSerial,
                     transaction: 'updateOne',
