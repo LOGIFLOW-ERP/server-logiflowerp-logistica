@@ -10,7 +10,7 @@ import {
     resolveCompanyFind,
 } from './decorators'
 
-export class WarehouseStockController extends BaseHttpController {
+export class EmployeeStockSerialController extends BaseHttpController {
 
     @httpPost('find', authorizeRoute)
     @resolveCompanyFind
