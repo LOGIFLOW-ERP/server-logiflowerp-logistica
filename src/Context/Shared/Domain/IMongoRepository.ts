@@ -34,4 +34,19 @@ export interface IMongoRepository<T extends Document> {
         keyDetail: string;
         available: number;
     }[]>
+    /**
+     * Ejecuta una agregación sobre una colección MongoDB y memoriza el resultado en Redis.
+     * Si existe una entrada cacheada en Redis para la combinación de base de datos, colección y pipeline,
+     * retorna esa directamente. En caso contrario, ejecuta la consulta en MongoDB, guarda el resultado en Redis
+     * y lo retorna.
+     *
+     * Esta función está pensada para consultas repetibles cuyo resultado no cambia frecuentemente,
+     * optimizando el rendimiento mediante almacenamiento temporal en caché.
+     *
+     * @param pipeline - El pipeline de agregación a ejecutar.
+     * @param collection - El nombre de la colección sobre la cual se ejecutará el pipeline.
+     * @param database - El nombre de la base de datos a consultar.
+     * @returns Un arreglo con los documentos encontrados, ya sea desde MongoDB o Redis.
+     */
+    queryMongoWithRedisMemo<ReturnType extends Document = T>(pipeline: Document[], collection?: string, database?: string): Promise<ReturnType[]>
 }

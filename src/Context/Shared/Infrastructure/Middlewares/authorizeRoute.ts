@@ -1,9 +1,12 @@
-import { ForbiddenException } from '@Config/exception'
+import { ConflictException, ForbiddenException } from '@Config/exception'
 import { NextFunction, Request, Response } from 'express'
+import { MongoRepository } from '../Repositories/Mongo'
+import { collections, ProfileENTITY, RootCompanyENTITY, State, SystemOptionENTITY } from 'logiflowerp-sdk'
+import { env } from '@Config/env'
 
-export function authorizeRoute(req: Request, _res: Response, next: NextFunction) {
+export async function authorizeRoute(req: Request, _res: Response, next: NextFunction) {
     try {
-        if (req.userRoot || req.user.root) {
+        if (req.userRoot /*|| req.user.root*/) {
             return next()
         }
 
@@ -19,7 +22,34 @@ export function authorizeRoute(req: Request, _res: Response, next: NextFunction)
             return url
         }
 
-        const cleanedRoutes = cleanRoutes(req.payloadToken.routes)
+        let _idsSystemOption: string[] = []
+
+        if (req.user.root) {
+            const repositoryMongoRootCompany = new MongoRepository<RootCompanyENTITY>(env.DB_ROOT, collections.company, req.user)
+            const pipelineRootCompany = [{ $match: { code: req.rootCompany.code, state: State.ACTIVO } }]
+            const rootCompany = await repositoryMongoRootCompany.queryMongoWithRedisMemo(pipelineRootCompany)
+            if (rootCompany.length !== 1) {
+                throw new ConflictException(`Se encontraron ${rootCompany.length} empresas root con el codigo y estado activo.`);
+            }
+            _idsSystemOption = rootCompany[0].systemOptions
+        } else {
+            const repositoryMongoProfile = new MongoRepository<ProfileENTITY>(req.rootCompany.code, collections.profile, req.user)
+            const pipelineProfile = [{ $match: { _id: req.payloadToken.personnel._idprofile, state: State.ACTIVO } }]
+            const profile = await repositoryMongoProfile.queryMongoWithRedisMemo(pipelineProfile)
+            if (profile.length !== 1) {
+                throw new ConflictException(`Se encontraron ${profile.length} perfiles con el mismo _id y estado activo.`);
+            }
+            _idsSystemOption = profile[0].systemOptions
+        }
+        const repositoryMongoSystemOption = new MongoRepository<SystemOptionENTITY>(env.DB_ROOT, collections.systemOption, req.user)
+        const pipelineSystemOption = [{ $match: { _id: { $in: _idsSystemOption } } }]
+        const SystemOption = await repositoryMongoSystemOption.queryMongoWithRedisMemo(pipelineSystemOption)
+
+        const routes = SystemOption
+            .map(el => el.route)
+            .filter(route => route !== '')
+
+        const cleanedRoutes = cleanRoutes(routes)
         const requestUrl = normalizeUrl(req)
 
         const exist = cleanedRoutes.some(route => route === requestUrl)

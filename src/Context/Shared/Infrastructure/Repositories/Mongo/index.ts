@@ -4,7 +4,7 @@ import { SHARED_TYPES } from '@Shared/Infrastructure/IoC'
 import { AdapterMongoDB, AdapterRedis, } from '@Shared/Infrastructure/Adapters'
 import { Request, Response } from 'express'
 import { Document, Filter, OptionalUnlessRequiredId, UpdateFilter } from 'mongodb'
-import { _deleteMany, _deleteOne, _find, _insertMany, _insertOne, _select, _selectOne, _updateOne, _validateAvailableWarehouseStocks } from './Transactions'
+import { _deleteMany, _deleteOne, _find, _insertMany, _insertOne, _queryMongoWithRedisMemo, _select, _selectOne, _updateOne, _validateAvailableWarehouseStocks } from './Transactions'
 import { BadRequestException } from '@Config/exception'
 import { AuthUserDTO, collections } from 'logiflowerp-sdk'
 
@@ -16,7 +16,7 @@ export class MongoRepository<T extends Document> implements IMongoRepository<T> 
     protected adapterRedis: AdapterRedis
     protected user: AuthUserDTO
 
-    constructor(collection: string, database: string, user: AuthUserDTO) {
+    constructor(database: string, collection: string, user: AuthUserDTO) {
         this.database = database
         this.collection = collection
         this.user = user
@@ -51,6 +51,12 @@ export class MongoRepository<T extends Document> implements IMongoRepository<T> 
         const client = await this.adapterMongo.connection()
         const col = client.db(database).collection(collection)
         return _selectOne<ReturnType>({ collection: col, pipeline })
+    }
+
+    async queryMongoWithRedisMemo<ReturnType extends Document = T>(pipeline: Document[], collection: string = this.collection, database: string = this.database) {
+        const client = await this.adapterMongo.connection()
+        const col = client.db(database).collection(collection)
+        return _queryMongoWithRedisMemo<ReturnType>({ collection: col, pipeline })
     }
 
     async insertOne(doc: OptionalUnlessRequiredId<T>) {
