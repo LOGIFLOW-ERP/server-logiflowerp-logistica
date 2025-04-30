@@ -17,21 +17,21 @@ import {
 } from 'logiflowerp-sdk';
 import {
     BadRequestException,
-    ConflictException,
     NotFoundException,
     UnprocessableEntityException
 } from '@Config/exception';
 import { WAREHOUSE_ENTRY_TYPES } from '../Infrastructure/IoC';
 import { inject, injectable } from 'inversify';
+import { validateDuplicateSerialEntry } from '@Shared/Infrastructure/Utils';
 
 @injectable()
 export class UseCaseValidate {
 
     private document!: WarehouseEntryENTITY
     private transactions: ITransaction<any>[] = []
-    private dataWarehouseStock!: WarehouseStockENTITY[]
+    private dataWarehouseStock: WarehouseStockENTITY[] = []
     private newDataWarehouseStock: WarehouseStockENTITY[] = []
-    private dataWarehouseStockSerial!: WarehouseStockSerialENTITY[]
+    private dataWarehouseStockSerial: WarehouseStockSerialENTITY[] = []
     private newDataWarehouseStockSerial: WarehouseStockSerialENTITY[] = []
 
     constructor(
@@ -41,9 +41,7 @@ export class UseCaseValidate {
     async exec(_id: string, user: AuthUserDTO) {
         await this.searchDocument(_id)
         const dataProductPrices = await this.searchProductPrice()
-        const keySearch = this.document.detail[0].keySearch
-        const keysDetail = this.document.detail.map(e => e.keyDetail)
-        await this.searchWarehouseStocks(keySearch, keysDetail)
+        await this.searchWarehouseStocks()
         await this.searchWarehouseStocksSerial()
         await this.updateDocument(dataProductPrices, user)
         this.createTransactionDocument()
@@ -128,7 +126,9 @@ export class UseCaseValidate {
     }
 
     //#region Stock almacen
-    private async searchWarehouseStocks(keySearch: string, keysDetail: string[]) {
+    private async searchWarehouseStocks() {
+        const keySearch = this.document.detail[0].keySearch
+        const keysDetail = this.document.detail.map(e => e.keyDetail)
         const pipeline = [{ $match: { keySearch, keyDetail: { $in: keysDetail } } }]
         this.dataWarehouseStock = await this.repository.select<WarehouseStockENTITY>(
             pipeline,
@@ -137,7 +137,7 @@ export class UseCaseValidate {
     }
 
     private async searchWarehouseStocksSerial() {
-        const itemsCode = this.dataWarehouseStock.filter(e => e.item.producType === ProducType.SERIE).map(e => e.item.itemCode)
+        const itemsCode = this.document.detail.filter(e => e.item.producType === ProducType.SERIE).map(e => e.item.itemCode)
         if (itemsCode.length === 0) return
         const pipeline = [{ $match: { itemCode: { $in: itemsCode } } }]
         this.dataWarehouseStockSerial = await this.repository.select<WarehouseStockSerialENTITY>(
@@ -164,6 +164,13 @@ export class UseCaseValidate {
     private async buildWarehouseStockSerial(detail: OrderDetailENTITY, stock: WarehouseStockENTITY) {
         if (detail.item.producType !== ProducType.SERIE) return
         for (const serial of detail.serials) {
+            //#region Validar
+            validateDuplicateSerialEntry(
+                this.dataWarehouseStockSerial,
+                detail.item.itemCode,
+                serial.serial
+            )
+            //#endregion Validar
             const newStock = new WarehouseStockSerialENTITY()
             newStock._id = crypto.randomUUID()
             newStock.brand = serial.brand
@@ -201,16 +208,11 @@ export class UseCaseValidate {
         if (detail.item.producType !== ProducType.SERIE) return
         for (const serial of detail.serials) {
             //#region Validar
-            const states = [StateStockSerialWarehouse.DISPONIBLE, StateStockSerialWarehouse.RESERVADO]
-            const stockSerialValidate = this.dataWarehouseStockSerial.some(
-                e => e.itemCode === warehouseStock.item.itemCode && e.serial === serial.serial && states.includes(e.state)
+            validateDuplicateSerialEntry(
+                this.dataWarehouseStockSerial,
+                warehouseStock.item.itemCode,
+                serial.serial
             )
-            if (stockSerialValidate) {
-                throw new ConflictException(
-                    `La serie ${serial.serial} en ${warehouseStock.item.itemCode} ya está registrado y no se puede ingresar nuevamente.`,
-                    true
-                )
-            }
             //#endregion Validar
             const stockSerial = this.dataWarehouseStockSerial.find(
                 e => e.keySearch === warehouseStock.keySearch && e.keyDetail === warehouseStock.keyDetail && e.serial === serial.serial
@@ -236,6 +238,7 @@ export class UseCaseValidate {
     }
 
     private createTransactionWarehouseStock() {
+        if (!this.newDataWarehouseStock.length) return
         const transaction: ITransaction<WarehouseStockENTITY> = {
             collection: collections.warehouseStock,
             transaction: 'insertMany',
@@ -245,6 +248,7 @@ export class UseCaseValidate {
     }
 
     private createTransactionWarehouseStockSerial() {
+        if (!this.newDataWarehouseStockSerial.length) return
         const transaction: ITransaction<WarehouseStockSerialENTITY> = {
             collection: collections.warehouseStockSerial,
             transaction: 'insertMany',

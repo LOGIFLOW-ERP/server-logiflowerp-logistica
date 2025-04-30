@@ -9,8 +9,8 @@ export class ManagerEntity {
 
     private indexes: IndexEntity<WarehouseStockSerialENTITY>[] = [
         {
-            campos: { itemCode: 1, serial: 1 },
-            opciones: { name: 'idx_itemCode_serial', unique: true }
+            campos: { keySearch: 1, keyDetail: 1, serial: 1 },
+            opciones: { name: 'idx_keySearch_keyDetail_serial', unique: true }
         },
         {
             campos: { itemCode: 1 },

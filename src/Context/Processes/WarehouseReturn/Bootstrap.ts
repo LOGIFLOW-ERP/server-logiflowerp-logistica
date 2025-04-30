@@ -1,16 +1,20 @@
 import { IndexEntity } from '@Shared/Domain'
 import { collection } from './Infrastructure/config'
 import { Bootstraping } from '@Shared/Bootstraping'
-import { RootCompanyENTITY, EmployeeStockSerialENTITY } from 'logiflowerp-sdk'
+import { RootCompanyENTITY, WarehouseReturnENTITY } from 'logiflowerp-sdk'
 import { inject } from 'inversify'
 import { SHARED_TYPES } from '@Shared/Infrastructure/IoC'
 
 export class ManagerEntity {
 
-    private indexes: IndexEntity<EmployeeStockSerialENTITY>[] = [
+    private indexes: IndexEntity<WarehouseReturnENTITY>[] = [
         {
-            campos: { keySearch: 1, keyDetail: 1, serial: 1 },
-            opciones: { name: 'idx_stock_id_serial', unique: true }
+            campos: { documentNumber: 1 },
+            opciones: { name: 'idx_documentNumber', unique: true }
+        },
+        {
+            campos: { 'detail.keySearch': 1, 'detail.keyDetail': 1, state: 1 },
+            opciones: { name: 'idx_detail.keySearch_detail.keyDetail_state' }
         }
     ]
 

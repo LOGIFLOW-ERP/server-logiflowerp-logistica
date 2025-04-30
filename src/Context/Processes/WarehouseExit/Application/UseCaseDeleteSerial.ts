@@ -66,7 +66,7 @@ export class UseCaseDeleteSerial {
     }
 
     private async searchWarehouseStock(detail: OrderDetailENTITY) {
-        const pipeline = [{ $match: { keySearch: detail.keySearch, keyDetail: detail.keyDetail } }]
+        const pipeline = [{ $match: { keySearch: detail.keySearch, keyDetail: detail.keyDetail, 'store.code': this.document.store.code } }]
         const warehouseStock = await this.repository.selectOne<WarehouseStockENTITY>(pipeline, collections.warehouseStock)
         if (warehouseStock.state !== StateWarehouseStock.ACTIVO) {
             throw new BadRequestException(

@@ -67,7 +67,7 @@ export class UseCaseAddDetail {
     }
 
     private async searchWarehouseStock(newDetail: OrderDetailENTITY) {
-        const pipeline = [{ $match: { keySearch: newDetail.keySearch, keyDetail: newDetail.keyDetail } }]
+        const pipeline = [{ $match: { keySearch: newDetail.keySearch, keyDetail: newDetail.keyDetail, 'store.code': this.document.store.code } }]
         const warehouseStock = await this.repository.selectOne<WarehouseStockENTITY>(pipeline, collections.warehouseStock)
         if (warehouseStock.state !== StateWarehouseStock.ACTIVO) {
             throw new BadRequestException(

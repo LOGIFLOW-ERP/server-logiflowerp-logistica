@@ -47,12 +47,10 @@ export class UseCaseValidate {
     async exec(_id: string, user: AuthUserDTO) {
         await this.searchDocument(_id)
         const dataProductPrices = await this.searchProductPrice()
-        const keySearch = this.document.detail[0].keySearch
-        const keysDetail = this.document.detail.map(e => e.keyDetail)
-        await this.searchWarehouseStocks(keySearch, keysDetail)
-        await this.searchWarehouseStocksSerial(keySearch)
-        await this.searchEmployeeStocks(keySearch, keysDetail)
-        await this.searchEmployeeStocksSerial(keySearch)
+        await this.searchWarehouseStocks()
+        await this.searchWarehouseStocksSerial()
+        await this.searchEmployeeStocks()
+        await this.searchEmployeeStocksSerial()
         await this.updateDocument(dataProductPrices, user)
         this.createTransactionDocument()
         this.createTransactionEmployeeStock()
@@ -140,7 +138,9 @@ export class UseCaseValidate {
     //#endregion Product Price
 
     //#region Search Stocks Warehouse And Employee
-    private async searchEmployeeStocks(keySearch: string, keysDetail: string[]) {
+    private async searchEmployeeStocks() {
+        const keySearch = this.document.detail[0].keySearch
+        const keysDetail = this.document.detail.map(e => e.keyDetail)
         const pipeline = [{
             $match: {
                 'employee.identity': this.document.carrier.identity,
@@ -154,8 +154,9 @@ export class UseCaseValidate {
         )
     }
 
-    private async searchEmployeeStocksSerial(keySearch: string) {
-        const keysDetail = this.dataEmployeeStock.filter(e => e.item.producType === ProducType.SERIE).map(e => e.keyDetail)
+    private async searchEmployeeStocksSerial() {
+        const keySearch = this.document.detail[0].keySearch
+        const keysDetail = this.document.detail.map(e => e.keyDetail)
         if (keysDetail.length === 0) return
         const pipeline = [{
             $match: {
@@ -169,7 +170,9 @@ export class UseCaseValidate {
         )
     }
 
-    private async searchWarehouseStocks(keySearch: string, keysDetail: string[]) {
+    private async searchWarehouseStocks() {
+        const keySearch = this.document.detail[0].keySearch
+        const keysDetail = this.document.detail.map(e => e.keyDetail)
         const pipeline = [{ $match: { keySearch, keyDetail: { $in: keysDetail } } }]
         this.dataWarehouseStock = await this.repository.select<WarehouseStockENTITY>(
             pipeline,
@@ -177,8 +180,9 @@ export class UseCaseValidate {
         )
     }
 
-    private async searchWarehouseStocksSerial(keySearch: string) {
-        const keysDetail = this.dataWarehouseStock.filter(e => e.item.producType === ProducType.SERIE).map(e => e.keyDetail)
+    private async searchWarehouseStocksSerial() {
+        const keySearch = this.document.detail[0].keySearch
+        const keysDetail = this.document.detail.map(e => e.keyDetail)
         if (keysDetail.length === 0) return
         const pipeline = [{ $match: { keySearch, keyDetail: { $in: keysDetail } } }]
         this.dataWarehouseStockSerial = await this.repository.select<WarehouseStockSerialENTITY>(
