@@ -94,7 +94,9 @@ export class UseCaseValidate {
             //#endregion Position
 
             //#region Warehouse Stock
-            const warehouseStock = this.dataWarehouseStock.find(e => e.keySearch === detail.keySearch && e.keyDetail === detail.keyDetail)
+            const warehouseStock = this.dataWarehouseStock.find(
+                e => e.keySearch === detail.keySearch && e.keyDetail === detail.keyDetail && e.store.code === this.document.store.code
+            )
             if (!warehouseStock) {
                 const stock = await this.buildWarehouseStock(detail)
                 await this.buildWarehouseStockSerial(detail, stock)
@@ -137,7 +139,9 @@ export class UseCaseValidate {
     }
 
     private async searchWarehouseStocksSerial() {
-        const itemsCode = this.document.detail.filter(e => e.item.producType === ProducType.SERIE).map(e => e.item.itemCode)
+        const itemsCode = this.document.detail
+            .filter(e => e.item.producType === ProducType.SERIE)
+            .map(e => e.item.itemCode)
         if (itemsCode.length === 0) return
         const pipeline = [{ $match: { itemCode: { $in: itemsCode } } }]
         this.dataWarehouseStockSerial = await this.repository.select<WarehouseStockSerialENTITY>(

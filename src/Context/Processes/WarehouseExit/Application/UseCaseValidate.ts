@@ -27,6 +27,7 @@ import {
     NotFoundException,
     UnprocessableEntityException
 } from '@Config/exception';
+import { validateDuplicateSerialExit } from '@Shared/Infrastructure/Utils';
 
 @injectable()
 export class UseCaseValidate {
@@ -95,7 +96,7 @@ export class UseCaseValidate {
 
             //#region WarehouseStock
             const warehouseStock = this.dataWarehouseStock.find(
-                e => e.keySearch === detail.keySearch && e.keyDetail === detail.keyDetail
+                e => e.keySearch === detail.keySearch && e.keyDetail === detail.keyDetail && e.store.code === this.document.store.code
             )
             if (!warehouseStock) {
                 throw new NotFoundException(
@@ -108,7 +109,7 @@ export class UseCaseValidate {
 
             //#region Employee Stock
             const employeeStock = this.dataEmployeeStock.find(
-                e => e.keySearch === detail.keySearch && e.keyDetail === detail.keyDetail
+                e => e.keySearch === detail.keySearch && e.keyDetail === detail.keyDetail && e.employee.identity === this.document.carrier.identity
             )
             if (!employeeStock) {
                 const stock = await this.buildEmployeeStock(detail)
@@ -155,15 +156,11 @@ export class UseCaseValidate {
     }
 
     private async searchEmployeeStocksSerial() {
-        const keySearch = this.document.detail[0].keySearch
-        const keysDetail = this.document.detail.map(e => e.keyDetail)
-        if (keysDetail.length === 0) return
-        const pipeline = [{
-            $match: {
-                keySearch,
-                keyDetail: { $in: keysDetail }
-            }
-        }]
+        const itemsCode = this.document.detail
+            .filter(e => e.item.producType === ProducType.SERIE)
+            .map(e => e.item.itemCode)
+        if (itemsCode.length === 0) return
+        const pipeline = [{ $match: { itemCode: { $in: itemsCode } } }]
         this.dataEmployeeStockSerial = await this.repository.select<EmployeeStockSerialENTITY>(
             pipeline,
             collections.employeeStockSerial
@@ -212,6 +209,12 @@ export class UseCaseValidate {
     private async buildEmployeeStockSerial(detail: OrderDetailENTITY, stock: EmployeeStockENTITY) {
         if (detail.item.producType !== ProducType.SERIE) return
         for (const serial of detail.serials) {
+            //#region Validar
+            validateDuplicateSerialExit(
+                this.dataEmployeeStockSerial,
+                detail.item.itemCode,
+                serial.serial
+            )
             const newStock = new EmployeeStockSerialENTITY()
             newStock._id = crypto.randomUUID()
             newStock.brand = serial.brand
@@ -249,8 +252,15 @@ export class UseCaseValidate {
     private async updateEmployeeStockSerial(employeeStock: EmployeeStockENTITY, detail: OrderDetailENTITY) {
         if (detail.item.producType !== ProducType.SERIE) return
         for (const serial of detail.serials) {
+            //#region Validar
+            validateDuplicateSerialExit(
+                this.dataEmployeeStockSerial,
+                employeeStock.item.itemCode,
+                serial.serial
+            )
+            //#endregion Validar
             const stockSerial = this.dataEmployeeStockSerial.find(
-                e => e.keySearch === employeeStock.keySearch && e.keyDetail === employeeStock.keyDetail && e.serial === serial.serial
+                e => e.keySearch === employeeStock.keySearch && e.keyDetail === employeeStock.keyDetail && e.serial === serial.serial && e.identity === this.document.carrier.identity
             )
             if (stockSerial) {
                 const states = [StateStockSerialEmployee.POSESION]
