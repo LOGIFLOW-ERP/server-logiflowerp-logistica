@@ -16,8 +16,8 @@ export async function _validateAvailableWarehouseStocks(params: Props) {
         throw new BadRequestException(`Debe enviar "_ids" o "pipeline"`)
     }
 
-    const pipelineAux = _ids ? [{ $match: { _id: { $in: _ids } } }] : pipeline
-    const dataWarehouseStock = await colWarehouseStock.aggregate<WarehouseStockENTITY>(pipelineAux).toArray()
+    const _pipeline = _ids ? [{ $match: { _id: { $in: _ids } } }] : pipeline
+    const dataWarehouseStock = await colWarehouseStock.aggregate<WarehouseStockENTITY>(_pipeline).toArray()
     const keys = dataWarehouseStock.reduce((acc: { keysDetail: string[]; keysSearch: string[] }, el) => {
         acc.keysDetail.push(el.keyDetail)
         acc.keysSearch.push(el.keySearch)
@@ -50,7 +50,6 @@ export async function _validateAvailableWarehouseStocks(params: Props) {
     ]
 
     const dataTransit = await colWarehouseExit.aggregate(pipelineWarehouseExit).toArray()
-    console.log(dataTransit)
 
     const transitMap = new Map<string, number>()
     for (const item of dataTransit) {

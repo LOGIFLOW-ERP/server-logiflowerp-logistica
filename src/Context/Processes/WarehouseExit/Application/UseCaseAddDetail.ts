@@ -60,7 +60,7 @@ export class UseCaseAddDetail {
         const detail = new OrderDetailENTITY()
         detail.set(dto.warehouseStock)
         detail.amount = dto.amount
-        detail.codeStore = dto.warehouseStock.store.code
+        detail.codeStore = this.document.store.code
         detail.position = lastPosition + 1
         detail.price = productPrice
         return validateCustom(detail, OrderDetailENTITY, UnprocessableEntityException)

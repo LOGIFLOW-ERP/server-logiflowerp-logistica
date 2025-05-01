@@ -6,7 +6,7 @@ import { env } from '@Config/env'
 
 export async function authorizeRoute(req: Request, _res: Response, next: NextFunction) {
     try {
-        if (req.userRoot /*|| req.user.root*/) {
+        if (req.userRoot) {
             return next()
         }
 
@@ -19,6 +19,10 @@ export async function authorizeRoute(req: Request, _res: Response, next: NextFun
             Object.entries(req.params).forEach(([key, param]) => {
                 url = url.replace(param.toLowerCase(), patronParam)
             })
+            if (url.includes('?')) {
+                const [pathWithParams] = url.split('?')
+                return pathWithParams
+            }
             return url
         }
 

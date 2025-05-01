@@ -34,6 +34,12 @@ export interface IMongoRepository<T extends Document> {
         keyDetail: string;
         available: number;
     }[]>
+    validateAvailableEmployeeStocks({ pipeline, _ids }: { pipeline?: Document[]; _ids?: string[]; }): Promise<{
+        keySearch: string;
+        keyDetail: string;
+        identity: string;
+        available: number;
+    }[]>
     /**
      * Ejecuta una agregación sobre una colección MongoDB y memoriza el resultado en Redis.
      * Si existe una entrada cacheada en Redis para la combinación de base de datos, colección y pipeline,
