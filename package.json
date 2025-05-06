@@ -8,7 +8,7 @@
     "prebuild": "npm run copy-html-once",
     "copy-html-once": "copyfiles -u 1 public/*.html build/public",
     "start": "node build/server.js",
-    "dev": "ts-node-dev --files -r tsconfig-paths/register --respawn server.ts"
+    "dev": "ts-node-dev --env-file=.env --files -r tsconfig-paths/register --respawn server.ts"
   },
   "repository": {
     "type": "git",
