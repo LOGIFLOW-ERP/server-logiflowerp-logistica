@@ -13,7 +13,7 @@ async function getRootCompanies() {
 
 async function initcollection(paths: Dirent[], rootCompanies: RootCompanyENTITY[]) {
     for (let rute of paths) {
-        const newPath = path.join('../', `${rute.parentPath.split('src')[1]}/${rute.name}`)
+        const newPath = path.join('../', `${rute.parentPath.split('src').pop()}/${rute.name}`)
         const { ManagerEntity } = await import(newPath)
         const instance = ContainerGlobal.resolve<any>(ManagerEntity)
         await instance.exec(rootCompanies)

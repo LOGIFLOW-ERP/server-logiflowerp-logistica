@@ -7,7 +7,7 @@ const _container = new Container()
 
 async function merge(paths: Dirent[]) {
     for (const rute of paths) {
-        const filePath = join(__dirname, '../', `${rute.parentPath.split('src')[1]}/${rute.name}`)
+        const filePath = join(__dirname, '../', `${rute.parentPath.split('src').pop()}/${rute.name}`)
         const { containerModule } = await import(filePath)
         _container.load(containerModule)
     }

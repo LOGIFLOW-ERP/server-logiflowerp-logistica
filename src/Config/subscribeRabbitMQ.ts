@@ -4,7 +4,7 @@ import { ContainerGlobal } from './inversify'
 
 async function init(paths: Dirent[]) {
     for (const rute of paths) {
-        const newPath = path.join('../', `${rute.parentPath.split('src')[1]}/${rute.name}`.replace('.js', ''))
+        const newPath = path.join('../', `${rute.parentPath.split('src').pop()}/${rute.name}`.replace('.js', ''))
         const { Worker } = await import(newPath)
         await ContainerGlobal.resolve<any>(Worker).exec()
     }
