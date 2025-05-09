@@ -18,4 +18,10 @@ export class WarehouseStockController extends BaseHttpController {
         await req.useCase.exec(req, res)
     }
 
+    @httpPost('report', authorizeRoute)
+    @resolveCompanyFind
+    async report(@request() req: Request, @response() res: Response) {
+        await req.useCase.exec(req, res)
+    }
+
 }
