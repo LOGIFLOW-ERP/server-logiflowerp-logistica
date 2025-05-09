@@ -7,7 +7,7 @@
     "build": "npx tsc && tsc-alias",
     "prebuild": "npm run copy-html-once",
     "copy-html-once": "copyfiles -u 1 public/*.html build/public",
-    "start": "node --env-file=.env build/server.js",
+    "start": "node build/server.js",
     "dev": "ts-node-dev --env-file=.env --files -r tsconfig-paths/register --respawn server.ts"
   },
   "repository": {
