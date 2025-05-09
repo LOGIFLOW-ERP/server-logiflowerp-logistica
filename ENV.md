@@ -1,5 +1,5 @@
 PREFIX=configuration
-PORT=3000
+PORT=3002
 DOMAINS=http://localhost:3001
 NODE_ENV=development
 MONGO_URI=

@@ -13,12 +13,14 @@ export class AdapterToken {
 
     async create(payload: TokenPayloadDTO, secretOrPrivateKey: string = this.env.JWT_KEY, expiresIn?: number) {
         const _payload = await validateCustom(payload, TokenPayloadDTO, UnprocessableEntityException)
-        return JWT.sign(JSON.parse(JSON.stringify(_payload)), secretOrPrivateKey, expiresIn ? { expiresIn } : {})
+        const _secretOrPrivateKey = `${secretOrPrivateKey}${this.env.NODE_ENV}`
+        return JWT.sign(JSON.parse(JSON.stringify(_payload)), _secretOrPrivateKey, expiresIn ? { expiresIn } : {})
     }
 
     async verify(token: string, secretOrPublicKey: string = this.env.JWT_KEY) {
         try {
-            const res = JWT.verify(token, secretOrPublicKey) as TokenPayloadDTO
+            const _secretOrPublicKey = `${secretOrPublicKey}${this.env.NODE_ENV}`
+            const res = JWT.verify(token, _secretOrPublicKey) as TokenPayloadDTO
             return await validateCustom(res, TokenPayloadDTO, UnprocessableEntityException)
         } catch (error) {
             console.error(error)

@@ -1,18 +1,18 @@
 {
-  "name": "server-logiflowerp-configuracion",
+  "name": "server-logiflowerp-logistica",
   "version": "1.0.0",
-  "description": "Microservicio de configuracion de Logiflow ERP",
+  "description": "Microservicio de logistica de Logiflow ERP",
   "main": "server.js",
   "scripts": {
     "build": "npx tsc && tsc-alias",
     "prebuild": "npm run copy-html-once",
     "copy-html-once": "copyfiles -u 1 public/*.html build/public",
-    "start": "node build/server.js",
+    "start": "node --env-file=.env build/server.js",
     "dev": "ts-node-dev --env-file=.env --files -r tsconfig-paths/register --respawn server.ts"
   },
   "repository": {
     "type": "git",
-    "url": "git@github-empresa.com:LOGIFLOW-ERP/server-logiflowerp-configuracion.git"
+    "url": "git@github-empresa.com:LOGIFLOW-ERP/server-logiflowerp-logistica.git"
   },
   "author": "Antonio Mejia",
   "license": "ISC",
