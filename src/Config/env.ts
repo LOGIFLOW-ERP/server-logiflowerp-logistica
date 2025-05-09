@@ -20,7 +20,6 @@ export const env = {
     SMTP_PORT: get('SMTP_PORT').required().asInt(),
     SMTP_SECURE: get('SMTP_SECURE').required().asBool(),
     DEVELOPERS_MAILS: get('DEVELOPERS_MAILS').required().asArray(),
-    ADMINISTRATOR_EMAILS: get('ADMINISTRATOR_EMAILS').required().asArray(),
 }
 
 export type typeEnv = typeof env
