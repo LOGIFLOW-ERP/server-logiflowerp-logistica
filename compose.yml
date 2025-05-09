@@ -3,7 +3,7 @@ services:
     container_name: server-logiflowerp-logistica
     image: logiflowerp/server-logiflowerp-logistica:latest
     env_file:
-     - ./.env
+     - .env
     environment:
       NODE_ENV: production
     networks:
