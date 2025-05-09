@@ -142,7 +142,7 @@ function authMiddleware(app: Application) {
             const decoded = await adapterToken.verify(token)
 
             if (!decoded) {
-                return next(new UnauthorizedException('Token inválido o expirado'))
+                return next(new UnauthorizedException('¡Token inválido o expirado!'))
             }
 
             req.payloadToken = decoded
