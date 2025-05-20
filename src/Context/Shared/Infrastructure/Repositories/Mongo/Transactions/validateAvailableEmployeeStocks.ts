@@ -56,7 +56,6 @@ export async function _validateAvailableEmployeeStocks(params: Props) {
     ]
 
     const dataTransit = await colWarehouseReturn.aggregate(pipelineWarehouseReturns).toArray()
-    console.log(dataTransit)
 
     const transitMap = new Map<string, number>()
     for (const item of dataTransit) {
