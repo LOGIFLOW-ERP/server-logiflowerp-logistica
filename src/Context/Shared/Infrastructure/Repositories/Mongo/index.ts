@@ -57,13 +57,13 @@ export class MongoRepository<T extends Document> implements IMongoRepository<T> 
     async selectOne<ReturnType extends Document = T>(pipeline: Document[], collection: string = this.collection, database: string = this.database) {
         const client = await this.adapterMongo.connection()
         const col = client.db(database).collection(collection)
-        return _selectOne<ReturnType>({ collection: col, pipeline })
+        return await _selectOne<ReturnType>({ collection: col, pipeline })
     }
 
     async queryMongoWithRedisMemo<ReturnType extends Document = T>(pipeline: Document[], collection: string = this.collection, database: string = this.database) {
         const client = await this.adapterMongo.connection()
         const col = client.db(database).collection(collection)
-        return _queryMongoWithRedisMemo<ReturnType>({ collection: col, pipeline })
+        return await _queryMongoWithRedisMemo<ReturnType>({ collection: col, pipeline })
     }
 
     async insertOne(doc: OptionalUnlessRequiredId<T>) {
