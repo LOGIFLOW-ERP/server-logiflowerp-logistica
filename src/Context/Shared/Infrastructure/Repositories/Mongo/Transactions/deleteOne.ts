@@ -19,8 +19,12 @@ export async function _deleteOne<T extends Document>(params: IParamsTransaction<
         throw new NotFoundException('Documento no encontrado')
     }
 
-    const deleteResult = await col.deleteOne(filter, { session })
-    if (!deleteResult.acknowledged) {
+    // const deleteResult = await col.deleteOne(filter, { session })
+    // if (!deleteResult.acknowledged) {
+    //     throw new InternalServerException('No se pudo eliminar el documento')
+    // }
+    const updateResult = await col.updateOne(filter, { $set: { isDeleted: true } as any }, { session })
+    if (!updateResult.acknowledged) {
         throw new InternalServerException('No se pudo eliminar el documento')
     }
 

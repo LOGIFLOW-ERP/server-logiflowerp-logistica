@@ -9,8 +9,12 @@ export class ManagerEntity {
 
     private indexes: IndexEntity<UnitOfMeasureENTITY>[] = [
         {
-            campos: { uomCode: 1 },
-            opciones: { name: 'idx_uomCode', unique: true }
+            campos: { uomCode: 1, isDeleted: 1 },
+            opciones: {
+                name: 'idx_uomCode',
+                unique: true,
+                partialFilterExpression: { isDeleted: false }
+            }
         }
     ]
 

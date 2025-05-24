@@ -9,8 +9,12 @@ export class ManagerEntity {
 
     private indexes: IndexEntity<MovementENTITY>[] = [
         {
-            campos: { code: 1 },
-            opciones: { name: 'idx_code', unique: true }
+            campos: { code: 1, isDeleted: 1 },
+            opciones: {
+                name: 'idx_code_unique_not_deleted',
+                unique: true,
+                partialFilterExpression: { isDeleted: false }
+            }
         }
     ]
 

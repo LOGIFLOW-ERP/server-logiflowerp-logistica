@@ -9,8 +9,12 @@ export class ManagerEntity {
 
     private indexes: IndexEntity<ProductPriceENTITY>[] = [
         {
-            campos: { itemCode: 1 },
-            opciones: { name: 'idx_itemCode', unique: true }
+            campos: { itemCode: 1, isDeleted: 1 },
+            opciones: {
+                name: 'idx_itemCode_unique_not_deleted',
+                unique: true,
+                partialFilterExpression: { isDeleted: false }
+            }
         }
     ]
 
