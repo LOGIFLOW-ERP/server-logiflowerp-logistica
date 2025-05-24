@@ -15,12 +15,21 @@ export async function _deleteMany<T extends Document>(params: IParamsTransaction
         throw new InternalServerException('No se encontró documentos con filtros indicados')
     }
 
-    const response = await col.deleteMany(filter, { session })
+    // const response = await col.deleteMany(filter, { session })
+    // if (!response.acknowledged) {
+    //     throw new UnprocessableEntityException('No se eliminaron los documentos')
+    // }
+
+    // if (documents.length !== response.deletedCount) {
+    //     throw new InternalServerException('No se eliminaron los documentos')
+    // }
+
+    const response = await col.updateMany(filter, { $set: { isDeleted: true } as any }, { session })
     if (!response.acknowledged) {
         throw new UnprocessableEntityException('No se eliminaron los documentos')
     }
 
-    if (documents.length !== response.deletedCount) {
+    if (documents.length !== response.upsertedCount) {
         throw new InternalServerException('No se eliminaron los documentos')
     }
 

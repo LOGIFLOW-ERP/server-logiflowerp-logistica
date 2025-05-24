@@ -78,6 +78,7 @@ export function serverErrorConfig(app: Application) {
         if (err instanceof MongoServerError) {
             console.log(err.errorResponse)
             if (err.code === 11000) {
+                delete err.errorResponse.keyValue.isDeleted
                 const msg = `El recurso ya existe (clave duplicada: ${JSON.stringify(err.errorResponse.keyValue)})`
                 res.status(409).send(new ConflictException(msg, true))
                 return
