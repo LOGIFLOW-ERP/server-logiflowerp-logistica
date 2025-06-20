@@ -42,7 +42,7 @@ export class UseCaseAddDetail {
     }
 
     private searchProductPrice(dto: CreateWarehouseExitDetailDTO) {
-        const pipeline = [{ $match: { itemCode: dto.warehouseStock.item.itemCode } }]
+        const pipeline = [{ $match: { itemCode: dto.warehouseStock.item.itemCode, isDeleted: false } }]
         return this.repository.selectOne<ProductPriceENTITY>(pipeline, collections.productPrice)
     }
 

@@ -1,5 +1,5 @@
 import { IProductPriceMongoRepository } from '../Domain';
-import { collections, CreateProductPriceDTO, ProductENTITY, ProductPriceENTITY, validateCustom } from 'logiflowerp-sdk';
+import { collections, CreateProductPriceDTO, ProductENTITY, ProductPriceENTITY, State, validateCustom } from 'logiflowerp-sdk';
 import { UnprocessableEntityException } from '@Config/exception';
 import { PRODUCT_PRICE_TYPES } from '../Infrastructure/IoC';
 import { inject, injectable } from 'inversify';
@@ -12,7 +12,7 @@ export class UseCaseInsertOne {
     ) { }
 
     async exec(dto: CreateProductPriceDTO) {
-        const pipeline = [{ $match: { itemCode: dto.itemCode } }]
+        const pipeline = [{ $match: { itemCode: dto.itemCode, state: State.ACTIVO, isDeleted: false } }]
         await this.repository.selectOne<ProductENTITY>(pipeline, collections.product)
         const _entity = new ProductPriceENTITY()
         _entity.set(dto)

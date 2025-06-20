@@ -7,7 +7,7 @@ import { ContainerGlobal } from './inversify'
 
 async function getRootCompanies() {
     const repository = new MongoRepository<RootCompanyENTITY>(env.DB_ROOT, collections.company, new AuthUserDTO())
-    const pipeline = [{ $match: { state: State.ACTIVO } }]
+    const pipeline = [{ $match: { state: State.ACTIVO, isDeleted: false } }]
     return repository.select(pipeline)
 }
 

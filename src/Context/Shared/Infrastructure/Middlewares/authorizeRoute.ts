@@ -30,7 +30,7 @@ export async function authorizeRoute(req: Request, _res: Response, next: NextFun
 
         if (req.user.root) {
             const repositoryMongoRootCompany = new MongoRepository<RootCompanyENTITY>(env.DB_ROOT, collections.company, req.user)
-            const pipelineRootCompany = [{ $match: { code: req.rootCompany.code, state: State.ACTIVO } }]
+            const pipelineRootCompany = [{ $match: { code: req.rootCompany.code, state: State.ACTIVO, isDeleted: false } }]
             const rootCompany = await repositoryMongoRootCompany.queryMongoWithRedisMemo(pipelineRootCompany)
             if (rootCompany.length !== 1) {
                 throw new ConflictException(`Se encontraron ${rootCompany.length} empresas root con el codigo y estado activo.`);
@@ -38,7 +38,7 @@ export async function authorizeRoute(req: Request, _res: Response, next: NextFun
             _idsSystemOption = rootCompany[0].systemOptions
         } else {
             const repositoryMongoProfile = new MongoRepository<ProfileENTITY>(req.rootCompany.code, collections.profile, req.user)
-            const pipelineProfile = [{ $match: { _id: req.payloadToken.personnel._idprofile, state: State.ACTIVO } }]
+            const pipelineProfile = [{ $match: { _id: req.payloadToken.personnel._idprofile, state: State.ACTIVO, isDeleted: false } }]
             const profile = await repositoryMongoProfile.queryMongoWithRedisMemo(pipelineProfile)
             if (profile.length !== 1) {
                 throw new ConflictException(`Se encontraron ${profile.length} perfiles con el mismo _id y estado activo.`);
