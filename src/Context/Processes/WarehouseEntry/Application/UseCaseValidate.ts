@@ -59,7 +59,7 @@ export class UseCaseValidate {
     }
 
     private searchProductPrice() {
-        const pipeline = [{ $match: { itemCode: { $in: this.document.detail.map(e => e.item.itemCode) } } }]
+        const pipeline = [{ $match: { itemCode: { $in: this.document.detail.map(e => e.item.itemCode) }, isDeleted: false } }]
         return this.repository.select<ProductPriceENTITY>(pipeline, collections.productPrice)
     }
 

@@ -11,9 +11,9 @@ export class UseCaseUpdateOne {
     ) { }
 
     async exec(_id: string, dto: UpdateProductPriceDTO) {
-        const pipelineProductPrice = [{ $match: { _id } }]
+        const pipelineProductPrice = [{ $match: { _id, isDeleted: false } }]
         const document = await this.repository.selectOne(pipelineProductPrice)
-        const pipelineProduct = [{ $match: { itemCode: document.itemCode, state: State.ACTIVO } }]
+        const pipelineProduct = [{ $match: { itemCode: document.itemCode, state: State.ACTIVO, isDeleted: false } }]
         await this.repository.selectOne<ProductENTITY>(pipelineProduct, collections.product)
         return this.repository.updateOne({ _id }, { $set: { ...dto, priceMax: Math.max(document.priceMax, dto.price) } })
     }
