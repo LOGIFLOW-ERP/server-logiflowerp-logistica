@@ -4,7 +4,7 @@ import { UseCaseReport } from '../../Application';
 import { WarehouseStockMongoRepository } from '../MongoRepository';
 import { collection } from '../config';
 
-export const resolveCompanyInsertOne = resolveCompanyDecorator(
+export const resolveCompanyReport = resolveCompanyDecorator(
     WAREHOUSE_STOCK_TYPES.UseCaseReport,
     UseCaseReport,
     WAREHOUSE_STOCK_TYPES.RepositoryMongo,

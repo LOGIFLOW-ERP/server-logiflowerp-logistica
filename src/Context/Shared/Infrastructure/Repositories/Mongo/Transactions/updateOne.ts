@@ -16,6 +16,7 @@ export async function _updateOne<T extends Document>(params: IParamsTransaction<
 
     const oldDocument = await col.findOne(filter, { session, readPreference: 'primary' })
     if (!oldDocument) {
+        console.log(filter)
         throw new NotFoundException('Documento no encontrado')
     }
 

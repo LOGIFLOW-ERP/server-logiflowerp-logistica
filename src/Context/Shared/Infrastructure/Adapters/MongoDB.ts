@@ -18,7 +18,7 @@ export class AdapterMongoDB {
         if (this.clientInstance) return this.clientInstance
         try {
             this.clientInstance = await MongoClient.connect(uri, {
-                directConnection: true,
+                // directConnection: true,
                 maxPoolSize: 10,
                 minPoolSize: 2
             })
