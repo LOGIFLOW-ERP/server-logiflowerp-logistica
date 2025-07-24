@@ -145,7 +145,6 @@ function authMiddleware(app: Application) {
 
             req.payloadToken = decoded
             req.user = decoded.user
-            req.userRoot = decoded.root
             req.rootCompany = decoded.rootCompany
 
             next()

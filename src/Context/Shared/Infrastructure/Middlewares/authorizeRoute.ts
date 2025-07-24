@@ -1,15 +1,11 @@
 import { ConflictException, ForbiddenException } from '@Config/exception'
 import { NextFunction, Request, Response } from 'express'
 import { MongoRepository } from '../Repositories/Mongo'
-import { collections, ProfileENTITY, RootCompanyENTITY, State, SystemOptionENTITY } from 'logiflowerp-sdk'
+import { collections, db_root, ProfileENTITY, RootCompanyENTITY, State, SystemOptionENTITY } from 'logiflowerp-sdk'
 import { env } from '@Config/env'
 
 export async function authorizeRoute(req: Request, _res: Response, next: NextFunction) {
     try {
-        if (req.userRoot) {
-            return next()
-        }
-
         const patronParam = ':_param_'
 
         const cleanRoutes = (routes: string[]) => routes.map(route => route.replace(/\/$/, "").replace(/\/:[^\/]+/g, `/${patronParam}`).toLowerCase())
@@ -29,7 +25,7 @@ export async function authorizeRoute(req: Request, _res: Response, next: NextFun
         let _idsSystemOption: string[] = []
 
         if (req.user.root) {
-            const repositoryMongoRootCompany = new MongoRepository<RootCompanyENTITY>(env.DB_ROOT, collections.company, req.user)
+            const repositoryMongoRootCompany = new MongoRepository<RootCompanyENTITY>(db_root, collections.company, req.user)
             const pipelineRootCompany = [{ $match: { code: req.rootCompany.code, state: State.ACTIVO, isDeleted: false } }]
             const rootCompany = await repositoryMongoRootCompany.queryMongoWithRedisMemo(pipelineRootCompany)
             if (rootCompany.length !== 1) {
@@ -45,7 +41,7 @@ export async function authorizeRoute(req: Request, _res: Response, next: NextFun
             }
             _idsSystemOption = profile[0].systemOptions
         }
-        const repositoryMongoSystemOption = new MongoRepository<SystemOptionENTITY>(env.DB_ROOT, collections.systemOption, req.user)
+        const repositoryMongoSystemOption = new MongoRepository<SystemOptionENTITY>(db_root, collections.systemOption, req.user)
         const pipelineSystemOption = [{ $match: { _id: { $in: _idsSystemOption } } }]
         const SystemOption = await repositoryMongoSystemOption.queryMongoWithRedisMemo(pipelineSystemOption)
 
