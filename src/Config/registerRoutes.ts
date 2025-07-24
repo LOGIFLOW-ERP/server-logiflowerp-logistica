@@ -30,7 +30,7 @@ export async function registerRoutes(rootPath: string) {
         }
 
         await exec(routes, rootPath, env.PREFIX)
-        console.log(styleText('bgCyan', 'Routes registered successfully.'))
+        console.log(styleText('yellow', '>>> Routes registered successfully.'))
     } catch (error) {
         console.error(error)
         process.exit(1)

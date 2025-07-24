@@ -23,7 +23,7 @@ import {
 import { ContainerGlobal } from './inversify'
 import { AdapterToken } from '@Shared/Infrastructure/Adapters'
 import crypto from 'crypto'
-import { convertDates } from 'logiflowerp-sdk'
+import { convertDates, db_default } from 'logiflowerp-sdk'
 import { SHARED_TYPES } from '@Shared/Infrastructure/IoC'
 import { MongoServerError } from 'mongodb'
 
@@ -32,6 +32,7 @@ const SECRET_KEY = Buffer.from(env.ENCRYPTION_KEY, 'utf8')
 
 export async function serverConfig(app: Application) {
 
+    app.use(resolveTenantBySubdomain)
     app.use(customLogger)
     app.use(cookieParser())
     app.use(helmet())
@@ -152,6 +153,18 @@ function authMiddleware(app: Application) {
             next(error)
         }
     })
+}
+
+function resolveTenantBySubdomain(req: Request, _res: Response, next: NextFunction) {
+    console.log(req.headers.host)
+    const subdomain = req.headers.host && req.headers.host.includes('.')
+        ? req.headers.host.split('.')[0]
+        : db_default
+    if (!subdomain) {
+        return next(new BadRequestException('Subdominio no encontrado'))
+    }
+    req.tenant = subdomain
+    next()
 }
 
 function convertDatesMiddleware(req: Request, _res: Response, next: NextFunction) {
