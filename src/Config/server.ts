@@ -1,6 +1,5 @@
 import {
     Application,
-    ErrorRequestHandler,
     json,
     NextFunction,
     Request,
@@ -15,9 +14,6 @@ import compression from 'compression'
 import cors from 'cors'
 import {
     BadRequestException,
-    BaseException,
-    ConflictException,
-    InternalServerException,
     UnauthorizedException
 } from './exception'
 import { ContainerGlobal } from './inversify'
@@ -25,7 +21,6 @@ import { AdapterToken } from '@Shared/Infrastructure/Adapters'
 import crypto from 'crypto'
 import { convertDates, db_default } from 'logiflowerp-sdk'
 import { SHARED_TYPES } from '@Shared/Infrastructure/IoC'
-import { MongoServerError } from 'mongodb'
 
 const ALGORITHM = 'aes-256-cbc'
 const SECRET_KEY = Buffer.from(env.ENCRYPTION_KEY, 'utf8')
@@ -67,34 +62,6 @@ export async function serverConfig(app: Application) {
     }
 
     app.use(convertDatesMiddleware)
-
-}
-
-export function serverErrorConfig(app: Application) {
-
-    const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
-
-        console.error(err)
-
-        if (err instanceof MongoServerError) {
-            if (err.code === 11000) {
-                delete err.errorResponse.keyValue.isDeleted
-                const msg = `El recurso ya existe (clave duplicada: ${JSON.stringify(err.errorResponse.keyValue)})`
-                res.status(409).send(new ConflictException(msg, true))
-                return
-            }
-        }
-
-        if (err instanceof BaseException) {
-            res.status(err.statusCode).json(err)
-            return
-        }
-
-        res.status(500).json(new InternalServerException('Ocurrió un error inesperado'))
-
-    }
-
-    app.use(errorHandler)
 
 }
 
