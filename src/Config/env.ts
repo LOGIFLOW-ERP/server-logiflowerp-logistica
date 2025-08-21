@@ -8,7 +8,6 @@ export const env = {
     MONGO_URI: get('MONGO_URI').required().asUrlString(),
     RABBITMQ_URL: get('RABBITMQ_URL').required().asUrlString(),
     REDIS_URL: get('REDIS_URL').required().asUrlString(),
-    FRONTEND_URL: get('FRONTEND_URL').required().asUrlString(),
     JWT_KEY: get('JWT_KEY').required().asString(),
     ENCRYPTION_KEY: get('ENCRYPTION_KEY').required().asString(),
     REQUIRE_ENCRYPTION: get('REQUIRE_ENCRYPTION').required().asBool(),

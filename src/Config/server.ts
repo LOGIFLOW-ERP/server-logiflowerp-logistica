@@ -19,7 +19,7 @@ import {
 import { ContainerGlobal } from './inversify'
 import { AdapterToken } from '@Shared/Infrastructure/Adapters'
 import crypto from 'crypto'
-import { convertDates, db_default } from 'logiflowerp-sdk'
+import { convertDates, db_default, getEmpresa } from 'logiflowerp-sdk'
 import { SHARED_TYPES } from '@Shared/Infrastructure/IoC'
 
 const ALGORITHM = 'aes-256-cbc'
@@ -123,10 +123,9 @@ function authMiddleware(app: Application) {
 }
 
 function resolveTenantBySubdomain(req: Request, _res: Response, next: NextFunction) {
-    console.log(req.headers.host)
-    const subdomain = req.headers.host && req.headers.host.includes('.')
-        ? req.headers.host.split('.')[0]
-        : db_default
+    const subdomain = env.NODE_ENV === 'development'
+        ? db_default
+        : getEmpresa(req.headers.host)
     if (!subdomain) {
         return next(new BadRequestException('Subdominio no encontrado'))
     }
