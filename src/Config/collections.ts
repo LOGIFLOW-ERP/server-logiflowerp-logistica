@@ -1,12 +1,11 @@
 import { MongoRepository } from '@Shared/Infrastructure/Repositories/Mongo'
 import { Dirent, globSync } from 'fs'
-import { AuthUserDTO, collections, RootCompanyENTITY, State } from 'logiflowerp-sdk'
+import { AuthUserDTO, collections, db_root, RootCompanyENTITY, State } from 'logiflowerp-sdk'
 import path from 'path'
-import { env } from './env'
 import { ContainerGlobal } from './inversify'
 
 async function getRootCompanies() {
-    const repository = new MongoRepository<RootCompanyENTITY>(env.DB_ROOT, collections.company, new AuthUserDTO())
+    const repository = new MongoRepository<RootCompanyENTITY>(db_root, collections.company, new AuthUserDTO())
     const pipeline = [{ $match: { state: State.ACTIVO, isDeleted: false } }]
     return repository.select(pipeline)
 }

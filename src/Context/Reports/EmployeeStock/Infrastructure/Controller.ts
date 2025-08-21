@@ -8,6 +8,7 @@ import {
 import { authorizeRoute } from '@Shared/Infrastructure/Middlewares'
 import {
     resolveCompanyFind,
+    resolveCompanyReport,
 } from './decorators'
 
 export class EmployeeStockController extends BaseHttpController {
@@ -16,6 +17,12 @@ export class EmployeeStockController extends BaseHttpController {
     @resolveCompanyFind
     async find(@request() req: Request, @response() res: Response) {
         await req.useCase.exec(req, res)
+    }
+
+    @httpPost('report', authorizeRoute)
+    @resolveCompanyReport
+    async report(@request() req: Request) {
+        return await req.useCase.exec(req)
     }
 
 }
