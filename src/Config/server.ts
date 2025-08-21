@@ -24,6 +24,7 @@ import { SHARED_TYPES } from '@Shared/Infrastructure/IoC'
 
 const ALGORITHM = 'aes-256-cbc'
 const SECRET_KEY = Buffer.from(env.ENCRYPTION_KEY, 'utf8')
+const allowedInProd = /^https?:\/\/([a-z0-9-]+\.)*logiflowerp\.com$/i
 
 export async function serverConfig(app: Application) {
 
@@ -35,15 +36,25 @@ export async function serverConfig(app: Application) {
 
     app.disable('x-powered-by')
 
-    const whitelist = env.DOMAINS
-
     app.use(cors({
         origin: (origin, callback) => {
             if (!origin) {
                 return callback(null, true)
             }
-            if (whitelist.some(org => org.toLowerCase() === origin?.toLowerCase())) {
-                return callback(null, true)
+            // if (whitelist.some(org => org.toLowerCase() === origin?.toLowerCase())) {
+            //     return callback(null, true)
+            // }
+            if (env.NODE_ENV === 'production') {
+                if (allowedInProd.test(origin)) {
+                    return callback(null, true)
+                }
+            } else {
+                if (
+                    origin.startsWith('http://localhost') ||
+                    allowedInProd.test(origin)
+                ) {
+                    return callback(null, true)
+                }
             }
             callback(new Error('Not allowed by CORS'))
         },

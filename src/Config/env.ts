@@ -3,7 +3,6 @@ import { get } from 'env-var'
 export const env = {
     PREFIX: get('PREFIX').required().asString(),
     PORT: get('PORT').required().asPortNumber(),
-    DOMAINS: get('DOMAINS').required().asArray(),
     NODE_ENV: get('NODE_ENV').required().asEnum(['development', 'qa', 'production']),
     MONGO_URI: get('MONGO_URI').required().asUrlString(),
     RABBITMQ_URL: get('RABBITMQ_URL').required().asUrlString(),
