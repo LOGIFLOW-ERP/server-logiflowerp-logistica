@@ -23,7 +23,7 @@ export function resolveCompanyDecorator(
                 symbolRepositoryMongo,
                 constructorUseCase,
                 constructorMongoRepository,
-                req.rootCompany.code, // database
+                req.tenant, // database
                 collection,
                 req.user
             )

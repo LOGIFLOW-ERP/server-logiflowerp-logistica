@@ -33,7 +33,7 @@ export async function authorizeRoute(req: Request, _res: Response, next: NextFun
             }
             _idsSystemOption = rootCompany[0].systemOptions
         } else {
-            const repositoryMongoProfile = new MongoRepository<ProfileENTITY>(req.rootCompany.code, collections.profile, req.user)
+            const repositoryMongoProfile = new MongoRepository<ProfileENTITY>(req.tenant, collections.profile, req.user)
             const pipelineProfile = [{ $match: { _id: req.payloadToken.personnel._idprofile, state: State.ACTIVO, isDeleted: false } }]
             const profile = await repositoryMongoProfile.queryMongoWithRedisMemo(pipelineProfile)
             if (profile.length !== 1) {
