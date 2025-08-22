@@ -136,7 +136,7 @@ function authMiddleware(app: Application) {
 function resolveTenantBySubdomain(req: Request, _res: Response, next: NextFunction) {
     const subdomain = env.NODE_ENV === 'development'
         ? db_default
-        : getEmpresa(req.headers.host)
+        : getEmpresa(req.headers.origin)
     if (!subdomain) {
         return next(new BadRequestException('Subdominio no encontrado'))
     }
