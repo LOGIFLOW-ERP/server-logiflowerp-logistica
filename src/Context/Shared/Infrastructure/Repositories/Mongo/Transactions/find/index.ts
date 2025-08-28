@@ -5,6 +5,7 @@ import { queryOnDBAndResponse } from './queryOnDBAndResponse'
 import { ContainerGlobal } from '@Config/inversify'
 import { queryOnRedis_AndResponse } from './queryOnRedis_AndResponse'
 import { queryOnDB_WriteRedis_AndResponse } from './queryOnDB_WriteRedis_AndResponse'
+import { validateNoLookup } from 'logiflowerp-sdk'
 
 export async function _find(params: IFind) {
 
@@ -16,7 +17,7 @@ export async function _find(params: IFind) {
 
     if (!key) return queryOnDBAndResponse(params)
 
-    // validateNoLookup(pipeline)
+    validateNoLookup(pipeline)
 
     const redis = ContainerGlobal.get<AdapterRedis>(SHARED_TYPES.AdapterRedis)
 

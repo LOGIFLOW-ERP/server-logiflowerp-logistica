@@ -357,6 +357,7 @@ export class UseCaseValidate {
     }
 
     private createTransactionEmployeeStock() {
+        if (!this.newDataEmployeeStock.length) return
         const transaction: ITransaction<EmployeeStockENTITY> = {
             collection: collections.employeeStock,
             transaction: 'insertMany',
@@ -366,6 +367,7 @@ export class UseCaseValidate {
     }
 
     private createTransactionEmployeeStockSerial() {
+        if (!this.newDataEmployeeStockSerial.length) return
         const transaction: ITransaction<EmployeeStockSerialENTITY> = {
             collection: collections.employeeStockSerial,
             transaction: 'insertMany',
