@@ -22,7 +22,7 @@ export async function registerRoutes(rootPath: string) {
                 UnprocessableEntityException
             })
             if (_ids.length) {
-                await repositoryMongoSystemOption.deleteMany({ _id: { $in: _ids } })
+                await repositoryMongoSystemOption.deleteManyReal({ _id: { $in: _ids } })
             }
             if (newData.length) {
                 await repositoryMongoSystemOption.insertMany(newData)
