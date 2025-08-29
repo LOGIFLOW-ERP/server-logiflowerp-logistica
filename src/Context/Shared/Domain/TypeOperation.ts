@@ -1,1 +1,1 @@
-export type TypeOperation = 'INSERT ONE' | 'UPDATE ONE' | 'DELETE ONE' | 'INSERT MANY' | 'DELETE MANY'
+export type TypeOperation = 'INSERT ONE' | 'UPDATE ONE' | 'DELETE ONE' | 'INSERT MANY' | 'DELETE MANY' | 'DELETE MANY REAL'
