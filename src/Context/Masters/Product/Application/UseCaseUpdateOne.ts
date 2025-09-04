@@ -10,7 +10,7 @@ export class UseCaseUpdateOne {
         @inject(PRODUCT_TYPES.RepositoryMongo) private readonly repository: IProductMongoRepository,
     ) { }
 
-    async exec(_id: string, dto: UpdateProductDTO) {
+    exec(_id: string, dto: UpdateProductDTO) {
         return this.repository.updateOne({ _id }, { $set: dto })
     }
 
