@@ -2,12 +2,20 @@ import { BadRequestException } from '@Config/exception'
 import { StateOrder, EmployeeStockENTITY } from 'logiflowerp-sdk'
 import { Collection, Document } from 'mongodb'
 
+// CUALQUIER CAMBIO SE DEBE HACER LOS MISMO EN BACKEND ROOT Y LOGISTICA
+// CUALQUIER CAMBIO SE DEBE HACER LOS MISMO EN BACKEND ROOT Y LOGISTICA
+// CUALQUIER CAMBIO SE DEBE HACER LOS MISMO EN BACKEND ROOT Y LOGISTICA
+
 interface Props {
     colEmployeeStock: Collection
     colWarehouseReturn: Collection
     pipeline?: Document[]
     _ids?: string[]
 }
+
+// CUALQUIER CAMBIO SE DEBE HACER LOS MISMO EN BACKEND ROOT Y LOGISTICA
+// CUALQUIER CAMBIO SE DEBE HACER LOS MISMO EN BACKEND ROOT Y LOGISTICA
+// CUALQUIER CAMBIO SE DEBE HACER LOS MISMO EN BACKEND ROOT Y LOGISTICA
 
 export async function _validateAvailableEmployeeStocks(params: Props) {
     const { colWarehouseReturn, colEmployeeStock, pipeline, _ids } = params
@@ -24,6 +32,10 @@ export async function _validateAvailableEmployeeStocks(params: Props) {
         acc.identities.push(el.employee.identity)
         return acc
     }, { keysDetail: [], keysSearch: [], identities: [] })
+
+    // CUALQUIER CAMBIO SE DEBE HACER LOS MISMO EN BACKEND ROOT Y LOGISTICA
+    // CUALQUIER CAMBIO SE DEBE HACER LOS MISMO EN BACKEND ROOT Y LOGISTICA
+    // CUALQUIER CAMBIO SE DEBE HACER LOS MISMO EN BACKEND ROOT Y LOGISTICA
 
     const pipelineWarehouseReturns = [
         {
@@ -55,6 +67,10 @@ export async function _validateAvailableEmployeeStocks(params: Props) {
         }
     ]
 
+    // CUALQUIER CAMBIO SE DEBE HACER LOS MISMO EN BACKEND ROOT Y LOGISTICA
+    // CUALQUIER CAMBIO SE DEBE HACER LOS MISMO EN BACKEND ROOT Y LOGISTICA
+    // CUALQUIER CAMBIO SE DEBE HACER LOS MISMO EN BACKEND ROOT Y LOGISTICA
+
     const dataTransit = await colWarehouseReturn.aggregate(pipelineWarehouseReturns).toArray()
 
     const transitMap = new Map<string, number>()
@@ -74,5 +90,7 @@ export async function _validateAvailableEmployeeStocks(params: Props) {
             available
         }
     })
-
+    // CUALQUIER CAMBIO SE DEBE HACER LOS MISMO EN BACKEND ROOT Y LOGISTICA
+    // CUALQUIER CAMBIO SE DEBE HACER LOS MISMO EN BACKEND ROOT Y LOGISTICA
+    // CUALQUIER CAMBIO SE DEBE HACER LOS MISMO EN BACKEND ROOT Y LOGISTICA
 }
