@@ -49,6 +49,9 @@ export class UseCaseAddSerial {
         if (detail.serials.some(e => e.serial === dto.serial)) {
             throw new ConflictException('El serial ya existe en el detalle.', true)
         }
+        if (this.document.detail.some(e => e.serials.some(e => e.serial === dto.serial))) {
+            throw new ConflictException('El serial ya existe en detalle del documento.', true)
+        }
     }
 
 }
