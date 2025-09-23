@@ -54,6 +54,9 @@ export class MongoRepository<T extends Document> implements IMongoRepository<T> 
     }
 
     async validateAvailableEmployeeStocks({ pipeline, _ids }: { pipeline?: Document[]; _ids?: string[] }) {
+        // CUALQUIER CAMBIO SE DEBE HACER LOS MISMO EN BACKEND ROOT Y LOGISTICA
+        // CUALQUIER CAMBIO SE DEBE HACER LOS MISMO EN BACKEND ROOT Y LOGISTICA
+        // CUALQUIER CAMBIO SE DEBE HACER LOS MISMO EN BACKEND ROOT Y LOGISTICA
         const client = await this.adapterMongo.connection()
         const colEmployeeStock = client.db(this.database).collection(collections.employeeStock)
         const colWarehouseReturn = client.db(this.database).collection(collections.warehouseReturn)
