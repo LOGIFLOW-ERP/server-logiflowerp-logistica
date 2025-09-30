@@ -1,6 +1,7 @@
 export const EMPLOYEE_STOCK_TYPES = {
-    RepositoryMongo: Symbol.for('RepositoryMongo'),
-    UseCaseFind: Symbol.for('UseCaseFind'),
-    UseCaseReport: Symbol.for('UseCaseReport'),
-
+    RepositoryMongo: Symbol('RepositoryMongo'),
+    UseCaseFind: Symbol('UseCaseFind'),
+    UseCaseReport: Symbol('UseCaseReport'),
+    UseCaseReportIndividual: Symbol('UseCaseReportIndividual'),
+    GetDataLiquidationOrder: Symbol('GetDataLiquidationOrder'),
 }

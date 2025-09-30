@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import {
     BaseHttpController,
+    httpGet,
     httpPost,
     request,
     response
@@ -8,7 +9,9 @@ import {
 import { authorizeRoute } from '@Shared/Infrastructure/Middlewares'
 import {
     resolveCompanyFind,
+    resolveCompanyGetDataLiquidationOrder,
     resolveCompanyReport,
+    resolveCompanyReportIndividual,
 } from './decorators'
 
 export class EmployeeStockController extends BaseHttpController {
@@ -25,4 +28,15 @@ export class EmployeeStockController extends BaseHttpController {
         return await req.useCase.exec(req)
     }
 
+    @httpGet('report-individual', authorizeRoute)
+    @resolveCompanyReportIndividual
+    async reportIndividual(@request() req: Request) {
+        return await req.useCase.exec(req)
+    }
+
+    @httpGet('get-data-liquidation-order', authorizeRoute)
+    @resolveCompanyGetDataLiquidationOrder
+    async getDataLiquidationOrder(@request() req: Request) {
+        return await req.useCase.exec(req)
+    }
 }

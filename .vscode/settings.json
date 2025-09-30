@@ -12,5 +12,6 @@
     "autoBarrel.files.useNamedExports": false,
     // "autoBarrel.formatting.excludeSemiColonAtEndOfLine": true,
     "autoBarrel.formatting.useSingleQuotes": true,
-    "autoBarrel.language.defaultLanguage": "TypeScript"
+    "autoBarrel.language.defaultLanguage": "TypeScript",
+    "postman.settings.dotenv-detection-notification-visibility": false
 }
