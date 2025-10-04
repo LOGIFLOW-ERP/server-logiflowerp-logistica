@@ -55,7 +55,8 @@ export class UseCaseAddInventory {
             invsn: data.invsn,
             invtype: '',
             lot: '',
-            State: StateInventory.PENDIENTE
+            State_consumption: StateInventory.PENDIENTE,
+            State_replacement: StateInventory.PENDIENTE,
         }
 
         const inventory = await validateCustom(newInventory, InventoryDTO, UnprocessableEntityException)

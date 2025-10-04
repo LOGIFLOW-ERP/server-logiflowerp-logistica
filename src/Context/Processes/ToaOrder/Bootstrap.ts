@@ -11,6 +11,10 @@ export class ManagerEntity {
         {
             campos: { numero_de_peticion: 1 },
             opciones: { name: 'idx_numero_de_peticion', unique: true }
+        },
+        {
+            campos: { settlement_date: 1 },
+            opciones: { name: 'idx_settlement_date' }
         }
     ]
 
