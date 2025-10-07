@@ -18,7 +18,7 @@ import {
     resolveCompanyGetAll,
 } from './decorators'
 
-export class LiquidationOrderController extends BaseHttpController {
+export class LiquidationToaOrderController extends BaseHttpController {
     @httpGet('', authorizeRoute)
     @resolveCompanyGetAll
     async findAll(@request() req: Request, @response() res: Response) {
