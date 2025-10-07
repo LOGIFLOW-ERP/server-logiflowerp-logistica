@@ -29,7 +29,8 @@ export async function _validateAvailableWarehouseStocks(params: Props) {
             $match: {
                 'detail.keySearch': { $in: keys.keysSearch },
                 'detail.keyDetail': { $in: keys.keysDetail },
-                state: { $ne: StateOrder.VALIDADO }
+                state: { $ne: StateOrder.VALIDADO },
+                isDeleted: false
             }
         },
         {

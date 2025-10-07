@@ -3,7 +3,7 @@ import {
     CreateInventoryDTO,
     EmployeeENTITY,
     EmployeeStockSerialENTITY,
-    InventoryDTO,
+    InventoryToaDTO,
     ProducType,
     ProductENTITY,
     StateInventory,
@@ -59,7 +59,7 @@ export class UseCaseAddInventory {
             State_replacement: StateInventory.PENDIENTE,
         }
 
-        const inventory = await validateCustom(newInventory, InventoryDTO, UnprocessableEntityException)
+        const inventory = await validateCustom(newInventory, InventoryToaDTO, UnprocessableEntityException)
 
         if (document.inventory.some(e => e.code === data.code)) {
             throw new BadRequestException('El producto ya fue agregado a la orden', true)

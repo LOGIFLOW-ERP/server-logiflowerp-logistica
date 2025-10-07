@@ -2,7 +2,7 @@ import { Response, Request } from 'express'
 import { inject, injectable } from 'inversify'
 import { TOA_ORDER_TYPES } from '@Processes/ToaOrder/Infrastructure/IoC/types'
 import { ITOAOrderMongoRepository } from '@Processes/ToaOrder/Domain'
-import { collections, EmployeeENTITY } from 'logiflowerp-sdk'
+import { collections, EmployeeENTITY, ScrapingSystem } from 'logiflowerp-sdk'
 import { ConflictException, NotFoundException } from '@Config/exception'
 
 @injectable()
@@ -13,9 +13,13 @@ export class UseCaseGetAll {
 
 	async exec(req: Request, res: Response) {
 		const personel = await this.getPersonel(req)
+		const resource_id = personel.resourceSystem.filter(e => e.system === ScrapingSystem.TOA)
+		if (resource_id.length !== 1) {
+			throw new Error(`Hay ${resource_id.length} resultados para recurso id: ${ScrapingSystem.TOA}`)
+		}
 		const pipeline = [{
 			$match: {
-				toa_resource_id: personel.toa_resource_id,
+				toa_resource_id: resource_id,
 				estado_actividad: { $ne: 'Completado' }
 			}
 		}]

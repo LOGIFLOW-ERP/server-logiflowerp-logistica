@@ -20,6 +20,7 @@ import { authorizeRoute } from '@Shared/Infrastructure/Middlewares'
 import {
     resolveCompanyAddDetail,
     resolveCompanyAddSerial,
+    resolveCompanyAutomaticReplenishmentToa,
     resolveCompanyDeleteDetail,
     resolveCompanyDeleteOne,
     resolveCompanyDeleteSerial,
@@ -86,4 +87,9 @@ export class WarehouseExitController extends BaseHttpController {
         res.sendStatus(204)
     }
 
+    @httpPost('automatic-replenishment-toa', authorizeRoute, VRB.bind(null, CreateWarehouseExitDTO, BRE))
+    @resolveCompanyAutomaticReplenishmentToa
+    automaticReplenishment(@request() req: Request) {
+        return req.useCase.exec(req.body, req.user, req.tenant)
+    }
 }

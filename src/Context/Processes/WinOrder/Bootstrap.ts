@@ -1,20 +1,16 @@
 import { IndexEntity } from '@Shared/Domain'
 import { collection } from './Infrastructure/config'
 import { Bootstraping } from '@Shared/Bootstraping'
-import { RootCompanyENTITY, WarehouseExitENTITY } from 'logiflowerp-sdk'
+import { RootCompanyENTITY, WINOrderENTITY } from 'logiflowerp-sdk'
 import { inject } from 'inversify'
 import { SHARED_TYPES } from '@Shared/Infrastructure/IoC'
 
 export class ManagerEntity {
 
-    private indexes: IndexEntity<WarehouseExitENTITY>[] = [
+    private indexes: IndexEntity<WINOrderENTITY>[] = [
         {
-            campos: { documentNumber: 1 },
-            opciones: { name: 'idx_documentNumber', unique: true }
-        },
-        {
-            campos: { 'detail.keySearch': 1, 'detail.keyDetail': 1, state: 1, isDeleted: 1 },
-            opciones: { name: 'idx_detail.keySearch_detail.keyDetail_state_isDeleted' }
+            campos: { numero_de_peticion: 1 },
+            opciones: { name: 'idx_numero_de_peticion', unique: true }
         }
     ]
 
