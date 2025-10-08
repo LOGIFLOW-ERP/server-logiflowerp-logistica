@@ -21,6 +21,7 @@ import {
     resolveCompanyAddDetail,
     resolveCompanyAddSerial,
     resolveCompanyAutomaticReplenishmentToa,
+    resolveCompanyAutomaticReplenishmentWin,
     resolveCompanyDeleteDetail,
     resolveCompanyDeleteOne,
     resolveCompanyDeleteSerial,
@@ -89,7 +90,13 @@ export class WarehouseExitController extends BaseHttpController {
 
     @httpPost('automatic-replenishment-toa', authorizeRoute, VRB.bind(null, CreateWarehouseExitDTO, BRE))
     @resolveCompanyAutomaticReplenishmentToa
-    automaticReplenishment(@request() req: Request) {
+    private automaticReplenishmentToa(@request() req: Request) {
+        return req.useCase.exec(req.body, req.user, req.tenant)
+    }
+
+    @httpPost('automatic-replenishment-win', authorizeRoute, VRB.bind(null, CreateWarehouseExitDTO, BRE))
+    @resolveCompanyAutomaticReplenishmentWin
+    private automaticReplenishmentWin(@request() req: Request) {
         return req.useCase.exec(req.body, req.user, req.tenant)
     }
 }

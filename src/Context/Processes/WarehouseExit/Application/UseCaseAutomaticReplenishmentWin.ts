@@ -11,7 +11,7 @@ import {
     State,
     StateInventory,
     StateWarehouseStock,
-    TOAOrderStockENTITY,
+    WINOrderStockENTITY,
     validateCustom,
     WarehouseExitENTITY,
     WarehouseStockENTITY
@@ -23,8 +23,8 @@ import { collection } from '../Infrastructure/config';
 import { UnprocessableEntityException } from '@Config/exception';
 
 @injectable()
-export class UseCaseAutomaticReplenishmentToa extends AddDetail {
-    private idsToaOrderStock: string[] = []
+export class UseCaseAutomaticReplenishmentWin extends AddDetail {
+    private idsOrderStock: string[] = []
     private resource_id!: string
 
     constructor(
@@ -34,22 +34,22 @@ export class UseCaseAutomaticReplenishmentToa extends AddDetail {
     }
 
     async exec(dto: CreateWarehouseExitDTO, user: AuthUserDTO, tenant: string) {
-        await this.searchResourceIdToa(dto)
+        await this.searchResourceId(dto)
         await this.createDocument(dto, user, tenant)
         do {
-            const dataToaOrderStock = await this.getToaOrderStock(dto)
-            this.idsToaOrderStock = []
-            await this.addDetail(dataToaOrderStock)
-        } while (this.idsToaOrderStock.length)
+            const dataOrderStock = await this.getOrderStock()
+            this.idsOrderStock = []
+            await this.addDetail(dataOrderStock)
+        } while (this.idsOrderStock.length)
         return this.repository.selectOne([{ $match: { _id: this.document._id } }])
     }
 
-    private async addDetail(dataToaOrderStock: TOAOrderStockENTITY[]) {
-        for (const toaOrderStock of dataToaOrderStock) {
+    private async addDetail(dataOrderStock: WINOrderStockENTITY[]) {
+        for (const orderStock of dataOrderStock) {
             const pipeline = [{
                 $match: {
                     'store.code': this.document.store.code,
-                    'item.itemCode': toaOrderStock.itemCode,
+                    'item.itemCode': orderStock.itemCode,
                     state: StateWarehouseStock.ACTIVO,
                     isDeleted: false
                 }
@@ -70,7 +70,7 @@ export class UseCaseAutomaticReplenishmentToa extends AddDetail {
                 if (result[0].available <= 0) {
                     continue
                 }
-                await this._addDetail(warehouseStocks[0], toaOrderStock)
+                await this._addDetail(warehouseStocks[0], orderStock)
                 continue
             }
             const results = await this.repository.validateAvailableWarehouseStocks({ _ids: warehouseStocks.map(e => e._id) })
@@ -89,21 +89,21 @@ export class UseCaseAutomaticReplenishmentToa extends AddDetail {
             if (_warehouseStocks.length === 0) {
                 continue
             }
-            const searchMatch = _warehouseStocks.find(e => e.available === toaOrderStock.quantity)
+            const searchMatch = _warehouseStocks.find(e => e.available === orderStock.quantity)
             if (searchMatch) {
-                await this._addDetail(searchMatch, toaOrderStock)
+                await this._addDetail(searchMatch, orderStock)
                 continue
             }
             const warehouseStock = _warehouseStocks.sort((a, b) => b.available - a.available)[0]
-            await this._addDetail(warehouseStock, toaOrderStock)
+            await this._addDetail(warehouseStock, orderStock)
         }
     }
 
     private async _addDetail(
         warehouseStock: WarehouseStockENTITY,
-        toaOrderStock: TOAOrderStockENTITY
+        orderStock: WINOrderStockENTITY
     ) {
-        const amount = Math.min(warehouseStock.available, toaOrderStock.quantity)
+        const amount = Math.min(warehouseStock.available, orderStock.quantity)
         let newDetail: OrderDetailENTITY | null = null
         try {
             newDetail = await this.buildDetail(this.document, { amount, warehouseStock: warehouseStock })
@@ -112,12 +112,12 @@ export class UseCaseAutomaticReplenishmentToa extends AddDetail {
                 throw error
             }
         }
-        await this.createAndExecuteTransactions(newDetail, toaOrderStock, amount, warehouseStock)
+        await this.createAndExecuteTransactions(newDetail, orderStock, amount, warehouseStock)
     }
 
     private async createAndExecuteTransactions(
         newDetail: OrderDetailENTITY | null,
-        toaOrderStock: TOAOrderStockENTITY,
+        orderStock: WINOrderStockENTITY,
         amount: number,
         warehouseStock: WarehouseStockENTITY
     ) {
@@ -144,60 +144,59 @@ export class UseCaseAutomaticReplenishmentToa extends AddDetail {
             }
             transactions.push(transactionWarehouseExit)
         }
-        const transactionTOAOrderStock: ITransaction<TOAOrderStockENTITY> = {
-            collection: collections.toaOrderStock,
+        const transactionOrderStock: ITransaction<WINOrderStockENTITY> = {
+            collection: collections.winOrderStock,
             transaction: 'updateOne',
-            filter: { _id: toaOrderStock._id },
+            filter: { _id: orderStock._id },
             update: {
                 $set: { state_replacement: StateInventory.PROCESADO }
             }
         }
-        transactions.push(transactionTOAOrderStock)
-        if (amount < toaOrderStock.quantity) {
-            const newDoc = new TOAOrderStockENTITY()
+        transactions.push(transactionOrderStock)
+        if (amount < orderStock.quantity) {
+            const newDoc = new WINOrderStockENTITY()
             newDoc._id = crypto.randomUUID()
             newDoc.isDeleted = false
-            newDoc.itemCode = toaOrderStock.itemCode
-            newDoc.lot = toaOrderStock.lot
-            newDoc.numero_de_peticion = `DERIVADO CONSUMO ${toaOrderStock.numero_de_peticion}`
-            newDoc.quantity = toaOrderStock.quantity - amount
-            newDoc.serial = toaOrderStock.serial
+            newDoc.itemCode = orderStock.itemCode
+            newDoc.numero_de_peticion = `DERIVADO CONSUMO ${orderStock.numero_de_peticion}`
+            newDoc.quantity = orderStock.quantity - amount
+            newDoc.serial = orderStock.serial
             newDoc.state_consumption = StateInventory.PROCESADO
             newDoc.state_replacement = StateInventory.PENDIENTE
             newDoc.stock_quantity_employee = []
-            newDoc.toa_resource_id = toaOrderStock.toa_resource_id
+            newDoc.resource_id = orderStock.resource_id
 
-            const doc = await validateCustom(newDoc, TOAOrderStockENTITY, UnprocessableEntityException)
+            const doc = await validateCustom(newDoc, WINOrderStockENTITY, UnprocessableEntityException)
 
-            this.idsToaOrderStock.push(newDoc._id)
+            this.idsOrderStock.push(newDoc._id)
 
-            const transactionTOAOrderStock: ITransaction<TOAOrderStockENTITY> = {
-                collection: collections.toaOrderStock,
+            const transactionOrderStock: ITransaction<WINOrderStockENTITY> = {
+                collection: collections.winOrderStock,
                 transaction: 'insertOne',
                 doc
             }
-            transactions.push(transactionTOAOrderStock)
+            transactions.push(transactionOrderStock)
         }
         await this.repository.executeTransactionBatch(transactions)
         this.document = await this.repository.selectOne([{ $match: { _id: this.document._id } }])
     }
 
-    private async getToaOrderStock(dto: CreateWarehouseExitDTO) {
+    private async getOrderStock() {
         const pipeline = [
             {
-                $match: this.idsToaOrderStock.length
-                    ? { _id: { $in: this.idsToaOrderStock } }
+                $match: this.idsOrderStock.length
+                    ? { _id: { $in: this.idsOrderStock } }
                     : {
-                        toa_resource_id: this.resource_id,
+                        resource_id: this.resource_id,
                         state_replacement: StateInventory.PENDIENTE,
                         invpool: 'install',
                         isDeleted: false,
                     }
             }
         ]
-        const data = await this.repository.select<TOAOrderStockENTITY>(
+        const data = await this.repository.select<WINOrderStockENTITY>(
             pipeline,
-            collections.toaOrderStock
+            collections.winOrderStock
         )
         return data
     }
@@ -216,15 +215,15 @@ export class UseCaseAutomaticReplenishmentToa extends AddDetail {
         this.document = await useCase.exec(dto, user)
     }
 
-    private async searchResourceIdToa(dto: CreateWarehouseExitDTO) {
+    private async searchResourceId(dto: CreateWarehouseExitDTO) {
         const pipeline = [{ $match: { identity: dto.carrier.identity, isDeleted: false, state: State.ACTIVO } }]
         const result = await this.repository.selectOne<EmployeeENTITY>(
             pipeline,
             collections.employee
         )
-        const resource_id = result.resourceSystem.filter(e => e.system === ScrapingSystem.TOA)
+        const resource_id = result.resourceSystem.filter(e => e.system === ScrapingSystem.WIN)
         if (resource_id.length !== 1) {
-            throw new Error(`Hay ${resource_id.length} resultados para recurso id: ${ScrapingSystem.TOA}`)
+            throw new Error(`Hay ${resource_id.length} resultados para recurso id: ${ScrapingSystem.WIN}`)
         }
         this.resource_id = resource_id[0].resource_id
     }

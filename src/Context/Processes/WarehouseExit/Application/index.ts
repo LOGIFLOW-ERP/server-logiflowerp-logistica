@@ -8,3 +8,4 @@ export * from './UseCaseGetAll';
 export * from './UseCaseInsertOne';
 export * from './UseCaseValidate';
 export * from './UseCaseAutomaticReplenishmentToa';
+export * from './UseCaseAutomaticReplenishmentWin';
