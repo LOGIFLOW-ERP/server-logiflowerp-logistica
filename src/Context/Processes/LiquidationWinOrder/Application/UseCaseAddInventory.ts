@@ -89,7 +89,11 @@ export class UseCaseAddInventory extends Common {
                 transaction: 'updateOne',
                 filter: { _id: stockSerial._id },
                 update: {
-                    $set: { state: StateStockSerialEmployee.RESERVADO_CONSUMO }
+                    $set: {
+                        state: StateStockSerialEmployee.RESERVADO_CONSUMO_WIN,
+                        documentNumber: document.numero_de_peticion,
+                        updatedate: new Date()
+                    }
                 }
             }
             this.transactions.push(transaction)
