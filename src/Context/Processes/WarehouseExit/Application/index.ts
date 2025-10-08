@@ -9,3 +9,4 @@ export * from './UseCaseInsertOne';
 export * from './UseCaseValidate';
 export * from './UseCaseAutomaticReplenishmentToa';
 export * from './UseCaseAutomaticReplenishmentWin';
+export * from './UseCaseEditAmountDetail';

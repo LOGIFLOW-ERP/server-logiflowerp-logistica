@@ -11,6 +11,7 @@ import {
 import {
     CreateWarehouseExitDetailDTO,
     CreateWarehouseExitDTO,
+    EditAmountDetailDTO,
     StockSerialDTO,
     validateRequestBody as VRB,
     validateUUIDv4Param as VUUID,
@@ -25,6 +26,7 @@ import {
     resolveCompanyDeleteDetail,
     resolveCompanyDeleteOne,
     resolveCompanyDeleteSerial,
+    resolveCompanyEditAmountDetail,
     resolveCompanyFind,
     resolveCompanyGetAll,
     resolveCompanyInsertOne,
@@ -98,5 +100,11 @@ export class WarehouseExitController extends BaseHttpController {
     @resolveCompanyAutomaticReplenishmentWin
     private automaticReplenishmentWin(@request() req: Request) {
         return req.useCase.exec(req.body, req.user, req.tenant)
+    }
+
+    @httpPut('edit-amount-detail/:_id', authorizeRoute, VRB.bind(null, EditAmountDetailDTO, BRE))
+    @resolveCompanyEditAmountDetail
+    private editAmountDetail(@request() req: Request) {
+        return req.useCase.exec(req.params._id, req.query.keyDetail, req.body)
     }
 }

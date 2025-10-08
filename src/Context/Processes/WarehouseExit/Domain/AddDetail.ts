@@ -19,14 +19,16 @@ export class AddDetail {
 
     async buildDetail(
         document: WarehouseExitENTITY,
-        dto: CreateWarehouseExitDetailDTO
+        dto: CreateWarehouseExitDetailDTO,
+        validateIfItExistsInDetail: boolean = true,
+        available: number = 0,
     ) {
         this.document = document
         const productPrice = await this.searchProductPrice(dto)
         const newDetail = await this._buildDetail(dto, productPrice)
         await this.searchWarehouseStock(newDetail)
-        await this.validateAvailableStockWarehouse(dto.warehouseStock._id, newDetail)
-        this.validateDetail(newDetail) // importante que se llame este metodo aqui antes de retornar haga esta validacion
+        await this.validateAvailableStockWarehouse(dto.warehouseStock._id, newDetail, available)
+        this.validateDetail(newDetail, validateIfItExistsInDetail) // importante que se llame este metodo aqui antes de retornar haga esta validacion
         return newDetail
     }
 
@@ -35,11 +37,14 @@ export class AddDetail {
         return this.repository.selectOne<ProductPriceENTITY>(pipeline, collections.productPrice)
     }
 
-    private validateDetail(newDetail: OrderDetailENTITY) {
+    private validateDetail(newDetail: OrderDetailENTITY, validateIfItExistsInDetail: boolean) {
         if (newDetail.amount <= 0) {
             throw new UnprocessableEntityException(`La cantidad del detalle debe ser mayor a cero.`, true)
         }
-        if (this.document.detail.some(item => item.keyDetail === newDetail.keyDetail)) {
+        if (
+            this.document.detail.some(item => item.keyDetail === newDetail.keyDetail) &&
+            validateIfItExistsInDetail
+        ) {
             throw new BadRequestException(this.msgExistDetail, true) // importante que el mensaje de error empiece por this.msgExistDetail
         }
     }
@@ -73,11 +78,12 @@ export class AddDetail {
         }
     }
 
-    private async validateAvailableStockWarehouse(_id: string, newDetail: OrderDetailENTITY) {
+    private async validateAvailableStockWarehouse(_id: string, newDetail: OrderDetailENTITY, available: number) {
         const result = await this.repository.validateAvailableWarehouseStocks({ _ids: [_id] })
-        if (newDetail.amount > result[0].available) {
+        const _available = result[0].available + available
+        if (newDetail.amount > _available) {
             throw new BadRequestException(
-                `La cantidad solicitada (${newDetail.amount}) excede el stock disponible (${result[0].available}).`,
+                `La cantidad solicitada (${newDetail.amount}) excede el stock disponible (${_available}).`,
                 true
             )
         }
