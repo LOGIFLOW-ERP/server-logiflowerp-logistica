@@ -11,6 +11,7 @@ import {
 import {
     CreateWarehouseExitDetailDTO,
     CreateWarehouseExitDTO,
+    EditAmountDetailDTO,
     StockSerialDTO,
     validateRequestBody as VRB,
     validateUUIDv4Param as VUUID,
@@ -20,9 +21,12 @@ import { authorizeRoute } from '@Shared/Infrastructure/Middlewares'
 import {
     resolveCompanyAddDetail,
     resolveCompanyAddSerial,
+    resolveCompanyAutomaticReplenishmentToa,
+    resolveCompanyAutomaticReplenishmentWin,
     resolveCompanyDeleteDetail,
     resolveCompanyDeleteOne,
     resolveCompanyDeleteSerial,
+    resolveCompanyEditAmountDetail,
     resolveCompanyFind,
     resolveCompanyGetAll,
     resolveCompanyInsertOne,
@@ -86,4 +90,21 @@ export class WarehouseExitController extends BaseHttpController {
         res.sendStatus(204)
     }
 
+    @httpPost('automatic-replenishment-toa', authorizeRoute, VRB.bind(null, CreateWarehouseExitDTO, BRE))
+    @resolveCompanyAutomaticReplenishmentToa
+    private automaticReplenishmentToa(@request() req: Request) {
+        return req.useCase.exec(req.body, req.user, req.tenant)
+    }
+
+    @httpPost('automatic-replenishment-win', authorizeRoute, VRB.bind(null, CreateWarehouseExitDTO, BRE))
+    @resolveCompanyAutomaticReplenishmentWin
+    private automaticReplenishmentWin(@request() req: Request) {
+        return req.useCase.exec(req.body, req.user, req.tenant)
+    }
+
+    @httpPut('edit-amount-detail/:_id', authorizeRoute, VRB.bind(null, EditAmountDetailDTO, BRE))
+    @resolveCompanyEditAmountDetail
+    private editAmountDetail(@request() req: Request) {
+        return req.useCase.exec(req.params._id, req.query.keyDetail, req.body)
+    }
 }

@@ -14,6 +14,7 @@ import {
     StateStockSerialEmployee,
     StateStockSerialWarehouse,
     StateWarehouseStock,
+    StockSerialDTO,
     validateCustom,
     WarehouseExitENTITY,
     WarehouseStockENTITY,
@@ -209,26 +210,30 @@ export class UseCaseValidate {
     private async buildEmployeeStockSerial(detail: OrderDetailENTITY, stock: EmployeeStockENTITY) {
         if (detail.item.producType !== ProducType.SERIE) return
         for (const serial of detail.serials) {
-            //#region Validar
-            validateDuplicateSerialExit(
-                this.dataEmployeeStockSerial,
-                detail.item.itemCode,
-                serial.serial
-            )
-            const newStock = new EmployeeStockSerialENTITY()
-            newStock._id = crypto.randomUUID()
-            newStock.brand = serial.brand
-            newStock.documentNumber = this.document.documentNumber
-            newStock.model = serial.model
-            newStock.serial = serial.serial
-            newStock.itemCode = stock.item.itemCode
-            newStock.updatedate = new Date()
-            newStock.keyDetail = stock.keyDetail
-            newStock.keySearch = stock.keySearch
-            newStock.identity = this.document.carrier.identity
-            const entity = await validateCustom(newStock, EmployeeStockSerialENTITY, UnprocessableEntityException)
-            this.newDataEmployeeStockSerial.push(entity)
+            await this.buildEmployeeStockSerialAux(serial, detail, stock)
         }
+    }
+
+    private async buildEmployeeStockSerialAux(serial: StockSerialDTO, detail: OrderDetailENTITY, stock: EmployeeStockENTITY) {
+        //#region Validar
+        validateDuplicateSerialExit(
+            this.dataEmployeeStockSerial,
+            detail.item.itemCode,
+            serial.serial
+        )
+        const newStock = new EmployeeStockSerialENTITY()
+        newStock._id = crypto.randomUUID()
+        newStock.brand = serial.brand
+        newStock.documentNumber = this.document.documentNumber
+        newStock.model = serial.model
+        newStock.serial = serial.serial
+        newStock.itemCode = stock.item.itemCode
+        newStock.updatedate = new Date()
+        newStock.keyDetail = stock.keyDetail
+        newStock.keySearch = stock.keySearch
+        newStock.identity = this.document.carrier.identity
+        const entity = await validateCustom(newStock, EmployeeStockSerialENTITY, UnprocessableEntityException)
+        this.newDataEmployeeStockSerial.push(entity)
     }
 
     private updateEmployeeStock(employeeStock: EmployeeStockENTITY, detail: OrderDetailENTITY) {
@@ -281,7 +286,7 @@ export class UseCaseValidate {
                 this.transactions.push(transaction)
                 continue
             }
-            await this.buildEmployeeStockSerial(detail, employeeStock)
+            await this.buildEmployeeStockSerialAux(serial, detail, employeeStock)
         }
     }
     //#endregion EmployeeStock
