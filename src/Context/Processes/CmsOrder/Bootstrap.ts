@@ -8,14 +8,14 @@ import { SHARED_TYPES } from '@Shared/Infrastructure/IoC'
 export class ManagerEntity {
 
     private indexes: IndexEntity<CMSOrderENTITY>[] = [
-        {
-            campos: { numero_de_peticion: 1 },
-            opciones: { name: 'idx_numero_de_peticion', unique: true }
-        },
-        {
-            campos: { fin_visita: 1 },
-            opciones: { name: 'idx_fin_visita' }
-        }
+        // {
+        //     campos: { numero_de_peticion: 1 },
+        //     opciones: { name: 'idx_numero_de_peticion', unique: true }
+        // },
+        // {
+        //     campos: { fin_visita: 1 },
+        //     opciones: { name: 'idx_fin_visita' }
+        // }
     ]
 
     constructor(
