@@ -1,6 +1,6 @@
 import { Response, Request } from 'express'
 import { inject, injectable } from 'inversify'
-import { collections, EmployeeENTITY, ScrapingSystem, State, StateOrderWin } from 'logiflowerp-sdk'
+import { collections, EmployeeENTITY, ScrapingSystem, State, StateInternalOrderWin, StateOrderWin } from 'logiflowerp-sdk'
 import { ConflictException, NotFoundException } from '@Config/exception'
 import { IWINOrderMongoRepository } from '@Processes/WinOrder/Domain'
 import { WIN_ORDER_TYPES } from '@Processes/WinOrder/Infrastructure/IoC/types'
@@ -20,7 +20,8 @@ export class UseCaseGetAll {
 		const pipeline = [{
 			$match: {
 				resource_id: resourceSystem[0].resource_id,
-				estado: StateOrderWin.FINALIZADA
+				estado: StateOrderWin.FINALIZADA,
+				estado_interno: StateInternalOrderWin.PENDIENTE
 			}
 		}]
 		await this.repository.find(pipeline, req, res)

@@ -9,4 +9,5 @@ export const SHARED_TYPES = {
     Bootstraping: Symbol.for('Bootstraping'),
     BootstrapingDatabaseMongo: Symbol.for('BootstrapingDatabaseMongo'),
     User: Symbol.for('User'),
+    AdapterS3FileStorage: Symbol('AdapterS3FileStorage'),
 }
