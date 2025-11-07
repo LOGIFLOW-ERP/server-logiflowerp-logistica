@@ -92,7 +92,7 @@ export class UseCaseAddInventory {
                 filter: { _id: stockSerial._id },
                 update: {
                     $set: {
-                        state: StateStockSerialEmployee.RESERVADO_CONSUMO_WIN,
+                        state: StateStockSerialEmployee.RESERVADO_CONSUMO,
                         documentNumber: document.numero_de_peticion,
                         updatedate: new Date()
                     }

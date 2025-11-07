@@ -11,7 +11,7 @@ import {
     State,
     StateInventory,
     StateWarehouseStock,
-    WINOrderStockENTITY,
+    OrderStockENTITY,
     validateCustom,
     WarehouseExitENTITY,
     WarehouseStockENTITY
@@ -44,7 +44,7 @@ export class UseCaseAutomaticReplenishmentWin extends AddDetail {
         return this.repository.selectOne([{ $match: { _id: this.document._id } }])
     }
 
-    private async addDetail(dataOrderStock: WINOrderStockENTITY[]) {
+    private async addDetail(dataOrderStock: OrderStockENTITY[]) {
         for (const orderStock of dataOrderStock) {
             const pipeline = [{
                 $match: {
@@ -101,7 +101,7 @@ export class UseCaseAutomaticReplenishmentWin extends AddDetail {
 
     private async _addDetail(
         warehouseStock: WarehouseStockENTITY,
-        orderStock: WINOrderStockENTITY
+        orderStock: OrderStockENTITY
     ) {
         const amount = Math.min(warehouseStock.available, orderStock.quantity)
         let newDetail: OrderDetailENTITY | null = null
@@ -117,7 +117,7 @@ export class UseCaseAutomaticReplenishmentWin extends AddDetail {
 
     private async createAndExecuteTransactions(
         newDetail: OrderDetailENTITY | null,
-        orderStock: WINOrderStockENTITY,
+        orderStock: OrderStockENTITY,
         amount: number,
         warehouseStock: WarehouseStockENTITY
     ) {
@@ -144,7 +144,7 @@ export class UseCaseAutomaticReplenishmentWin extends AddDetail {
             }
             transactions.push(transactionWarehouseExit)
         }
-        const transactionOrderStock: ITransaction<WINOrderStockENTITY> = {
+        const transactionOrderStock: ITransaction<OrderStockENTITY> = {
             collection: collections.winOrderStock,
             transaction: 'updateOne',
             filter: { _id: orderStock._id },
@@ -154,7 +154,7 @@ export class UseCaseAutomaticReplenishmentWin extends AddDetail {
         }
         transactions.push(transactionOrderStock)
         if (amount < orderStock.quantity) {
-            const newDoc = new WINOrderStockENTITY()
+            const newDoc = new OrderStockENTITY()
             newDoc._id = crypto.randomUUID()
             newDoc.isDeleted = false
             newDoc.itemCode = orderStock.itemCode
@@ -166,11 +166,11 @@ export class UseCaseAutomaticReplenishmentWin extends AddDetail {
             newDoc.stock_quantity_employee = []
             newDoc.resource_id = orderStock.resource_id
 
-            const doc = await validateCustom(newDoc, WINOrderStockENTITY, UnprocessableEntityException)
+            const doc = await validateCustom(newDoc, OrderStockENTITY, UnprocessableEntityException)
 
             this.idsOrderStock.push(newDoc._id)
 
-            const transactionOrderStock: ITransaction<WINOrderStockENTITY> = {
+            const transactionOrderStock: ITransaction<OrderStockENTITY> = {
                 collection: collections.winOrderStock,
                 transaction: 'insertOne',
                 doc
@@ -194,7 +194,7 @@ export class UseCaseAutomaticReplenishmentWin extends AddDetail {
                     }
             }
         ]
-        const data = await this.repository.select<WINOrderStockENTITY>(
+        const data = await this.repository.select<OrderStockENTITY>(
             pipeline,
             collections.winOrderStock
         )

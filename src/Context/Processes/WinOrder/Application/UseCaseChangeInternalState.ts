@@ -22,7 +22,7 @@ export class UseCaseChangeInternalState {
 			{ _id },
 			{
 				$set: {
-					estado_interno: StateInternalOrderWin.LIQUIDADA
+					estado_interno: StateInternalOrderWin.REVISION
 				}
 			}
 		)

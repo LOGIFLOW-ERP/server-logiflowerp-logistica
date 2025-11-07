@@ -1,13 +1,13 @@
 import { IndexEntity } from '@Shared/Domain'
 import { collection } from './Infrastructure/config'
 import { Bootstraping } from '@Shared/Bootstraping'
-import { RootCompanyENTITY, WINOrderStockENTITY } from 'logiflowerp-sdk'
+import { RootCompanyENTITY, OrderStockENTITY } from 'logiflowerp-sdk'
 import { inject } from 'inversify'
 import { SHARED_TYPES } from '@Shared/Infrastructure/IoC'
 
 export class ManagerEntity {
 
-    private indexes: IndexEntity<WINOrderStockENTITY>[] = [
+    private indexes: IndexEntity<OrderStockENTITY>[] = [
         {
             campos: {
                 resource_id: 1,
