@@ -7,7 +7,7 @@ import {
     response
 } from 'inversify-express-utils'
 import {
-    resolveCompanyChangeInternalState,
+    resolveCompanyFinalizeOrder,
     resolveCompanyFind,
 } from './decorators'
 import { authorizeRoute } from '@Shared/Infrastructure/Middlewares'
@@ -19,9 +19,9 @@ export class WINOrderController extends BaseHttpController {
         await req.useCase.exec(req, res)
     }
 
-    @httpPut('change-internal-state/:_id', authorizeRoute)
-    @resolveCompanyChangeInternalState
-    private changeInternalState(@request() req: Request) {
+    @httpPut('finalize-order/:_id', authorizeRoute)
+    @resolveCompanyFinalizeOrder
+    private finalizeOrder(@request() req: Request) {
         return req.useCase.exec(req.params._id)
     }
 }

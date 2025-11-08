@@ -1,12 +1,12 @@
 import { resolveCompanyDecorator } from '@Shared/Infrastructure/decorators';
 import { WIN_ORDER_TYPES } from '../IoC/types';
-import { UseCaseChangeInternalState } from '../../Application';
+import { UseCaseFinalizeOrder } from '../../Application';
 import { WINOrderMongoRepository } from '../MongoRepository';
 import { collection } from '../config';
 
-export const resolveCompanyChangeInternalState = resolveCompanyDecorator(
-    WIN_ORDER_TYPES.UseCaseChangeInternalState,
-    UseCaseChangeInternalState,
+export const resolveCompanyFinalizeOrder = resolveCompanyDecorator(
+    WIN_ORDER_TYPES.UseCaseFinalizeOrder,
+    UseCaseFinalizeOrder,
     WIN_ORDER_TYPES.RepositoryMongo,
     WINOrderMongoRepository,
     collection

@@ -23,7 +23,7 @@ export class UseCaseUploadPhotos {
                 key: uploadedFile.key,
                 mimetype: file.mimetype,
                 size: file.size,
-                uploadedBy: user.identity,
+                uploadedBy: `${user.names} ${user.surnames}`,
                 id_nodo
             }
 

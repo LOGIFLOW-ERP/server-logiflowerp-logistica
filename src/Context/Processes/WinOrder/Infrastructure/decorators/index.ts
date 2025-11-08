@@ -1,2 +1,2 @@
 export { resolveCompanyFind } from './resolveCompanyFind';
-export { resolveCompanyChangeInternalState } from './resolveCompanyChangeInternalState';
+export { resolveCompanyFinalizeOrder } from './resolveCompanyFinalizeOrder';

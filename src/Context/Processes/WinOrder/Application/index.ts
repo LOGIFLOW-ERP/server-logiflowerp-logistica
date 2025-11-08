@@ -1,2 +1,2 @@
 export * from './UseCaseFind';
-export * from './UseCaseChangeInternalState';
+export * from './UseCaseFinalizeOrder';
