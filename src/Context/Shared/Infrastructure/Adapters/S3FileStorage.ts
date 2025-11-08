@@ -15,8 +15,8 @@ export class AdapterS3FileStorage {
             credentials: {
                 accessKeyId: env.CLOUDFLARE_ACCESS_KEY_ID,
                 secretAccessKey: env.CLOUDFLARE_SECRET_ACCESS_KEY,
-            },
-        });
+            }
+        })
     }
 
     async upload(file: Express.Multer.File, options: { folder: string }) {
@@ -29,7 +29,7 @@ export class AdapterS3FileStorage {
                 Body: file.buffer,
                 ContentType: file.mimetype,
             })
-        );
+        )
 
         const url = `https://${this.accountId}.r2.cloudflarestorage.com/${this.bucket}/${key}`
 

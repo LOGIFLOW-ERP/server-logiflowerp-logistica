@@ -12,7 +12,7 @@ export class UseCaseUploadPhotos {
         @inject(WIN_ORDER_TYPES.RepositoryMongo) private readonly repository: IWINOrderMongoRepository,
     ) { }
 
-    async exec(_id: string, file: Express.Multer.File, user: AuthUserDTO, tenant: string) {
+    async exec(_id: string, file: Express.Multer.File, user: AuthUserDTO, tenant: string, id_nodo: string) {
         let uploadedFile: { url: string; key: string } | null = null
         try {
             uploadedFile = await this.fileStorage.upload(file, { folder: tenant })
@@ -24,7 +24,8 @@ export class UseCaseUploadPhotos {
                 mimetype: file.mimetype,
                 size: file.size,
                 uploadedBy: user.identity,
-                url: uploadedFile.url
+                url: uploadedFile.url,
+                id_nodo
             }
 
             return this.repository.updateOne({ _id }, { $push: { fotos: foto } })

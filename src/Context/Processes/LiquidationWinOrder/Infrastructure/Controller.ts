@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import {
     BaseHttpController,
     httpGet,
+    httpPost,
     httpPut,
     request,
     response
@@ -35,14 +36,15 @@ export class LiquidationWinOrderController extends BaseHttpController {
         return req.useCase.exec(req.params._id, req.body, req.user)
     }
 
-    @httpPut(
+    @httpPost(
         'upload-photos/:_id',
-        authorizeRoute,
+        // authorizeRoute,
         VUUID.bind(null, BRE),
         upload.single('file')
     )
     @resolveCompanyUploadPhotos
     private uploadPhotos(@request() req: Request) {
-        return req.useCase.exec(req.params._id, req.file, req.user, req.tenant)
+        const idNodo = req.body.id
+        return req.useCase.exec(req.params._id, req.file, req.user, req.tenant, idNodo)
     }
 }
