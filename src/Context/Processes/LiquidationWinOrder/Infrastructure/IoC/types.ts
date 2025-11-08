@@ -3,4 +3,5 @@ export const LIQUIDATION_WIN_ORDER_TYPES = {
     UseCaseGetAll: Symbol(`UseCaseGetAll`),
     UseCaseUploadPhotos: Symbol(`UseCaseUploadPhotos`),
     UseCaseDeletePhotos: Symbol(`UseCaseDeletePhotos`),
+    UseCaseSendReview: Symbol(`UseCaseSendReview`),
 }

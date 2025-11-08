@@ -24,7 +24,6 @@ export class UseCaseUploadPhotos {
                 mimetype: file.mimetype,
                 size: file.size,
                 uploadedBy: user.identity,
-                url: uploadedFile.url,
                 id_nodo
             }
 

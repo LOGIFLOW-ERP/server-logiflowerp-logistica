@@ -18,6 +18,7 @@ import {
     resolveCompanyAddInventory,
     resolveCompanyDeletePhotos,
     resolveCompanyGetAll,
+    resolveCompanySendReview,
     resolveCompanyUploadPhotos,
 } from './decorators'
 import multer from 'multer'
@@ -36,6 +37,12 @@ export class LiquidationWinOrderController extends BaseHttpController {
     @resolveCompanyAddInventory
     private addInventory(@request() req: Request) {
         return req.useCase.exec(req.params._id, req.body, req.user)
+    }
+
+    @httpPut('send-review/:_id', authorizeRoute, VUUID.bind(null, BRE))
+    @resolveCompanySendReview
+    private sendReview(@request() req: Request) {
+        return req.useCase.exec(req.params._id, req.user)
     }
 
     @httpPut('delete-photos/:_id', authorizeRoute, VRB.bind(null, BodyReqDeletePhotoDTO, BRE), VUUID.bind(null, BRE))

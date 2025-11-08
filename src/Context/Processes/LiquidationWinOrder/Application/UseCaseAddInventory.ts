@@ -33,7 +33,7 @@ export class UseCaseAddInventory {
         const document = await this.repository.selectOne([{ $match: { _id } }])
         if (document.estado !== StateOrderWin.FINALIZADA || document.estado_interno !== StateInternalOrderWin.PENDIENTE) {
             throw new BadRequestException(
-                `No se puede agregar inventario la orden, su estado es ${document.estado} y su estado inerno es ${document.estado_interno}`,
+                `No se puede agregar inventario la orden, su estado es ${document.estado} y su estado interno es ${document.estado_interno}`,
                 true
             )
         }
