@@ -94,7 +94,7 @@ export class UseCaseAddInventory {
                 transaction: 'updateOne',
                 filter: { _id: stockSerial._id },
                 update: {
-                    $set: { state: StateStockSerialEmployee.RESERVADO_CONSUMO_CMS }
+                    $set: { state: StateStockSerialEmployee.RESERVADO_CONSUMO }
                 }
             }
             this.transactions.push(transaction)

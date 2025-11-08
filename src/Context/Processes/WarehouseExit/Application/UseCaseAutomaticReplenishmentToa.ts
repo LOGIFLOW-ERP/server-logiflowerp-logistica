@@ -11,7 +11,7 @@ import {
     State,
     StateInventory,
     StateWarehouseStock,
-    TOAOrderStockENTITY,
+    OrderStockENTITY,
     validateCustom,
     WarehouseExitENTITY,
     WarehouseStockENTITY
@@ -37,14 +37,14 @@ export class UseCaseAutomaticReplenishmentToa extends AddDetail {
         await this.searchResourceIdToa(dto)
         await this.createDocument(dto, user, tenant)
         do {
-            const dataToaOrderStock = await this.getToaOrderStock(dto)
+            const dataToaOrderStock = await this.getToaOrderStock()
             this.idsToaOrderStock = []
             await this.addDetail(dataToaOrderStock)
         } while (this.idsToaOrderStock.length)
         return this.repository.selectOne([{ $match: { _id: this.document._id } }])
     }
 
-    private async addDetail(dataToaOrderStock: TOAOrderStockENTITY[]) {
+    private async addDetail(dataToaOrderStock: OrderStockENTITY[]) {
         for (const toaOrderStock of dataToaOrderStock) {
             const pipeline = [{
                 $match: {
@@ -101,7 +101,7 @@ export class UseCaseAutomaticReplenishmentToa extends AddDetail {
 
     private async _addDetail(
         warehouseStock: WarehouseStockENTITY,
-        toaOrderStock: TOAOrderStockENTITY
+        toaOrderStock: OrderStockENTITY
     ) {
         const amount = Math.min(warehouseStock.available, toaOrderStock.quantity)
         let newDetail: OrderDetailENTITY | null = null
@@ -117,7 +117,7 @@ export class UseCaseAutomaticReplenishmentToa extends AddDetail {
 
     private async createAndExecuteTransactions(
         newDetail: OrderDetailENTITY | null,
-        toaOrderStock: TOAOrderStockENTITY,
+        toaOrderStock: OrderStockENTITY,
         amount: number,
         warehouseStock: WarehouseStockENTITY
     ) {
@@ -144,7 +144,7 @@ export class UseCaseAutomaticReplenishmentToa extends AddDetail {
             }
             transactions.push(transactionWarehouseExit)
         }
-        const transactionTOAOrderStock: ITransaction<TOAOrderStockENTITY> = {
+        const transactionTOAOrderStock: ITransaction<OrderStockENTITY> = {
             collection: collections.toaOrderStock,
             transaction: 'updateOne',
             filter: { _id: toaOrderStock._id },
@@ -154,24 +154,23 @@ export class UseCaseAutomaticReplenishmentToa extends AddDetail {
         }
         transactions.push(transactionTOAOrderStock)
         if (amount < toaOrderStock.quantity) {
-            const newDoc = new TOAOrderStockENTITY()
+            const newDoc = new OrderStockENTITY()
             newDoc._id = crypto.randomUUID()
             newDoc.isDeleted = false
             newDoc.itemCode = toaOrderStock.itemCode
-            newDoc.lot = toaOrderStock.lot
             newDoc.numero_de_peticion = `DERIVADO CONSUMO ${toaOrderStock.numero_de_peticion}`
             newDoc.quantity = toaOrderStock.quantity - amount
             newDoc.serial = toaOrderStock.serial
             newDoc.state_consumption = StateInventory.PROCESADO
             newDoc.state_replacement = StateInventory.PENDIENTE
             newDoc.stock_quantity_employee = []
-            newDoc.toa_resource_id = toaOrderStock.toa_resource_id
+            newDoc.resource_id = toaOrderStock.resource_id
 
-            const doc = await validateCustom(newDoc, TOAOrderStockENTITY, UnprocessableEntityException)
+            const doc = await validateCustom(newDoc, OrderStockENTITY, UnprocessableEntityException)
 
             this.idsToaOrderStock.push(newDoc._id)
 
-            const transactionTOAOrderStock: ITransaction<TOAOrderStockENTITY> = {
+            const transactionTOAOrderStock: ITransaction<OrderStockENTITY> = {
                 collection: collections.toaOrderStock,
                 transaction: 'insertOne',
                 doc
@@ -182,7 +181,7 @@ export class UseCaseAutomaticReplenishmentToa extends AddDetail {
         this.document = await this.repository.selectOne([{ $match: { _id: this.document._id } }])
     }
 
-    private async getToaOrderStock(dto: CreateWarehouseExitDTO) {
+    private async getToaOrderStock() {
         const pipeline = [
             {
                 $match: this.idsToaOrderStock.length
@@ -195,7 +194,7 @@ export class UseCaseAutomaticReplenishmentToa extends AddDetail {
                     }
             }
         ]
-        const data = await this.repository.select<TOAOrderStockENTITY>(
+        const data = await this.repository.select<OrderStockENTITY>(
             pipeline,
             collections.toaOrderStock
         )

@@ -6,6 +6,8 @@ import {
     InventoryWinDTO,
     ProducType,
     ProductENTITY,
+    StateInternalOrderWin,
+    StateOrderWin,
     StateStockSerialEmployee,
     WINOrderENTITY,
     collections,
@@ -18,24 +20,24 @@ import {
 import { inject, injectable } from 'inversify';
 import { IWINOrderMongoRepository } from '@Processes/WinOrder/Domain';
 import { WIN_ORDER_TYPES } from '@Processes/WinOrder/Infrastructure/IoC/types';
-import { Common } from '../Domain';
 
 @injectable()
-export class UseCaseAddInventory extends Common {
+export class UseCaseAddInventory {
     private transactions: ITransaction<any>[] = []
 
     constructor(
         @inject(WIN_ORDER_TYPES.RepositoryMongo) private readonly repository: IWINOrderMongoRepository,
-    ) {
-        super()
-    }
+    ) { }
 
     async exec(_id: string, data: CreateInventoryDTO, user: AuthUserDTO) {
-
         const document = await this.repository.selectOne([{ $match: { _id } }])
-        if (this.estados.includes(document.estado)) {
-            throw new BadRequestException(`No se puede agregar inventario la orden esta ${document.estado}`, true)
+        if (document.estado !== StateOrderWin.FINALIZADA || document.estado_interno !== StateInternalOrderWin.PENDIENTE) {
+            throw new BadRequestException(
+                `No se puede agregar inventario la orden, su estado es ${document.estado} y su estado interno es ${document.estado_interno}`,
+                true
+            )
         }
+
         const product = await this.repository.selectOne<ProductENTITY>([{ $match: { itemCode: data.code } }], collections.product)
 
         const isSerie = product.producType === ProducType.SERIE
@@ -90,7 +92,7 @@ export class UseCaseAddInventory extends Common {
                 filter: { _id: stockSerial._id },
                 update: {
                     $set: {
-                        state: StateStockSerialEmployee.RESERVADO_CONSUMO_WIN,
+                        state: StateStockSerialEmployee.RESERVADO_CONSUMO,
                         documentNumber: document.numero_de_peticion,
                         updatedate: new Date()
                     }

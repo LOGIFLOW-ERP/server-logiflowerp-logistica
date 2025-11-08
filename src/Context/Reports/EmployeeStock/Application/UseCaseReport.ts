@@ -41,6 +41,7 @@ export class UseCaseReport {
             }
         }
         recurse(doc);
+        results['available'] = available.available
         return results;
     }
 

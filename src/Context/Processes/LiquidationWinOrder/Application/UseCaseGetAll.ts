@@ -1,18 +1,15 @@
 import { Response, Request } from 'express'
 import { inject, injectable } from 'inversify'
-import { collections, EmployeeENTITY, ScrapingSystem, State } from 'logiflowerp-sdk'
+import { collections, EmployeeENTITY, ScrapingSystem, State, StateInternalOrderWin, StateOrderWin } from 'logiflowerp-sdk'
 import { ConflictException, NotFoundException } from '@Config/exception'
 import { IWINOrderMongoRepository } from '@Processes/WinOrder/Domain'
 import { WIN_ORDER_TYPES } from '@Processes/WinOrder/Infrastructure/IoC/types'
-import { Common } from '../Domain'
 
 @injectable()
-export class UseCaseGetAll extends Common {
+export class UseCaseGetAll {
 	constructor(
 		@inject(WIN_ORDER_TYPES.RepositoryMongo) private readonly repository: IWINOrderMongoRepository,
-	) {
-		super()
-	}
+	) { }
 
 	async exec(req: Request, res: Response) {
 		const personel = await this.getPersonel(req)
@@ -23,7 +20,8 @@ export class UseCaseGetAll extends Common {
 		const pipeline = [{
 			$match: {
 				resource_id: resourceSystem[0].resource_id,
-				estado: { $nin: this.estados }
+				estado: StateOrderWin.FINALIZADA,
+				estado_interno: StateInternalOrderWin.PENDIENTE
 			}
 		}]
 		await this.repository.find(pipeline, req, res)

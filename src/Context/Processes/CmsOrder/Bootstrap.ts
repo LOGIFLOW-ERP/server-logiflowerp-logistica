@@ -1,25 +1,21 @@
 import { IndexEntity } from '@Shared/Domain'
 import { collection } from './Infrastructure/config'
 import { Bootstraping } from '@Shared/Bootstraping'
-import { RootCompanyENTITY, OrderStockENTITY } from 'logiflowerp-sdk'
+import { RootCompanyENTITY, CMSOrderENTITY } from 'logiflowerp-sdk'
 import { inject } from 'inversify'
 import { SHARED_TYPES } from '@Shared/Infrastructure/IoC'
 
 export class ManagerEntity {
 
-    private indexes: IndexEntity<OrderStockENTITY>[] = [
-        {
-            campos: {
-                resource_id: 1,
-                itemCode: 1,
-                serial: 1,
-                numero_de_peticion: 1,
-            },
-            opciones: {
-                name: 'idx_resource_id_itemCode_serial_numero_de_peticion',
-                unique: true
-            }
-        }
+    private indexes: IndexEntity<CMSOrderENTITY>[] = [
+        // {
+        //     campos: { numero_de_peticion: 1 },
+        //     opciones: { name: 'idx_numero_de_peticion', unique: true }
+        // },
+        // {
+        //     campos: { fin_visita: 1 },
+        //     opciones: { name: 'idx_fin_visita' }
+        // }
     ]
 
     constructor(

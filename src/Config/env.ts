@@ -14,6 +14,10 @@ export const env = {
     SMTP_PORT: get('SMTP_PORT').required().asInt(),
     SMTP_SECURE: get('SMTP_SECURE').required().asBool(),
     DEVELOPERS_MAILS: get('DEVELOPERS_MAILS').required().asArray(),
+    CLOUDFLARE_ACCOUNT_ID: get('CLOUDFLARE_ACCOUNT_ID').required().asString(),
+    CLOUDFLARE_BUCKET: get('CLOUDFLARE_BUCKET').required().asString(),
+    CLOUDFLARE_ACCESS_KEY_ID: get('CLOUDFLARE_ACCESS_KEY_ID').required().asString(),
+    CLOUDFLARE_SECRET_ACCESS_KEY: get('CLOUDFLARE_SECRET_ACCESS_KEY').required().asString(),
 }
 
 export type typeEnv = typeof env

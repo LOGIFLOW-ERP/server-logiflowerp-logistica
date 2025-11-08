@@ -6,6 +6,7 @@ import {
     AdapterMongoDB,
     AdapterRabbitMQ,
     AdapterRedis,
+    AdapterS3FileStorage,
     AdapterSocket,
     AdapterToken
 } from '../Adapters'
@@ -20,6 +21,7 @@ export const containerModule = new ContainerModule(bind => {
     bind(SHARED_TYPES.AdapterMail).to(AdapterMail).inSingletonScope()
     bind(SHARED_TYPES.AdapterApiRequest).to(AdapterApiRequest).inSingletonScope()
     bind(SHARED_TYPES.AdapterRabbitMQ).to(AdapterRabbitMQ).inSingletonScope()
+    bind(SHARED_TYPES.AdapterS3FileStorage).to(AdapterS3FileStorage).inSingletonScope()
     bind(SHARED_TYPES.BootstrapingDatabaseMongo).to(BootstrapingDatabaseMongo)
     bind(SHARED_TYPES.Bootstraping).to(Bootstraping)
 })
