@@ -16,10 +16,12 @@ import { BadRequestException as BRE } from '@Config/exception'
 import { authorizeRoute } from '@Shared/Infrastructure/Middlewares'
 import {
     resolveCompanyAddInventory,
+    resolveCompanyDeletePhotos,
     resolveCompanyGetAll,
     resolveCompanyUploadPhotos,
 } from './decorators'
 import multer from 'multer'
+import { BodyReqDeletePhotoDTO } from '../Domain'
 
 const upload = multer({ storage: multer.memoryStorage() })
 
@@ -36,9 +38,15 @@ export class LiquidationWinOrderController extends BaseHttpController {
         return req.useCase.exec(req.params._id, req.body, req.user)
     }
 
+    @httpPut('delete-photos/:_id', authorizeRoute, VRB.bind(null, BodyReqDeletePhotoDTO, BRE), VUUID.bind(null, BRE))
+    @resolveCompanyDeletePhotos
+    private deletePhotos(@request() req: Request) {
+        return req.useCase.exec(req.params._id, req.body.key)
+    }
+
     @httpPost(
         'upload-photos/:_id',
-        // authorizeRoute,
+        authorizeRoute,
         VUUID.bind(null, BRE),
         upload.single('file')
     )
