@@ -1,8 +1,9 @@
 export const PRODUCT_PRICE_TYPES = {
-    RepositoryMongo: Symbol.for('RepositoryMongo'),
-    UseCaseFind: Symbol.for('UseCaseFind'),
-    UseCaseGetAll: Symbol.for('UseCaseGetAll'),
-    UseCaseUpdateOne: Symbol.for('UseCaseUpdateOne'),
-    UseCaseDeleteOne: Symbol.for('UseCaseDeleteOne'),
-    UseCaseInsertOne: Symbol.for('UseCaseInsertOne'),
+    RepositoryMongo: Symbol('RepositoryMongo'),
+    UseCaseFind: Symbol('UseCaseFind'),
+    UseCaseGetAll: Symbol('UseCaseGetAll'),
+    UseCaseUpdateOne: Symbol('UseCaseUpdateOne'),
+    UseCaseDeleteOne: Symbol('UseCaseDeleteOne'),
+    UseCaseInsertOne: Symbol('UseCaseInsertOne'),
+    UseCaseInsertBulk: Symbol('UseCaseInsertBulk'),
 }
