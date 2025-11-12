@@ -16,6 +16,7 @@ import {
 import {
     resolveCompanyFind,
     resolveCompanyGetAll,
+    resolveCompanyInsertBulk,
     resolveCompanyInsertOne,
     resolveCompanyUpdateOne
 } from './decorators'
@@ -39,6 +40,13 @@ export class ProductController extends BaseHttpController {
     @httpPost('', authorizeRoute, VRB.bind(null, CreateProductDTO, BRE))
     @resolveCompanyInsertOne
     async saveOne(@request() req: Request, @response() res: Response) {
+        await req.useCase.exec(req.body)
+        res.sendStatus(204)
+    }
+
+    @httpPost('insert-bulk', authorizeRoute)
+    @resolveCompanyInsertBulk
+    private async insertBulk(@request() req: Request, @response() res: Response) {
         await req.useCase.exec(req.body)
         res.sendStatus(204)
     }
