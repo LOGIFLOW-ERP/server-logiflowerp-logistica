@@ -1,4 +1,5 @@
 export * from './UseCaseAddDetail';
+export * from './UseCaseAddDetailBulk';
 export * from './UseCaseAddSerial';
 export * from './UseCaseDeleteDetail';
 export * from './UseCaseDeleteOne';

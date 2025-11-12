@@ -1,4 +1,4 @@
-import { IWarehouseEntryMongoRepository } from '../Domain';
+import { AddDetail, IWarehouseEntryMongoRepository } from '../Domain';
 import {
     CreateOrderDetailDTO,
     OrderDetailENTITY,
@@ -16,18 +16,20 @@ import { WAREHOUSE_ENTRY_TYPES } from '../Infrastructure/IoC';
 import { inject, injectable } from 'inversify';
 
 @injectable()
-export class UseCaseAddDetail {
+export class UseCaseAddDetail extends AddDetail {
 
     private document!: WarehouseEntryENTITY
 
     constructor(
         @inject(WAREHOUSE_ENTRY_TYPES.RepositoryMongo) private readonly repository: IWarehouseEntryMongoRepository,
-    ) { }
+    ) {
+        super()
+    }
 
     async exec(_id: string, dto: CreateOrderDetailDTO) {
         await this.searchDocument(_id)
         const productPrice = await this.searchProductPrice(dto)
-        const newDetail = await this.buildDetail(dto, productPrice)
+        const newDetail = await this.buildDetail(this.document, dto, productPrice)
         this.validateDetail(newDetail)
         return this.repository.updateOne({ _id }, { $push: { detail: newDetail } })
     }
@@ -50,16 +52,4 @@ export class UseCaseAddDetail {
             throw new BadRequestException('Ya existe un detalle con el mismo keyDetail', true)
         }
     }
-
-    private buildDetail(dto: CreateOrderDetailDTO, productPrice: ProductPriceENTITY) {
-        const lastPosition = this.document.detail.reduce((acc, item) => Math.max(acc, item.position), 0)
-        const detail = new OrderDetailENTITY()
-        detail.set(dto)
-        detail.codeStore = this.document.store.code
-        detail.stockType = this.document.movement.stockType
-        detail.position = lastPosition + 1
-        detail.price = productPrice
-        return validateCustom(detail, OrderDetailENTITY, UnprocessableEntityException)
-    }
-
 }

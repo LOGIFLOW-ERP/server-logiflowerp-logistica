@@ -7,7 +7,8 @@ export function resolveCompanyDecorator(
     constructorUseCase: interfaces.Newable<unknown>,
     symbolRepositoryMongo: symbol,
     constructorMongoRepository: interfaces.Newable<unknown>,
-    collection: string
+    collection: string,
+    useCases?: [symbol, interfaces.Newable<unknown>][]
 ) {
     return function (
         target: any,
@@ -25,7 +26,8 @@ export function resolveCompanyDecorator(
                 constructorMongoRepository,
                 req.tenant, // database
                 collection,
-                req.user
+                req.user,
+                useCases
             )
             const useCase = tenantContainer.get<typeof constructorUseCase>(symbolUseCase)
             req.useCase = useCase
