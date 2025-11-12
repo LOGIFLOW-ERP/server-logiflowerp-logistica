@@ -10,7 +10,8 @@ export function createTenantScopedContainer(
     constructorMongoRepository: interfaces.Newable<unknown>,
     database: string,
     collection: string,
-    user: AuthUserDTO
+    user: AuthUserDTO,
+    useCases?: [symbol, interfaces.Newable<unknown>][]
 ) {
     const childContainer = ContainerGlobal.createChild()
     childContainer.bind('database').toConstantValue(database)
@@ -18,5 +19,14 @@ export function createTenantScopedContainer(
     childContainer.bind(SHARED_TYPES.User).toConstantValue(user)
     childContainer.bind(symbolRepositoryMongo).to(constructorMongoRepository)
     childContainer.bind(symbolUseCase).to(constructorUseCase)
+
+    if (useCases?.length) {
+        for (const [symbol, constructor] of useCases) {
+            if (!childContainer.isBound(symbol)) {
+                childContainer.bind(symbol).to(constructor);
+            }
+        }
+    }
+
     return childContainer
 }

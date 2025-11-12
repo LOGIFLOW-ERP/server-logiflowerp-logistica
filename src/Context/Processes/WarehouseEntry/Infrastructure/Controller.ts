@@ -19,6 +19,7 @@ import { BadRequestException as BRE } from '@Config/exception'
 import { authorizeRoute } from '@Shared/Infrastructure/Middlewares'
 import {
     resolveCompanyAddDetail,
+    resolveCompanyAddDetailBulk,
     resolveCompanyAddSerial,
     resolveCompanyDeleteDetail,
     resolveCompanyDeleteOne,
@@ -46,7 +47,6 @@ export class WarehouseEntryController extends BaseHttpController {
     @httpPost('', authorizeRoute, VRB.bind(null, CreateWarehouseEntryDTO, BRE))
     @resolveCompanyInsertOne
     saveOne(@request() req: Request) {
-        // await new Promise(resolve => setTimeout(resolve, 3000))
         return req.useCase.exec(req.body, req.user)
     }
 
@@ -59,6 +59,12 @@ export class WarehouseEntryController extends BaseHttpController {
     @httpPut('add-detail/:_id', authorizeRoute, VRB.bind(null, CreateOrderDetailDTO, BRE))
     @resolveCompanyAddDetail
     addDetail(@request() req: Request) {
+        return req.useCase.exec(req.params._id, req.body)
+    }
+
+    @httpPut('add-detail-bulk/:_id', authorizeRoute)
+    @resolveCompanyAddDetailBulk
+    private addDetailBulk(@request() req: Request) {
         return req.useCase.exec(req.params._id, req.body)
     }
 
