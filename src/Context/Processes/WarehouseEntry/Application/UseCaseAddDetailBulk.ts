@@ -1,5 +1,6 @@
 import { AddDetail, IWarehouseEntryMongoRepository } from '../Domain';
 import {
+    AuthUserDTO,
     CreateOrderDetailDTO,
     OrderDetailENTITY,
     ProducType,
@@ -19,6 +20,8 @@ import { WAREHOUSE_ENTRY_TYPES } from '../Infrastructure/IoC';
 import { inject, injectable } from 'inversify';
 import { UseCaseAddDetail } from './UseCaseAddDetail';
 import { UseCaseAddSerial } from './UseCaseAddSerial';
+import { SHARED_TYPES } from '@Shared/Infrastructure/IoC';
+// import { AdapterSocket } from '@Shared/Infrastructure/Adapters';
 
 @injectable()
 export class UseCaseAddDetailBulk extends AddDetail {
@@ -29,11 +32,12 @@ export class UseCaseAddDetailBulk extends AddDetail {
         @inject(WAREHOUSE_ENTRY_TYPES.RepositoryMongo) private readonly repository: IWarehouseEntryMongoRepository,
         @inject(WAREHOUSE_ENTRY_TYPES.UseCaseAddDetail) private readonly useCaseAddDetail: UseCaseAddDetail,
         @inject(WAREHOUSE_ENTRY_TYPES.UseCaseAddSerial) private readonly useCaseAddSerial: UseCaseAddSerial,
+        // @inject(SHARED_TYPES.AdapterSocket) private readonly socket: AdapterSocket
     ) {
         super()
     }
 
-    async exec(_id: string, data: Record<string, any>[]) {
+    async exec(_id: string, data: Record<string, any>[], user: AuthUserDTO) {
         await this.searchDocument(_id)
         const cods = data.map(e => e['CodMaterial'].toString())
         const dataProduct = await this.getDataProduct(cods)
@@ -51,6 +55,7 @@ export class UseCaseAddDetailBulk extends AddDetail {
                 await this.useCaseAddSerial.exec(_id, detail.keyDetail, serial)
             }
         }
+        // this.socket.getIO().to(`user:${user._id}`).emit('order:completed', { _id });
         return this.repository.selectOne([{ $match: { _id } }])
     }
 

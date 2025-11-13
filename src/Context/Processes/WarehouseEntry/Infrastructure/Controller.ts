@@ -65,7 +65,7 @@ export class WarehouseEntryController extends BaseHttpController {
     @httpPut('add-detail-bulk/:_id', authorizeRoute)
     @resolveCompanyAddDetailBulk
     private addDetailBulk(@request() req: Request) {
-        return req.useCase.exec(req.params._id, req.body)
+        return req.useCase.exec(req.params._id, req.body, req.user)
     }
 
     @httpPut('delete-detail/:_id', authorizeRoute)
