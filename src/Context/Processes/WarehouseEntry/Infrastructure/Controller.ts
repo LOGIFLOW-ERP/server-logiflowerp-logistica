@@ -19,7 +19,6 @@ import { BadRequestException as BRE } from '@Config/exception'
 import { authorizeRoute } from '@Shared/Infrastructure/Middlewares'
 import {
     resolveCompanyAddDetail,
-    resolveCompanyAddDetailBulk,
     resolveCompanyAddSerial,
     resolveCompanyDeleteDetail,
     resolveCompanyDeleteOne,
@@ -29,8 +28,16 @@ import {
     resolveCompanyInsertOne,
     resolveCompanyValidate,
 } from './decorators'
+import { inject } from 'inversify'
+import { SHARED_TYPES } from '@Shared/Infrastructure/IoC'
+import { AdapterRabbitMQ } from '@Shared/Infrastructure/Adapters'
 
 export class WarehouseEntryController extends BaseHttpController {
+    constructor(
+        @inject(SHARED_TYPES.AdapterRabbitMQ) private readonly adapterRabbitMQ: AdapterRabbitMQ,
+    ) {
+        super()
+    }
 
     @httpPost('find', authorizeRoute)
     @resolveCompanyFind
@@ -63,9 +70,13 @@ export class WarehouseEntryController extends BaseHttpController {
     }
 
     @httpPut('add-detail-bulk/:_id', authorizeRoute)
-    @resolveCompanyAddDetailBulk
-    private addDetailBulk(@request() req: Request) {
-        return req.useCase.exec(req.params._id, req.body, req.user)
+    private async addDetailBulk(@request() req: Request, @response() res: Response) {
+        await this.adapterRabbitMQ.publish({
+            queue: 'WarehouseEntry_UseCaseInsertOneBulk',
+            message: { _id: req.params._id, data: req.body },
+            user: req.payloadToken
+        })
+        res.sendStatus(204)
     }
 
     @httpPut('delete-detail/:_id', authorizeRoute)

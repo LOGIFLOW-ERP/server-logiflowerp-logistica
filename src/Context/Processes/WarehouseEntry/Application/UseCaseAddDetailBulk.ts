@@ -1,6 +1,5 @@
 import { AddDetail, IWarehouseEntryMongoRepository } from '../Domain';
 import {
-    AuthUserDTO,
     CreateOrderDetailDTO,
     OrderDetailENTITY,
     ProducType,
@@ -20,8 +19,6 @@ import { WAREHOUSE_ENTRY_TYPES } from '../Infrastructure/IoC';
 import { inject, injectable } from 'inversify';
 import { UseCaseAddDetail } from './UseCaseAddDetail';
 import { UseCaseAddSerial } from './UseCaseAddSerial';
-import { SHARED_TYPES } from '@Shared/Infrastructure/IoC';
-// import { AdapterSocket } from '@Shared/Infrastructure/Adapters';
 
 @injectable()
 export class UseCaseAddDetailBulk extends AddDetail {
@@ -32,31 +29,37 @@ export class UseCaseAddDetailBulk extends AddDetail {
         @inject(WAREHOUSE_ENTRY_TYPES.RepositoryMongo) private readonly repository: IWarehouseEntryMongoRepository,
         @inject(WAREHOUSE_ENTRY_TYPES.UseCaseAddDetail) private readonly useCaseAddDetail: UseCaseAddDetail,
         @inject(WAREHOUSE_ENTRY_TYPES.UseCaseAddSerial) private readonly useCaseAddSerial: UseCaseAddSerial,
-        // @inject(SHARED_TYPES.AdapterSocket) private readonly socket: AdapterSocket
     ) {
         super()
     }
 
-    async exec(_id: string, data: Record<string, any>[], user: AuthUserDTO) {
+    async exec(_id: string, data: Record<string, any>[]) {
         await this.searchDocument(_id)
         const cods = data.map(e => e['CodMaterial'].toString())
         const dataProduct = await this.getDataProduct(cods)
         const dataProductPrice = await this.getDataProductPrice(cods)
         const dataGroup = await this.groupProducts(_id, data, dataProduct, dataProductPrice)
+
+        const total = dataGroup.size
+        let index = 0
         for (const [_key, det] of dataGroup) {
+            ++index
+
             const { detail, serials } = det
+            console.log(`🧩 [${index}/${total}] Agregando detalle: ${detail.keyDetail}`)
+
             await this.useCaseAddDetail.exec(_id, detail)
 
             if (detail.item.producType !== ProducType.SERIE) {
                 continue
             }
 
-            for (const serial of serials) {
+            for (const [i, serial] of serials.entries()) {
+                console.log(`   ↳ [${i + 1}/${serials.length}] Serie: ${serial.serial}`)
                 await this.useCaseAddSerial.exec(_id, detail.keyDetail, serial)
             }
         }
-        // this.socket.getIO().to(`user:${user._id}`).emit('order:completed', { _id });
-        return this.repository.selectOne([{ $match: { _id } }])
+        return await this.repository.selectOne([{ $match: { _id } }])
     }
 
     private async groupProducts(
@@ -67,7 +70,9 @@ export class UseCaseAddDetailBulk extends AddDetail {
     ) {
         const mapa = new Map<string, { detail: OrderDetailENTITY; serials: StockSerialDTO[] }>()
 
-        for (const el of data) {
+        for (const [index, el] of data.entries()) {
+            console.log(`GroupProducts >> Iteración ${index + 1} de ${data.length}`)
+
             const codMaterial = el['CodMaterial']?.toString()
             const product = dataProduct.find(e => e.itemCode === codMaterial)
             if (!product) {
@@ -118,7 +123,6 @@ export class UseCaseAddDetailBulk extends AddDetail {
 
         return mapa
     }
-
 
     private getDataProduct(cods: string[]) {
         const pipeline = [{ $match: { isDeleted: false, state: State.ACTIVO, itemCode: { $in: cods } } }]
