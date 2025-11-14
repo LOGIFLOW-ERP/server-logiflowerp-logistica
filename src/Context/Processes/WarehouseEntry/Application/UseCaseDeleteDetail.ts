@@ -1,6 +1,6 @@
 import { IWarehouseEntryMongoRepository } from '../Domain';
 import { StateOrder, WarehouseEntryENTITY, } from 'logiflowerp-sdk';
-import { NotFoundException } from '@Config/exception';
+import { ConflictException, NotFoundException, TooManyRequestsException } from '@Config/exception';
 import { WAREHOUSE_ENTRY_TYPES } from '../Infrastructure/IoC';
 import { inject, injectable } from 'inversify';
 
@@ -20,8 +20,20 @@ export class UseCaseDeleteDetail {
     }
 
     private async searchDocument(_id: string) {
-        const pipeline = [{ $match: { _id, state: { $ne: StateOrder.VALIDADO } } }]
+        const pipeline = [{ $match: { _id } }]
         this.document = await this.repository.selectOne(pipeline)
+        if (this.document.state === StateOrder.PROCESANDO) {
+            throw new TooManyRequestsException(
+                `¡Se está procesando el detalle de este documento!`,
+                true
+            )
+        }
+        if (this.document.state !== StateOrder.REGISTRADO) {
+            throw new ConflictException(
+                `¡El estado de la orden para eliminar detalle debe ser ${StateOrder.REGISTRADO}!`,
+                true
+            )
+        }
     }
 
     private validateDetail(keyDetail: string) {

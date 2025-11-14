@@ -5,10 +5,10 @@ import { WarehouseEntryMongoRepository } from './MongoRepository';
 import { collection } from './config';
 import { createTenantScopedContainer, SHARED_TYPES } from '@Shared/Infrastructure/IoC';
 import { AdapterRabbitMQ } from '@Shared/Infrastructure/Adapters';
-import { CommonWorker } from '@Shared/Domain';
+import { AddDetail } from '../Domain';
 
 @injectable()
-export class Worker extends CommonWorker {
+export class Worker extends AddDetail {
     constructor(
         @inject(SHARED_TYPES.AdapterRabbitMQ) private readonly rabbitMQ: AdapterRabbitMQ,
     ) {
@@ -27,6 +27,7 @@ export class Worker extends CommonWorker {
                 if (!user) {
                     throw new Error(`No se envió usuario`)
                 }
+
                 try {
                     const tenantContainer = createTenantScopedContainer(
                         WAREHOUSE_ENTRY_TYPES.UseCaseAddDetailBulk,
@@ -42,18 +43,24 @@ export class Worker extends CommonWorker {
                         ]
                     )
                     const useCase = tenantContainer.get<UseCaseAddDetailBulk>(WAREHOUSE_ENTRY_TYPES.UseCaseAddDetailBulk)
-                    const doc = await useCase.exec(message._id, message.data)
+                    const doc = await useCase.exec(message._id, message.data, user)
 
                     const msg = await this.createSuccesNotification(
                         user.user,
-                        `¡Detalles agregado ${doc.documentNumber}!`,
-                        `Por favor refrescar datos y verificar. Se agregó los detalles al documento con Nro. Documento ${doc.documentNumber}.`
+                        `Ingreso — Doc. N.º ${message._id}: Detalles agregados`,
+                        `Ingreso — Doc. N.º ${message._id}: se agregaron correctamente ${doc.detail.length} detalle(s).`,
+                        this.invalidatesTags
                     )
                     await this.rabbitMQ.publish({ queue: this.queueNotification_UseCaseInsertOne, user, message: msg })
                 } catch (error) {
-                    const mensaje = `Por favor refrescar datos y verificar. No se pudo agregar detalles (parcial o todo). ${(error as Error).message}`
+                    const mensaje = `Ingreso — Doc. N.º ${message._id}: no se pudieron agregar uno o más detalles. Error: ${(error as Error).message}`
                     console.error(mensaje)
-                    const msg = await this.createSuccesNotification(user.user, `¡Error al agregar detalles!`, mensaje)
+                    const msg = await this.createErrorNotification(
+                        user.user,
+                        `Ingreso — Doc. N.º ${message._id}: Error al agregar detalles`,
+                        mensaje,
+                        this.invalidatesTags
+                    )
                     await this.rabbitMQ.publish({ queue: this.queueNotification_UseCaseInsertOne, user, message: msg })
                 }
             }

@@ -8,4 +8,4 @@ export * from './IndexEntity';
 export * from './IndexesEntity';
 export * from './LogEntity';
 export * from './TypeOperation';
-export * from './CommonWorker';
+export * from './CommonNotification';

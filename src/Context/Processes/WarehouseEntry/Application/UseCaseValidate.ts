@@ -18,7 +18,9 @@ import {
 } from 'logiflowerp-sdk';
 import {
     BadRequestException,
+    ConflictException,
     NotFoundException,
+    TooManyRequestsException,
     UnprocessableEntityException
 } from '@Config/exception';
 import { WAREHOUSE_ENTRY_TYPES } from '../Infrastructure/IoC';
@@ -52,8 +54,20 @@ export class UseCaseValidate {
     }
 
     private async searchDocument(_id: string) {
-        const pipeline = [{ $match: { _id, state: { $ne: StateOrder.VALIDADO } } }]
+        const pipeline = [{ $match: { _id } }]
         this.document = await this.repository.selectOne(pipeline)
+        if (this.document.state === StateOrder.PROCESANDO) {
+            throw new TooManyRequestsException(
+                `¡Se está procesando el detalle de este documento!`,
+                true
+            )
+        }
+        if (this.document.state !== StateOrder.REGISTRADO) {
+            throw new ConflictException(
+                `¡El estado de la orden para validar debe ser ${StateOrder.REGISTRADO}!`,
+                true
+            )
+        }
         if (this.document.detail.length === 0) {
             throw new BadRequestException('No se puede validar un ingreso sin detalle', true)
         }

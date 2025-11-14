@@ -2,18 +2,20 @@ import { UnprocessableEntityException } from '@Config/exception'
 import {
     AuthUserDTO,
     CreateNotificationDTO,
+    InvalidatesTagsDTO,
     PriorityNotification,
     TypeNotification,
     validateCustom
 } from 'logiflowerp-sdk'
 
-export class CommonWorker {
+export class CommonNotification {
     protected queueNotification_UseCaseInsertOne = 'Notification_UseCaseInsertOne'
 
     protected createSuccesNotification(
         user: AuthUserDTO,
         titulo: string,
         mensaje: string,
+        invalidatesTags: InvalidatesTagsDTO[] | undefined = [],
         prioridad: PriorityNotification | undefined = PriorityNotification.MEDIAN,
         urlDestino: string | undefined = ''
     ) {
@@ -23,7 +25,8 @@ export class CommonWorker {
             usuarioId: user._id,
             prioridad,
             tipo: TypeNotification.SUCCESS,
-            urlDestino
+            urlDestino,
+            invalidatesTags
         }
         return validateCustom(notification, CreateNotificationDTO, UnprocessableEntityException)
     }
@@ -32,6 +35,7 @@ export class CommonWorker {
         user: AuthUserDTO,
         titulo: string,
         mensaje: string,
+        invalidatesTags: InvalidatesTagsDTO[] | undefined = [],
         prioridad: PriorityNotification | undefined = PriorityNotification.MEDIAN,
         urlDestino: string | undefined = ''
     ) {
@@ -41,7 +45,8 @@ export class CommonWorker {
             usuarioId: user._id,
             prioridad,
             tipo: TypeNotification.INFO,
-            urlDestino
+            urlDestino,
+            invalidatesTags
         }
         return validateCustom(notification, CreateNotificationDTO, UnprocessableEntityException)
     }
@@ -50,6 +55,7 @@ export class CommonWorker {
         user: AuthUserDTO,
         titulo: string,
         mensaje: string,
+        invalidatesTags: InvalidatesTagsDTO[] | undefined = [],
         prioridad: PriorityNotification | undefined = PriorityNotification.MEDIAN,
         urlDestino: string | undefined = ''
     ) {
@@ -59,7 +65,8 @@ export class CommonWorker {
             usuarioId: user._id,
             prioridad,
             tipo: TypeNotification.ERROR,
-            urlDestino
+            urlDestino,
+            invalidatesTags
         }
         return validateCustom(notification, CreateNotificationDTO, UnprocessableEntityException)
     }

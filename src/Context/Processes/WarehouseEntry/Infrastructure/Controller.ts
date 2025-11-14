@@ -76,6 +76,7 @@ export class WarehouseEntryController extends BaseHttpController {
             message: { _id: req.params._id, data: req.body },
             user: req.payloadToken
         })
+        await new Promise(resolve => setTimeout(resolve, 1500))
         res.sendStatus(204)
     }
 
