@@ -10,3 +10,4 @@ export * from './UseCaseValidate';
 export * from './UseCaseAutomaticReplenishmentToa';
 export * from './UseCaseAutomaticReplenishmentWin';
 export * from './UseCaseEditAmountDetail';
+export * from './UseCaseBulkExit';

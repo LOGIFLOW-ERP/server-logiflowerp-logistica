@@ -1,0 +1,2059 @@
+{
+  "41693780": {
+    "detalle": [
+      {
+        "amount": 15,
+        "keyDetail": "0401010127NIU",
+        "keySearch": "WINNuevo",
+        "serials": [
+          "48575443582C7CB3",
+          "48575443354E98B4",
+          "48575443354FC7B4",
+          "48575443355979B4",
+          "485754433559E0B4",
+          "48575443355AEFB4",
+          "4857544338B457B4",
+          "4857544338B6A0B4",
+          "4857544338BC19B4",
+          "4857544338C0DDB4",
+          "48575443358251B4",
+          "48575443358491B4",
+          "4857544335870EB4",
+          "4857544335882BB4",
+          "48575443358F55B4"
+        ],
+        "item": {
+          "_id": "c49656f4-6217-48b4-af64-7770c026b6d4",
+          "itemCode": "0401010127",
+          "itemName": "ONT HUAWEI EG8145X6-10",
+          "producType": "S",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD4",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 5,
+        "keyDetail": "0403050968NIU",
+        "keySearch": "WINNuevo",
+        "serials": [
+          "48575443C55EB0B3",
+          "485754436B85C8B3",
+          "485754436B8706B3",
+          "485754436B8729B3",
+          "485754436B8935B3"
+        ],
+        "item": {
+          "_id": "dc3dffd9-d6b0-4477-9eda-67647c502866",
+          "itemCode": "0403050968",
+          "itemName": "SMART WIFI 6 K562E -10",
+          "producType": "S",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD4",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 29,
+        "keyDetail": "0002-ALUNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "44db79b3-ca3d-4d87-a215-45e9f0b821d5",
+          "itemCode": "0002-ALU",
+          "itemName": "ALICATE UNIVERSAL",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD1",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 26,
+        "keyDetail": "0012-CHLNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "08631f20-b4ab-4094-b829-055e15856c59",
+          "itemCode": "0012-CHL",
+          "itemName": "CHALECO DE SEGURIDAD",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 3,
+        "keyDetail": "0014-CB1MTR",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "74bb6cca-1bb2-489b-bdc9-9367c23523fa",
+          "itemCode": "0014-CB1",
+          "itemName": "CINTA BANDY 1/2 30.5M",
+          "producType": "G",
+          "uomCode": "MTR",
+          "itmsGrpCod": "CD3",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 201,
+        "keyDetail": "0016-CDCMTR",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "6269088a-cd55-40f4-9907-0e780d417430",
+          "itemCode": "0016-CDC",
+          "itemName": "CINTA DOBLE CONTACTO 30M",
+          "producType": "G",
+          "uomCode": "MTR",
+          "itmsGrpCod": "CD3",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 10,
+        "keyDetail": "0018-CAMNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "96b651b8-7976-4288-80e8-ae0ebfc7ddba",
+          "itemCode": "0018-CAM",
+          "itemName": "CINTILLO DE AMARRE BOLSA DE 100 UN",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD3",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 15,
+        "keyDetail": "0020-CINNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "b3cf316e-215b-46d3-bf62-db7fa931f5dc",
+          "itemCode": "0020-CIN",
+          "itemName": "CINTURON DE POSICIONAMIENTO",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 40,
+        "keyDetail": "0021-CLENIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "91244e26-a76f-4c74-b819-d22c66ec6419",
+          "itemCode": "0021-CLE",
+          "itemName": "CLEVIS",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD3",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1491,
+        "keyDetail": "0034-EXTNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "86e9d7bc-334b-4f1d-8156-36a3b6cd2f13",
+          "itemCode": "0034-EXT",
+          "itemName": "EXTINTOR NUEVO",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 200,
+        "keyDetail": "0036-FOTNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "6b6bdb35-0e85-4d1d-b4cb-6c3f098571db",
+          "itemCode": "0036-FOT",
+          "itemName": "FOTOCHECK",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 30,
+        "keyDetail": "0040-GPONIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "5bb76ecf-53a6-4e2b-85ae-5cedc98ac576",
+          "itemCode": "0040-GPO",
+          "itemName": "GUANTES POLIDETIRENO",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 11,
+        "keyDetail": "0056-PBONIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "9eaef5f0-8f7d-4fca-9ad1-81e58919e567",
+          "itemCode": "0056-PBO",
+          "itemName": "PORTA BOBINA",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD1",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 10,
+        "keyDetail": "0049-PANNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "b4b813b3-de74-4f9c-9b6f-0f98391ac042",
+          "itemCode": "0049-PAN",
+          "itemName": "PANTALON",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 108,
+        "keyDetail": "LIM-2558MTR",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "5ab43995-9dfb-40ff-80f3-c8e5708f7a6d",
+          "itemCode": "LIM-2558",
+          "itemName": "FO DROP 1H OFC-1G,657A2-FDC-S3 WIN",
+          "producType": "G",
+          "uomCode": "MTR",
+          "itmsGrpCod": "CD4",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 66,
+        "keyDetail": "0009-BRGNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "cddbfec5-3c76-4162-a11c-eb25f66fda18",
+          "itemCode": "0009-BRG",
+          "itemName": "BROCA GRANDE",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD1",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0001-ALCNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "df76e2cf-d2ad-4e7e-9ef8-c69f2d30683b",
+          "itemCode": "0001-ALC",
+          "itemName": "ALICATE DE CORTE",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD1",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0010-BRPNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "308e08a1-bd12-4279-a632-7cfa98fe6b9e",
+          "itemCode": "0010-BRP",
+          "itemName": "BROCA PEQUEÑA",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD1",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0043-KFONIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "90f5a8b7-d45e-4a16-b5b7-a007dd506e2b",
+          "itemCode": "0043-KFO",
+          "itemName": "KIT DE FIBRA OPTICA",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD1",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0026-ENZNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "58e8fa0e-e30f-46cd-b54f-1810a30780eb",
+          "itemCode": "0026-ENZ",
+          "itemName": "ENZUNCHADORA NUEVA",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD1",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0032-ESTNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "5868e5d7-b8ff-4944-b387-7c49b30e968a",
+          "itemCode": "0032-EST",
+          "itemName": "ESTENCION NUEVO",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD1",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0046-MARNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "66cd8c1f-4b34-4b50-8307-13c1e91671c4",
+          "itemCode": "0046-MAR",
+          "itemName": "MARTILLO",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD1",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0048-ONENIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "27b139db-4f80-4a0b-bb7a-7d2116f523eb",
+          "itemCode": "0048-ONE",
+          "itemName": "ONE CLICK",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD1",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0058-TLNNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "7d26ac23-7341-4d2a-bac1-4096e70746b2",
+          "itemCode": "0058-TLN",
+          "itemName": "TALADRO NUEVO",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD1",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0062-TUTNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "1e02dba4-5dd3-4b20-971f-4c8cb32b3209",
+          "itemCode": "0062-TUT",
+          "itemName": "TESTER UTP",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD1",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0063-PONNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "2c5d9c97-f551-43a6-b071-fb45d43b541e",
+          "itemCode": "0063-PON",
+          "itemName": "PONCHADORA",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD1",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0091-WIPNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "82fd0a14-5a46-42e4-8d68-2731b103d1e4",
+          "itemCode": "0091-WIP",
+          "itemName": "WINCHA PASACABLE",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD4",
+          "minLevel": 1,
+          "maxLevel": 3,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0087-DEPNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "dda40531-1076-49e3-8fe6-0569b6122674",
+          "itemCode": "0087-DEP",
+          "itemName": "DESTORNILLADOR PLANO",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD4",
+          "minLevel": 1,
+          "maxLevel": 3,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0086-DEENIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "6ba39396-5599-4ef1-a4ae-49d2d17802c4",
+          "itemCode": "0086-DEE",
+          "itemName": "DESTORNILLADOR ESTRELLA",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD4",
+          "minLevel": 1,
+          "maxLevel": 3,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0089-MAPNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "acdbf43d-6119-4587-b889-0e881efa1817",
+          "itemCode": "0089-MAP",
+          "itemName": "MALETA PORTA HERRAMIENTAS",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD4",
+          "minLevel": 1,
+          "maxLevel": 1000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0085-CIHNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "48ec6dc7-8a78-42d5-912c-c99d15527d09",
+          "itemCode": "0085-CIH",
+          "itemName": "CINTURON PORTA HERRAMIENTAS",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD4",
+          "minLevel": 1,
+          "maxLevel": 3,
+          "state": "activo",
+          "isDeleted": false
+        }
+      }
+    ],
+    "employee": {
+      "_id": "b6acb555-83a5-4913-aff1-4d7f7684da94",
+      "identity": "41693780",
+      "documentType": "DNI",
+      "names": "Britel Isaias",
+      "surnames": "Quihui Romero",
+      "country": "PER",
+      "email": "bquihuir@gmail.com",
+      "state": "activo",
+      "isDeleted": false,
+      "_idprofile": "9a161084-ea43-4a0a-b91a-b00fcbc8e607",
+      "company": {
+        "code": "JVTE2061",
+        "ruc": "20611584904",
+        "companyname": "JV TELCOM S.A.C."
+      },
+      "resourceSystem": [
+        {
+          "_id": "dde0b7c4-0b3e-44f2-8e34-8b50bb771a99",
+          "resource_id": "K 06 COMFICA SGI  QUIHUI ROMERO BRITEL ISAIAS",
+          "system": "WIN"
+        }
+      ]
+    }
+  },
+  "70038310": {
+    "detalle": [
+      {
+        "amount": 12,
+        "keyDetail": "0401010127NIU",
+        "keySearch": "WINNuevo",
+        "serials": [
+          "4857544338A6E4B4",
+          "4857544338A7D9B4",
+          "4857544338AD21B4",
+          "4857544338B216B4",
+          "4857544338B308B4",
+          "4857544338B625B4",
+          "4857544338B826B4",
+          "4857544338B916B4",
+          "4857544338BC67B4",
+          "4857544338BD28B4",
+          "485754433590E0B4",
+          "4857544335911EB4"
+        ],
+        "item": {
+          "_id": "c49656f4-6217-48b4-af64-7770c026b6d4",
+          "itemCode": "0401010127",
+          "itemName": "ONT HUAWEI EG8145X6-10",
+          "producType": "S",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD4",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 4,
+        "keyDetail": "0403050968NIU",
+        "keySearch": "WINNuevo",
+        "serials": [
+          "48575443C56101B3",
+          "485754436B8674B3",
+          "485754436B86ECB3",
+          "48575443D53044B3"
+        ],
+        "item": {
+          "_id": "dc3dffd9-d6b0-4477-9eda-67647c502866",
+          "itemCode": "0403050968",
+          "itemName": "SMART WIFI 6 K562E -10",
+          "producType": "S",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD4",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0403060094NIU",
+        "keySearch": "WINNuevo",
+        "serials": [
+          "2FWS000000077282"
+        ],
+        "item": {
+          "_id": "8646b27c-5ff0-4f28-9c86-2affb8f033c1",
+          "itemCode": "0403060094",
+          "itemName": "TELÉFONO ANALÓGICO SIN PANTALLA WIN (SERIADO)",
+          "producType": "S",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD4",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 7,
+        "keyDetail": "0002-ALUNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "44db79b3-ca3d-4d87-a215-45e9f0b821d5",
+          "itemCode": "0002-ALU",
+          "itemName": "ALICATE UNIVERSAL",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD1",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 31,
+        "keyDetail": "0012-CHLNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "08631f20-b4ab-4094-b829-055e15856c59",
+          "itemCode": "0012-CHL",
+          "itemName": "CHALECO DE SEGURIDAD",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 50,
+        "keyDetail": "0016-CDCMTR",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "6269088a-cd55-40f4-9907-0e780d417430",
+          "itemCode": "0016-CDC",
+          "itemName": "CINTA DOBLE CONTACTO 30M",
+          "producType": "G",
+          "uomCode": "MTR",
+          "itmsGrpCod": "CD3",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 2,
+        "keyDetail": "0018-CAMNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "96b651b8-7976-4288-80e8-ae0ebfc7ddba",
+          "itemCode": "0018-CAM",
+          "itemName": "CINTILLO DE AMARRE BOLSA DE 100 UN",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD3",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 5,
+        "keyDetail": "0020-CINNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "b3cf316e-215b-46d3-bf62-db7fa931f5dc",
+          "itemCode": "0020-CIN",
+          "itemName": "CINTURON DE POSICIONAMIENTO",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 6,
+        "keyDetail": "0021-CLENIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "91244e26-a76f-4c74-b819-d22c66ec6419",
+          "itemCode": "0021-CLE",
+          "itemName": "CLEVIS",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD3",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 977,
+        "keyDetail": "0034-EXTNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "86e9d7bc-334b-4f1d-8156-36a3b6cd2f13",
+          "itemCode": "0034-EXT",
+          "itemName": "EXTINTOR NUEVO",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 74,
+        "keyDetail": "0036-FOTNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "6b6bdb35-0e85-4d1d-b4cb-6c3f098571db",
+          "itemCode": "0036-FOT",
+          "itemName": "FOTOCHECK",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 21,
+        "keyDetail": "0040-GPONIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "5bb76ecf-53a6-4e2b-85ae-5cedc98ac576",
+          "itemCode": "0040-GPO",
+          "itemName": "GUANTES POLIDETIRENO",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 3,
+        "keyDetail": "0056-PBONIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "9eaef5f0-8f7d-4fca-9ad1-81e58919e567",
+          "itemCode": "0056-PBO",
+          "itemName": "PORTA BOBINA",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD1",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 4,
+        "keyDetail": "0049-PANNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "b4b813b3-de74-4f9c-9b6f-0f98391ac042",
+          "itemCode": "0049-PAN",
+          "itemName": "PANTALON",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 21,
+        "keyDetail": "LIM-2558MTR",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "5ab43995-9dfb-40ff-80f3-c8e5708f7a6d",
+          "itemCode": "LIM-2558",
+          "itemName": "FO DROP 1H OFC-1G,657A2-FDC-S3 WIN",
+          "producType": "G",
+          "uomCode": "MTR",
+          "itmsGrpCod": "CD4",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 26,
+        "keyDetail": "0009-BRGNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "cddbfec5-3c76-4162-a11c-eb25f66fda18",
+          "itemCode": "0009-BRG",
+          "itemName": "BROCA GRANDE",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD1",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0001-ALCNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "df76e2cf-d2ad-4e7e-9ef8-c69f2d30683b",
+          "itemCode": "0001-ALC",
+          "itemName": "ALICATE DE CORTE",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD1",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0010-BRPNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "308e08a1-bd12-4279-a632-7cfa98fe6b9e",
+          "itemCode": "0010-BRP",
+          "itemName": "BROCA PEQUEÑA",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD1",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0043-KFONIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "90f5a8b7-d45e-4a16-b5b7-a007dd506e2b",
+          "itemCode": "0043-KFO",
+          "itemName": "KIT DE FIBRA OPTICA",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD1",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0032-ESTNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "5868e5d7-b8ff-4944-b387-7c49b30e968a",
+          "itemCode": "0032-EST",
+          "itemName": "ESTENCION NUEVO",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD1",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0046-MARNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "66cd8c1f-4b34-4b50-8307-13c1e91671c4",
+          "itemCode": "0046-MAR",
+          "itemName": "MARTILLO",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD1",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0048-ONENIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "27b139db-4f80-4a0b-bb7a-7d2116f523eb",
+          "itemCode": "0048-ONE",
+          "itemName": "ONE CLICK",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD1",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0058-TLNNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "7d26ac23-7341-4d2a-bac1-4096e70746b2",
+          "itemCode": "0058-TLN",
+          "itemName": "TALADRO NUEVO",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD1",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0062-TUTNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "1e02dba4-5dd3-4b20-971f-4c8cb32b3209",
+          "itemCode": "0062-TUT",
+          "itemName": "TESTER UTP",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD1",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0063-PONNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "2c5d9c97-f551-43a6-b071-fb45d43b541e",
+          "itemCode": "0063-PON",
+          "itemName": "PONCHADORA",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD1",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0091-WIPNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "82fd0a14-5a46-42e4-8d68-2731b103d1e4",
+          "itemCode": "0091-WIP",
+          "itemName": "WINCHA PASACABLE",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD4",
+          "minLevel": 1,
+          "maxLevel": 3,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0087-DEPNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "dda40531-1076-49e3-8fe6-0569b6122674",
+          "itemCode": "0087-DEP",
+          "itemName": "DESTORNILLADOR PLANO",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD4",
+          "minLevel": 1,
+          "maxLevel": 3,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0086-DEENIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "6ba39396-5599-4ef1-a4ae-49d2d17802c4",
+          "itemCode": "0086-DEE",
+          "itemName": "DESTORNILLADOR ESTRELLA",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD4",
+          "minLevel": 1,
+          "maxLevel": 3,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0089-MAPNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "acdbf43d-6119-4587-b889-0e881efa1817",
+          "itemCode": "0089-MAP",
+          "itemName": "MALETA PORTA HERRAMIENTAS",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD4",
+          "minLevel": 1,
+          "maxLevel": 1000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0085-CIHNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "48ec6dc7-8a78-42d5-912c-c99d15527d09",
+          "itemCode": "0085-CIH",
+          "itemName": "CINTURON PORTA HERRAMIENTAS",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD4",
+          "minLevel": 1,
+          "maxLevel": 3,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0004-BANNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "b4919792-b006-4469-a5cf-4a46c96f42b4",
+          "itemCode": "0004-BAN",
+          "itemName": "BANDERINES DE SEGURIDAD",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0005-BBQNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "a14296c2-0832-4b50-a7ec-0c4846d638a9",
+          "itemCode": "0005-BBQ",
+          "itemName": "BARBIQUEJO DE SEGURIDAD",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0006-BRRNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "883d4f20-25f0-4d72-ad64-4d0e37bb5902",
+          "itemCode": "0006-BRR",
+          "itemName": "BARRA RETRACTIRL",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0007-BOTNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "c94db5e0-ef85-4b1a-9de5-3c0e9ec1b78a",
+          "itemCode": "0007-BOT",
+          "itemName": "BOTAS NUEVAS",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0008-BTQNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "f27f6e25-11e1-4a9a-8093-a952174cb78c",
+          "itemCode": "0008-BTQ",
+          "itemName": "BOTIQUIN NUEVO (COMPLETO)",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0011-CASNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "6c0b8ee2-9b0d-4945-9fb8-e952c520d2e6",
+          "itemCode": "0011-CAS",
+          "itemName": "CASCO DE SEGURIDAD",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0024-CNNNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "ef7b52b8-f3a1-4247-8c5a-c56707ae11ed",
+          "itemCode": "0024-CNN",
+          "itemName": "CONOS NUEVO",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0029-EPNNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "8a8db50b-0baf-4401-a377-68c110c68d1a",
+          "itemCode": "0029-EPN",
+          "itemName": "ESCALERA 28 PASOS NUEVA",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0031-E14NIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "dc4e815a-67c9-4cd5-848a-8baf4cf72565",
+          "itemCode": "0031-E14",
+          "itemName": "ESCALERA DE 14 PASOS USADA",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0039-GBDNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "d5b5abd9-fae1-42e2-8feb-0b50b2e199aa",
+          "itemCode": "0039-GBD",
+          "itemName": "GUANTES BADANA",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0045-LENNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "ec062f77-6441-4c16-a2cf-f1a7b10ad6f2",
+          "itemCode": "0045-LEN",
+          "itemName": "LENTES DE SEGURIDAD",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0051-PGCNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "b4347682-3425-4422-a4db-d35eddb72058",
+          "itemCode": "0051-PGC",
+          "itemName": "PEGATINA COMFICA",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0052-PGWNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "1cc03710-668b-492c-a79f-3d2c7e8f25df",
+          "itemCode": "0052-PGW",
+          "itemName": "PEGATINA WIN",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0053-PPFNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "90462cbe-2325-4e86-8e55-162edb965d79",
+          "itemCode": "0053-PPF",
+          "itemName": "PEGATINAS PERU FIBRA",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 2,
+        "keyDetail": "0055-POLNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "fe0484c1-06f8-4467-92d9-60bd36fc5016",
+          "itemCode": "0055-POL",
+          "itemName": "POLO CORPORATIVO",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      }
+    ],
+    "employee": {
+      "_id": "a27e4bfd-2ad3-4748-a3c2-3402ff73c923",
+      "identity": "70038310",
+      "documentType": "DNI",
+      "names": "Luis Eduardo",
+      "surnames": "Bazan Julcamoro",
+      "country": "PER",
+      "email": "ebazanj@hotmail.com",
+      "state": "activo",
+      "isDeleted": false,
+      "_idprofile": "9a161084-ea43-4a0a-b91a-b00fcbc8e607",
+      "company": {
+        "code": "JVTE2061",
+        "ruc": "20611584904",
+        "companyname": "JV TELCOM S.A.C."
+      },
+      "resourceSystem": [
+        {
+          "_id": "4c499f6d-7e5f-4f37-8954-dc0b03b635de",
+          "resource_id": "K 35 COMFICA SGI  BAZAN JULCAMORO LUIS EDUARDO",
+          "system": "WIN"
+        }
+      ]
+    }
+  },
+  "75279684": {
+    "detalle": [
+      {
+        "amount": 1,
+        "keyDetail": "0005-BBQNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "a14296c2-0832-4b50-a7ec-0c4846d638a9",
+          "itemCode": "0005-BBQ",
+          "itemName": "BARBIQUEJO DE SEGURIDAD",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0007-BOTNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "c94db5e0-ef85-4b1a-9de5-3c0e9ec1b78a",
+          "itemCode": "0007-BOT",
+          "itemName": "BOTAS NUEVAS",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0011-CASNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "6c0b8ee2-9b0d-4945-9fb8-e952c520d2e6",
+          "itemCode": "0011-CAS",
+          "itemName": "CASCO DE SEGURIDAD",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0012-CHLNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "08631f20-b4ab-4094-b829-055e15856c59",
+          "itemCode": "0012-CHL",
+          "itemName": "CHALECO DE SEGURIDAD",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0036-FOTNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "6b6bdb35-0e85-4d1d-b4cb-6c3f098571db",
+          "itemCode": "0036-FOT",
+          "itemName": "FOTOCHECK",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0039-GBDNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "d5b5abd9-fae1-42e2-8feb-0b50b2e199aa",
+          "itemCode": "0039-GBD",
+          "itemName": "GUANTES BADANA",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0040-GPONIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "5bb76ecf-53a6-4e2b-85ae-5cedc98ac576",
+          "itemCode": "0040-GPO",
+          "itemName": "GUANTES POLIDETIRENO",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0045-LENNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "ec062f77-6441-4c16-a2cf-f1a7b10ad6f2",
+          "itemCode": "0045-LEN",
+          "itemName": "LENTES DE SEGURIDAD",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 2,
+        "keyDetail": "0049-PANNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "b4b813b3-de74-4f9c-9b6f-0f98391ac042",
+          "itemCode": "0049-PAN",
+          "itemName": "PANTALON",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 2,
+        "keyDetail": "0055-POLNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "fe0484c1-06f8-4467-92d9-60bd36fc5016",
+          "itemCode": "0055-POL",
+          "itemName": "POLO CORPORATIVO",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      }
+    ],
+    "employee": {
+      "_id": "c6db2521-b4e0-43f2-a3ee-cda57ab909ab",
+      "identity": "75279684",
+      "documentType": "DNI",
+      "names": "Mirko Arsenio",
+      "surnames": "Cristi Ballumbrocio",
+      "country": "PER",
+      "email": "mcballumbrocio@gmail.com",
+      "state": "activo",
+      "isDeleted": false,
+      "_idprofile": "e313ed4c-0782-4a38-857d-72d2c1143980",
+      "company": {
+        "code": "JVTE2061",
+        "ruc": "20611584904",
+        "companyname": "JV TELCOM S.A.C."
+      },
+      "resourceSystem": []
+    }
+  },
+  "75954407": {
+    "detalle": [
+      {
+        "amount": 9,
+        "keyDetail": "0401010127NIU",
+        "keySearch": "WINNuevo",
+        "serials": [
+          "485754433F2C9EB4",
+          "485754433582B3B4",
+          "485754433584DBB4",
+          "485754433584E6B4",
+          "4857544335862FB4",
+          "485754433586C4B4",
+          "4857544335874AB4",
+          "485754433589BBB4",
+          "48575443358B23B4"
+        ],
+        "item": {
+          "_id": "c49656f4-6217-48b4-af64-7770c026b6d4",
+          "itemCode": "0401010127",
+          "itemName": "ONT HUAWEI EG8145X6-10",
+          "producType": "S",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD4",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 4,
+        "keyDetail": "0403050968NIU",
+        "keySearch": "WINNuevo",
+        "serials": [
+          "48575443165A66B3",
+          "48575443165F85B3",
+          "48575443D534D1B3",
+          "48575443D53F5CB3"
+        ],
+        "item": {
+          "_id": "dc3dffd9-d6b0-4477-9eda-67647c502866",
+          "itemCode": "0403050968",
+          "itemName": "SMART WIFI 6 K562E -10",
+          "producType": "S",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD4",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0403060094NIU",
+        "keySearch": "WINNuevo",
+        "serials": [
+          "2FWS000000085159"
+        ],
+        "item": {
+          "_id": "8646b27c-5ff0-4f28-9c86-2affb8f033c1",
+          "itemCode": "0403060094",
+          "itemName": "TELÉFONO ANALÓGICO SIN PANTALLA WIN (SERIADO)",
+          "producType": "S",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD4",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0403050918NIU",
+        "keySearch": "WINNuevo",
+        "serials": [
+          "10008960044698"
+        ],
+        "item": {
+          "_id": "7f886dac-2c39-4d34-99ff-3723b81a1ba2",
+          "itemCode": "0403050918",
+          "itemName": "WIN BOX 2KAV1 ANDROID TV",
+          "producType": "S",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD4",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 6,
+        "keyDetail": "0002-ALUNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "44db79b3-ca3d-4d87-a215-45e9f0b821d5",
+          "itemCode": "0002-ALU",
+          "itemName": "ALICATE UNIVERSAL",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD1",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 79,
+        "keyDetail": "0016-CDCMTR",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "6269088a-cd55-40f4-9907-0e780d417430",
+          "itemCode": "0016-CDC",
+          "itemName": "CINTA DOBLE CONTACTO 30M",
+          "producType": "G",
+          "uomCode": "MTR",
+          "itmsGrpCod": "CD3",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 27,
+        "keyDetail": "0018-CAMNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "96b651b8-7976-4288-80e8-ae0ebfc7ddba",
+          "itemCode": "0018-CAM",
+          "itemName": "CINTILLO DE AMARRE BOLSA DE 100 UN",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD3",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 435,
+        "keyDetail": "0034-EXTNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "86e9d7bc-334b-4f1d-8156-36a3b6cd2f13",
+          "itemCode": "0034-EXT",
+          "itemName": "EXTINTOR NUEVO",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 43,
+        "keyDetail": "0036-FOTNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "6b6bdb35-0e85-4d1d-b4cb-6c3f098571db",
+          "itemCode": "0036-FOT",
+          "itemName": "FOTOCHECK",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD2",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 45,
+        "keyDetail": "LIM-2558MTR",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "5ab43995-9dfb-40ff-80f3-c8e5708f7a6d",
+          "itemCode": "LIM-2558",
+          "itemName": "FO DROP 1H OFC-1G,657A2-FDC-S3 WIN",
+          "producType": "G",
+          "uomCode": "MTR",
+          "itmsGrpCod": "CD4",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 25,
+        "keyDetail": "0009-BRGNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "cddbfec5-3c76-4162-a11c-eb25f66fda18",
+          "itemCode": "0009-BRG",
+          "itemName": "BROCA GRANDE",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD1",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 2,
+        "keyDetail": "0021-CLENIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "91244e26-a76f-4c74-b819-d22c66ec6419",
+          "itemCode": "0021-CLE",
+          "itemName": "CLEVIS",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD3",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0001-ALCNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "df76e2cf-d2ad-4e7e-9ef8-c69f2d30683b",
+          "itemCode": "0001-ALC",
+          "itemName": "ALICATE DE CORTE",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD1",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0043-KFONIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "90f5a8b7-d45e-4a16-b5b7-a007dd506e2b",
+          "itemCode": "0043-KFO",
+          "itemName": "KIT DE FIBRA OPTICA",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD1",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0026-ENZNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "58e8fa0e-e30f-46cd-b54f-1810a30780eb",
+          "itemCode": "0026-ENZ",
+          "itemName": "ENZUNCHADORA NUEVA",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD1",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0046-MARNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "66cd8c1f-4b34-4b50-8307-13c1e91671c4",
+          "itemCode": "0046-MAR",
+          "itemName": "MARTILLO",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD1",
+          "minLevel": 0,
+          "maxLevel": 10000,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0091-WIPNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "82fd0a14-5a46-42e4-8d68-2731b103d1e4",
+          "itemCode": "0091-WIP",
+          "itemName": "WINCHA PASACABLE",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD4",
+          "minLevel": 1,
+          "maxLevel": 3,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0087-DEPNIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "dda40531-1076-49e3-8fe6-0569b6122674",
+          "itemCode": "0087-DEP",
+          "itemName": "DESTORNILLADOR PLANO",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD4",
+          "minLevel": 1,
+          "maxLevel": 3,
+          "state": "activo",
+          "isDeleted": false
+        }
+      },
+      {
+        "amount": 1,
+        "keyDetail": "0086-DEENIU",
+        "keySearch": "WINNuevo",
+        "serials": [],
+        "item": {
+          "_id": "6ba39396-5599-4ef1-a4ae-49d2d17802c4",
+          "itemCode": "0086-DEE",
+          "itemName": "DESTORNILLADOR ESTRELLA",
+          "producType": "G",
+          "uomCode": "NIU",
+          "itmsGrpCod": "CD4",
+          "minLevel": 1,
+          "maxLevel": 3,
+          "state": "activo",
+          "isDeleted": false
+        }
+      }
+    ],
+    "employee": {
+      "_id": "0fc79da0-84c3-424c-b0af-3f36cc5063f7",
+      "identity": "75954407",
+      "documentType": "DNI",
+      "names": "Jhonny Alexander",
+      "surnames": "Oyarce Palomino",
+      "country": "PER",
+      "email": "joyarcep@gmail.com",
+      "state": "activo",
+      "isDeleted": false,
+      "_idprofile": "9a161084-ea43-4a0a-b91a-b00fcbc8e607",
+      "company": {
+        "code": "JVTE2061",
+        "ruc": "20611584904",
+        "companyname": "JV TELCOM S.A.C."
+      },
+      "resourceSystem": [
+        {
+          "_id": "f16fca5c-79ef-4be4-80aa-b54ea9216ccd",
+          "resource_id": "K 20 COMFICA SGI  OYARCE PALOMINO JHONNY ALEXANDER",
+          "system": "WIN"
+        }
+      ]
+    }
+  }
+}
