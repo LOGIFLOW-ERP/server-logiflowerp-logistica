@@ -211,8 +211,8 @@ export class UseCaseBulkExit {
             }
         }
 
-        const obj = Object.fromEntries(mapa)
-        fs.writeFileSync("mapa.json", JSON.stringify(obj, null, 2), "utf-8")
+        // const obj = Object.fromEntries(mapa)
+        // fs.writeFileSync("logiflow_mapa.json", JSON.stringify(obj, null, 2), "utf-8")
         return { dataGroup: mapa, keysSearch: Array.from(keysSearch), keysDetail: Array.from(keysDetail) }
     }
 
