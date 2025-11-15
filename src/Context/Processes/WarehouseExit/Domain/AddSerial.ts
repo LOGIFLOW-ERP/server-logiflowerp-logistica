@@ -16,12 +16,14 @@ export class AddSerial {
 
     constructor(protected readonly repository: IWarehouseExitMongoRepository) { }
 
-    async buildTransactionsAddDetail(keyDetail: string, dto: StockSerialDTO, transactions: ITransaction<any>[]) {
+    async buildTransactionsAddDetail(keyDetail: string, dto: StockSerialDTO) {
+        const transactions: ITransaction<any>[] = []
         const detail = this._validateDetail(keyDetail)
         const warehouseStock = await this._searchWarehouseStock(detail)
         const warehouseStockSerial = await this.searchWarehouseStockSerial(warehouseStock, dto)
         this.createTransactionDocument(keyDetail, dto, transactions)
         this.createTransactionWarehouseStockSerial(warehouseStockSerial, transactions)
+        return transactions
     }
 
     private createTransactionDocument(keyDetail: string, dto: StockSerialDTO, transactions: ITransaction<any>[]) {

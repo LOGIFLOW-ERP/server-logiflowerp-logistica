@@ -8,7 +8,6 @@ import { serverErrorConfig } from '@Config/serverErrorConfig'
 import { initController } from '@Config/controller'
 import { registerContainer } from '@Config/inversify'
 import { initCollections } from '@Config/collections'
-import { initSocket } from '@Config/socket'
 import { registerRoutes } from '@Config/registerRoutes'
 import { subscribeRabbitMQ } from '@Config/subscribeRabbitMQ'
 
@@ -34,10 +33,11 @@ const Bootstrap = async () => {
 
     await registerRoutes(rootPath)
 
-    const httpServer = initSocket(expressApp)
-
-    httpServer.listen(PORT, () => {
-        console.info('\x1b[32m%s\x1b[0m', `❱❱❱✱ ✱ ✱ Express started on port ${PORT} ✱ ✱ ✱ ❰❰❰`)
+    expressApp.listen(PORT, () => {
+        console.info(
+            '\x1b[32m%s\x1b[0m',
+            `❱❱❱✱ ✱ ✱ Express started on port ${PORT} ✱ ✱ ✱ ❰❰❰`
+        )
     })
 
 }

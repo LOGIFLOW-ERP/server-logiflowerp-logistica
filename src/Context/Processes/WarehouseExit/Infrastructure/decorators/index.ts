@@ -10,3 +10,4 @@ export * from './resolveCompanyValidate';
 export * from './resolveCompanyAutomaticReplenishmentToa';
 export * from './resolveCompanyAutomaticReplenishmentWin';
 export * from './resolveCompanyEditAmountDetail';
+export * from './resolveCompanyBulkExit';

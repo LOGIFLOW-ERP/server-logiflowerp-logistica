@@ -18,7 +18,6 @@ export class Worker {
             exchange: getExchangeNameInitializationCollections({ NODE_ENV: this.env.NODE_ENV }),
             onMessage: async ({ message, user }) => {
                 await initCollections(message)
-                return 'Colecciones inicializadas'
             }
         })
     }

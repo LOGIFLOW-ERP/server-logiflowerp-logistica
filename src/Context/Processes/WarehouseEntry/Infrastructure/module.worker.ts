@@ -1,0 +1,73 @@
+import { inject, injectable } from 'inversify'
+import { WAREHOUSE_ENTRY_TYPES } from './IoC/types';
+import { UseCaseAddDetail, UseCaseAddDetailBulk, UseCaseAddSerial } from '../Application';
+import { WarehouseEntryMongoRepository } from './MongoRepository';
+import { collection } from './config';
+import { createTenantScopedContainer, SHARED_TYPES } from '@Shared/Infrastructure/IoC';
+import { AdapterRabbitMQ } from '@Shared/Infrastructure/Adapters';
+import { AddDetail } from '../Domain';
+import { getQueueName } from 'logiflowerp-sdk';
+import { CONFIG_TYPES } from '@Config/types';
+
+@injectable()
+export class Worker extends AddDetail {
+    constructor(
+        @inject(SHARED_TYPES.AdapterRabbitMQ) private readonly rabbitMQ: AdapterRabbitMQ,
+        @inject(CONFIG_TYPES.Env) private readonly env: Env,
+    ) {
+        super()
+    }
+
+    async exec() {
+        await this.resolveCountryAddDetailBulk()
+    }
+
+    private async resolveCountryAddDetailBulk() {
+        const queue = getQueueName({ NODE_ENV: this.env.NODE_ENV, name: 'WarehouseEntry_UseCaseInsertOneBulk' })
+        await this.rabbitMQ.subscribe({
+            queue,
+            onMessage: async ({ message, user }) => {
+                if (!user) {
+                    throw new Error(`No se envió usuario`)
+                }
+
+                try {
+                    const tenantContainer = createTenantScopedContainer(
+                        WAREHOUSE_ENTRY_TYPES.UseCaseAddDetailBulk,
+                        WAREHOUSE_ENTRY_TYPES.RepositoryMongo,
+                        UseCaseAddDetailBulk,
+                        WarehouseEntryMongoRepository,
+                        user.rootCompany.code, // database
+                        collection,
+                        user.user,
+                        [
+                            [WAREHOUSE_ENTRY_TYPES.UseCaseAddDetail, UseCaseAddDetail],
+                            [WAREHOUSE_ENTRY_TYPES.UseCaseAddSerial, UseCaseAddSerial],
+                        ]
+                    )
+                    const useCase = tenantContainer.get<UseCaseAddDetailBulk>(WAREHOUSE_ENTRY_TYPES.UseCaseAddDetailBulk)
+                    const doc = await useCase.exec(message._id, message.data, user)
+
+                    const msg = await this.createSuccesNotification(
+                        user.user,
+                        `Ingreso — Doc. N.º ${message._id}: Detalles agregados`,
+                        `Ingreso — Doc. N.º ${message._id}: se agregaron correctamente ${doc.detail.length} detalle(s).`,
+                        this.invalidatesTags
+                    )
+                    await this.rabbitMQ.publish({ queue: this.queueNotification_UseCaseInsertOne, user, message: msg })
+                } catch (error) {
+                    const mensaje = `Ingreso — Doc. N.º ${message._id}: no se pudieron agregar uno o más detalles. Error: ${(error as Error).message}`
+                    console.error(mensaje)
+                    const msg = await this.createErrorNotification(
+                        user.user,
+                        `Ingreso — Doc. N.º ${message._id}: Error al agregar detalles`,
+                        mensaje,
+                        this.invalidatesTags
+                    )
+                    await this.rabbitMQ.publish({ queue: this.queueNotification_UseCaseInsertOne, user, message: msg })
+                }
+            }
+        })
+        console.log('\x1b[34m%s\x1b[0m', `>>> Suscrito a: ${queue}`)
+    }
+}
