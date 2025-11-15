@@ -1,7 +1,9 @@
+import { env } from '@Config/env'
 import { UnprocessableEntityException } from '@Config/exception'
 import {
     AuthUserDTO,
     CreateNotificationDTO,
+    getQueueNameSaveOneNotification,
     InvalidatesTagsDTO,
     PriorityNotification,
     TypeNotification,
@@ -9,7 +11,7 @@ import {
 } from 'logiflowerp-sdk'
 
 export class CommonNotification {
-    protected queueNotification_UseCaseInsertOne = 'Notification_UseCaseInsertOne'
+    protected queueNotification_UseCaseInsertOne = getQueueNameSaveOneNotification({ NODE_ENV: env.NODE_ENV })
 
     protected createSuccesNotification(
         user: AuthUserDTO,

@@ -6,11 +6,14 @@ import { AdapterRabbitMQ } from '@Shared/Infrastructure/Adapters';
 import { BulkExit } from '../Domain';
 import { WAREHOUSE_EXIT_TYPES } from './IoC';
 import { WarehouseExitMongoRepository } from './MongoRepository';
+import { getQueueName } from 'logiflowerp-sdk';
+import { CONFIG_TYPES } from '@Config/types';
 
 @injectable()
 export class Worker extends BulkExit {
     constructor(
         @inject(SHARED_TYPES.AdapterRabbitMQ) private readonly rabbitMQ: AdapterRabbitMQ,
+        @inject(CONFIG_TYPES.Env) private readonly env: Env,
     ) {
         super()
     }
@@ -20,7 +23,7 @@ export class Worker extends BulkExit {
     }
 
     private async resolveCountryAddDetailBulk() {
-        const queue = 'WarehouseExit_UseCaseBulkExit'
+        const queue = getQueueName({ NODE_ENV: this.env.NODE_ENV, name: 'WarehouseExit_UseCaseBulkExit' })
         await this.rabbitMQ.subscribe({
             queue,
             onMessage: async ({ message, user }) => {

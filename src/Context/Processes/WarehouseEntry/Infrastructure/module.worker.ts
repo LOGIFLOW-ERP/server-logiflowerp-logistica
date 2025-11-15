@@ -6,11 +6,14 @@ import { collection } from './config';
 import { createTenantScopedContainer, SHARED_TYPES } from '@Shared/Infrastructure/IoC';
 import { AdapterRabbitMQ } from '@Shared/Infrastructure/Adapters';
 import { AddDetail } from '../Domain';
+import { getQueueName } from 'logiflowerp-sdk';
+import { CONFIG_TYPES } from '@Config/types';
 
 @injectable()
 export class Worker extends AddDetail {
     constructor(
         @inject(SHARED_TYPES.AdapterRabbitMQ) private readonly rabbitMQ: AdapterRabbitMQ,
+        @inject(CONFIG_TYPES.Env) private readonly env: Env,
     ) {
         super()
     }
@@ -20,7 +23,7 @@ export class Worker extends AddDetail {
     }
 
     private async resolveCountryAddDetailBulk() {
-        const queue = 'WarehouseEntry_UseCaseInsertOneBulk'
+        const queue = getQueueName({ NODE_ENV: this.env.NODE_ENV, name: 'WarehouseEntry_UseCaseInsertOneBulk' })
         await this.rabbitMQ.subscribe({
             queue,
             onMessage: async ({ message, user }) => {

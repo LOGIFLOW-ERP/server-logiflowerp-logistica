@@ -11,6 +11,7 @@ import {
 import {
     CreateOrderDetailDTO,
     CreateWarehouseEntryDTO,
+    getQueueName,
     StockSerialDTO,
     validateRequestBody as VRB,
     validateUUIDv4Param as VUUID,
@@ -31,10 +32,12 @@ import {
 import { inject } from 'inversify'
 import { SHARED_TYPES } from '@Shared/Infrastructure/IoC'
 import { AdapterRabbitMQ } from '@Shared/Infrastructure/Adapters'
+import { CONFIG_TYPES } from '@Config/types'
 
 export class WarehouseEntryController extends BaseHttpController {
     constructor(
         @inject(SHARED_TYPES.AdapterRabbitMQ) private readonly adapterRabbitMQ: AdapterRabbitMQ,
+        @inject(CONFIG_TYPES.Env) private readonly env: Env,
     ) {
         super()
     }
@@ -72,7 +75,7 @@ export class WarehouseEntryController extends BaseHttpController {
     @httpPut('add-detail-bulk/:_id', authorizeRoute)
     private async addDetailBulk(@request() req: Request, @response() res: Response) {
         await this.adapterRabbitMQ.publish({
-            queue: 'WarehouseEntry_UseCaseInsertOneBulk',
+            queue: getQueueName({ NODE_ENV: this.env.NODE_ENV, name: 'WarehouseEntry_UseCaseInsertOneBulk' }),
             message: { _id: req.params._id, data: req.body },
             user: req.payloadToken
         })

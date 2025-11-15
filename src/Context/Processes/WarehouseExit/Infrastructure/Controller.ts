@@ -13,6 +13,8 @@ import {
     CreateWarehouseExitDetailDTO,
     CreateWarehouseExitDTO,
     EditAmountDetailDTO,
+    getQueueName,
+    getQueueNameSaveOneNotification,
     PriorityNotification,
     StockSerialDTO,
     TypeNotification,
@@ -39,10 +41,12 @@ import {
 import { inject } from 'inversify'
 import { SHARED_TYPES } from '@Shared/Infrastructure/IoC'
 import { AdapterRabbitMQ } from '@Shared/Infrastructure/Adapters'
+import { CONFIG_TYPES } from '@Config/types'
 
 export class WarehouseExitController extends BaseHttpController {
     constructor(
         @inject(SHARED_TYPES.AdapterRabbitMQ) private readonly adapterRabbitMQ: AdapterRabbitMQ,
+        @inject(CONFIG_TYPES.Env) private readonly env: Env,
     ) {
         super()
     }
@@ -69,7 +73,7 @@ export class WarehouseExitController extends BaseHttpController {
     private async bulkExit(@request() req: Request, @response() res: Response) {
         const ticket = Date.now()
         await this.adapterRabbitMQ.publish({
-            queue: 'WarehouseExit_UseCaseBulkExit',
+            queue: getQueueName({ NODE_ENV: this.env.NODE_ENV, name: 'WarehouseExit_UseCaseBulkExit' }),
             message: { data: req.body, ticket },
             user: req.payloadToken
         })
@@ -83,7 +87,11 @@ export class WarehouseExitController extends BaseHttpController {
             invalidatesTags: []
         }
         const msg = await validateCustom(notification, CreateNotificationDTO, UnprocessableEntityException)
-        await this.adapterRabbitMQ.publish({ queue: 'Notification_UseCaseInsertOne', user: req.payloadToken, message: msg })
+        await this.adapterRabbitMQ.publish({
+            queue: getQueueNameSaveOneNotification({ NODE_ENV: this.env.NODE_ENV }),
+            user: req.payloadToken,
+            message: msg
+        })
         res.sendStatus(204)
     }
 
