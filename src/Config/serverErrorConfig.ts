@@ -1,6 +1,7 @@
 import { Application, ErrorRequestHandler } from 'express'
 import { MongoServerError } from 'mongodb'
 import { BaseException, ConflictException, InternalServerException } from './exception'
+import { parseDuplicateKeyError } from 'logiflowerp-sdk'
 
 export function serverErrorConfig(app: Application) {
 
@@ -28,29 +29,4 @@ export function serverErrorConfig(app: Application) {
 
     app.use(errorHandler)
 
-}
-
-const parseDuplicateKeyError = (message: string): string | null => {
-    const match = message.match(/dup key:\s*\{([^}]+)\}/)
-    if (!match) return null
-
-    const fieldsString = match[1]
-
-    const pairs = fieldsString.split(',').map(p => p.trim())
-
-    const excludeKeys = ['isDeleted', '_id', '__v']
-
-    const formattedFields = pairs
-        .map(pair => {
-            const [rawKey, rawValue] = pair.split(':').map(s => s.trim())
-            const key = rawKey.replace(/["']/g, '')
-            const value = rawValue?.replace(/["']/g, '')
-            return { key, value }
-        })
-        .filter(({ key }) => !excludeKeys.includes(key))
-        .map(({ key, value }) => `${key} = ${value}`)
-
-    if (formattedFields.length === 0) return null
-
-    return `Duplicado en ${formattedFields.join(', ')}`
 }
