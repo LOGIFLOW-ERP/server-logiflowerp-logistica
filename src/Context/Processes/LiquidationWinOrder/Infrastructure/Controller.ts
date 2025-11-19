@@ -49,7 +49,7 @@ export class LiquidationWinOrderController extends BaseHttpController {
     @httpPut('finalize-order/:_id', authorizeRoute)
     @resolveCompanyFinalizeOrder
     private finalizeOrder(@request() req: Request) {
-        return req.useCase.exec(req.params._id)
+        return req.useCase.exec(req.params._id, req.user)
     }
 
     @httpPut('delete-photos/:_id', authorizeRoute, VRB.bind(null, BodyReqDeletePhotoDTO, BRE), VUUID.bind(null, BRE))
