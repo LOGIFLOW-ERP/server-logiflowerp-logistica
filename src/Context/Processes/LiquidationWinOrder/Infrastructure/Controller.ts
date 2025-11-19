@@ -17,6 +17,7 @@ import { authorizeRoute } from '@Shared/Infrastructure/Middlewares'
 import {
     resolveCompanyAddInventory,
     resolveCompanyDeletePhotos,
+    resolveCompanyFinalizeOrder,
     resolveCompanyGetAll,
     resolveCompanySendReview,
     resolveCompanyUploadPhotos,
@@ -43,6 +44,12 @@ export class LiquidationWinOrderController extends BaseHttpController {
     @resolveCompanySendReview
     private sendReview(@request() req: Request) {
         return req.useCase.exec(req.params._id, req.user)
+    }
+
+    @httpPut('finalize-order/:_id', authorizeRoute)
+    @resolveCompanyFinalizeOrder
+    private finalizeOrder(@request() req: Request) {
+        return req.useCase.exec(req.params._id)
     }
 
     @httpPut('delete-photos/:_id', authorizeRoute, VRB.bind(null, BodyReqDeletePhotoDTO, BRE), VUUID.bind(null, BRE))

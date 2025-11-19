@@ -1,6 +1,4 @@
-import { IWINOrderMongoRepository } from '../Domain'
 import { inject, injectable } from 'inversify'
-import { WIN_ORDER_TYPES } from '../Infrastructure/IoC/types'
 import {
 	AuthUserDTO,
 	collections,
@@ -12,6 +10,8 @@ import {
 	WINOrderENTITY
 } from 'logiflowerp-sdk'
 import { BadRequestException, UnprocessableEntityException } from '@Config/exception'
+import { IWINOrderMongoRepository } from '@Processes/WinOrder/Domain'
+import { WIN_ORDER_TYPES } from '@Processes/WinOrder/Infrastructure/IoC/types'
 
 @injectable()
 export class UseCaseFinalizeOrder {
@@ -24,9 +24,24 @@ export class UseCaseFinalizeOrder {
 
 	async exec(_id: string, user: AuthUserDTO) {
 		const doc = await this.repository.selectOne([{ $match: { _id } }])
-		if (doc.estado_interno !== StateInternalOrderWin.REVISION) {
+		if (doc.estado_interno !== StateInternalOrderWin.PENDIENTE) {
 			throw new BadRequestException(
 				`Error al cambiar estado interno de la orden, su estado inerno es ${doc.estado_interno}`,
+				true
+			)
+		}
+
+		const minPhotos = 4
+		if (doc.fotos.length < minPhotos) {
+			throw new BadRequestException(
+				`La orden debe tener al menos ${minPhotos} fotos antes de enviarse a revisión.`,
+				true
+			)
+		}
+
+		if (doc.inventory.length === 0) {
+			throw new BadRequestException(
+				`La orden debe tener al menos 1 inventario antes de enviarse a revisión.`,
 				true
 			)
 		}
