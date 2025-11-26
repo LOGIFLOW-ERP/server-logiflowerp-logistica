@@ -25,18 +25,18 @@ export class EmployeeStockController extends BaseHttpController {
     @httpPost('report', authorizeRoute)
     @resolveCompanyReport
     async report(@request() req: Request) {
-        return await req.useCase.exec(req)
+        return await req.useCase.exec(req.body)
     }
 
-    @httpGet('report-individual', authorizeRoute)
+    @httpPost('report-individual', authorizeRoute)
     @resolveCompanyReportIndividual
     async reportIndividual(@request() req: Request) {
-        return await req.useCase.exec(req)
+        return await req.useCase.exec(req.body, req.user)
     }
 
     @httpGet('get-data-liquidation-order', authorizeRoute)
     @resolveCompanyGetDataLiquidationOrder
     async getDataLiquidationOrder(@request() req: Request) {
-        return await req.useCase.exec(req)
+        return await req.useCase.exec(req.user)
     }
 }

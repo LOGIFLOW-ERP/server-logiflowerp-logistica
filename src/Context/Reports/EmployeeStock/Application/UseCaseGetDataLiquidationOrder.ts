@@ -1,8 +1,16 @@
-import { Request } from 'express'
 import { IEmployeeStockMongoRepository } from '../Domain'
 import { EMPLOYEE_STOCK_TYPES } from '../Infrastructure/IoC'
 import { inject, injectable } from 'inversify'
-import { collections, EmployeeStockENTITY, EmployeeStockSerialENTITY, ProductOrderDTO, State, StateStockSerialEmployee, StockType } from 'logiflowerp-sdk';
+import {
+    AuthUserDTO,
+    collections,
+    EmployeeStockENTITY,
+    EmployeeStockSerialENTITY,
+    ProductOrderDTO,
+    State,
+    StateStockSerialEmployee,
+    StockType
+} from 'logiflowerp-sdk';
 
 @injectable()
 export class UseCaseGetDataLiquidationOrder {
@@ -10,12 +18,12 @@ export class UseCaseGetDataLiquidationOrder {
         @inject(EMPLOYEE_STOCK_TYPES.RepositoryMongo) private readonly repository: IEmployeeStockMongoRepository,
     ) { }
 
-    async exec(req: Request) {
+    async exec(user: AuthUserDTO) {
         const pipelineEmployeeStock = [{
             $match: {
                 state: State.ACTIVO,
                 stockType: StockType.NUEVO,
-                'employee.identity': req.user.identity
+                'employee.identity': user.identity
             }
         }]
         const responseEmployeeStock = await this.repository.select(pipelineEmployeeStock)
@@ -25,7 +33,7 @@ export class UseCaseGetDataLiquidationOrder {
                 itemCode: { $in: codes },
                 state: StateStockSerialEmployee.POSESION,
                 keySearch: { $regex: 'Nuevo$', $options: 'i' },
-                identity: req.user.identity
+                identity: user.identity
             }
         }]
         const responseEmployeeStockSerials = await this.repository.select<EmployeeStockSerialENTITY>(pipelineEmployeeStockSerials, collections.employeeStockSerial)

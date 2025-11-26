@@ -3,6 +3,7 @@ import { WAREHOUSE_STOCK_SERIAL_TYPES } from '../Infrastructure/IoC'
 import { inject, injectable } from 'inversify'
 import {
 	collections,
+	DataSerialTracking,
 	EmployeeDTO,
 	EmployeeStockENTITY,
 	EmployeeStockSerialENTITY,
@@ -19,13 +20,6 @@ import {
 	WarehouseStockENTITY,
 	WINOrderENTITY
 } from 'logiflowerp-sdk'
-
-type DataSerialTracking =
-	Pick<OrderENTITY, 'documentNumber' | 'movement' | 'store'> &
-	Pick<OrderDetailENTITY, 'item'> &
-	Pick<EmployeeStockENTITY, 'employee'> &
-	Pick<EmployeeStockSerialENTITY, 'serial' | 'updatedate'> &
-	{ stateSerial: string, stateDocument: string, _id: string }
 
 @injectable()
 export class UseCaseSerialTracking {
