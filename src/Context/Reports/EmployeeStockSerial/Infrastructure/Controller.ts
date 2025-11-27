@@ -8,6 +8,7 @@ import {
 import { authorizeRoute } from '@Shared/Infrastructure/Middlewares'
 import {
     resolveCompanyFind,
+    resolveCompanyFindIndividual,
 } from './decorators'
 
 export class EmployeeStockSerialController extends BaseHttpController {
@@ -18,4 +19,9 @@ export class EmployeeStockSerialController extends BaseHttpController {
         await req.useCase.exec(req, res)
     }
 
+    @httpPost('find-individual', authorizeRoute)
+    @resolveCompanyFindIndividual
+    private async findIndividual(@request() req: Request, @response() res: Response) {
+        await req.useCase.exec(req, res)
+    }
 }
