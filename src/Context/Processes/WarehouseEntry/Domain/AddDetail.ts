@@ -9,14 +9,7 @@ import {
 } from 'logiflowerp-sdk'
 
 export class AddDetail extends CommonNotification {
-    protected path = 'processes/warehouseEntry'
-    protected api = 'warehouseEntryApi'
-    protected invalidatesTags = [
-        { api: this.api, type: this.path, id: `LIST${this.path}` },
-        { api: this.api, type: this.path, id: `LIST1${this.path}` },
-        { api: this.api, type: this.path, id: `STATIC_PIPELINE${this.path}` },
-        { api: this.api, type: this.path, id: `PIPELINE${this.path}` },
-    ]
+    protected invalidatesTags = ['warehouseEntryApi']
 
     protected buildDetail(document: WarehouseEntryENTITY, dto: CreateOrderDetailDTO, productPrice: ProductPriceENTITY) {
         const lastPosition = document.detail.reduce((acc, item) => Math.max(acc, item.position), 0)

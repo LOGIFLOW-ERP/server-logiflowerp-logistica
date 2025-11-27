@@ -4,7 +4,6 @@ import {
     AuthUserDTO,
     CreateNotificationDTO,
     getQueueNameSaveOneNotification,
-    InvalidatesTagsDTO,
     PriorityNotification,
     TypeNotification,
     validateCustom
@@ -17,7 +16,7 @@ export class CommonNotification {
         user: AuthUserDTO,
         titulo: string,
         mensaje: string,
-        invalidatesTags: InvalidatesTagsDTO[] | undefined = [],
+        invalidatesTags: string[] | undefined = [],
         prioridad: PriorityNotification | undefined = PriorityNotification.MEDIAN,
         urlDestino: string | undefined = ''
     ) {
@@ -37,7 +36,7 @@ export class CommonNotification {
         user: AuthUserDTO,
         titulo: string,
         mensaje: string,
-        invalidatesTags: InvalidatesTagsDTO[] | undefined = [],
+        invalidatesTags: string[] | undefined = [],
         prioridad: PriorityNotification | undefined = PriorityNotification.MEDIAN,
         urlDestino: string | undefined = ''
     ) {
@@ -57,7 +56,7 @@ export class CommonNotification {
         user: AuthUserDTO,
         titulo: string,
         mensaje: string,
-        invalidatesTags: InvalidatesTagsDTO[] | undefined = [],
+        invalidatesTags: string[] | undefined = [],
         prioridad: PriorityNotification | undefined = PriorityNotification.MEDIAN,
         urlDestino: string | undefined = ''
     ) {
