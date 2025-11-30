@@ -163,7 +163,7 @@ export class UseCaseAutomaticReplenishmentToa extends AddDetail {
             newDoc.serial = toaOrderStock.serial
             newDoc.state_consumption = StateInventory.PROCESADO
             newDoc.state_replacement = StateInventory.PENDIENTE
-            newDoc.stock_quantity_employee = []
+            // newDoc.stock_quantity_employee = []
             newDoc.resource_id = toaOrderStock.resource_id
 
             const doc = await validateCustom(newDoc, OrderStockENTITY, UnprocessableEntityException)

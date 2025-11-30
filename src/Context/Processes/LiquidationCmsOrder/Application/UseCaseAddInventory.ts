@@ -2,6 +2,7 @@
 import {
     CreateInventoryDTO,
     EmployeeENTITY,
+    EmployeeStockENTITY,
     EmployeeStockSerialENTITY,
     InventoryToaDTO,
     ProducType,
@@ -34,9 +35,9 @@ export class UseCaseAddInventory {
         if (document.estado_actividad === 'Completado') {
             throw new BadRequestException('No se puede agregar inventario a una orden de TOA que ya ha sido completada', true)
         }
-        const product = await this.repository.selectOne<ProductENTITY>([{ $match: { itemCode: data.code } }], collections.product)
+        const product = await this.repository.selectOne<EmployeeStockENTITY>([{ $match: { _id: data._id_stock } }], collections.employeeStock)
 
-        const isSerie = product.producType === ProducType.SERIE
+        const isSerie = product.item.producType === ProducType.SERIE
 
         if (isSerie) {
             if (data.invsn.trim() === '') {
@@ -48,8 +49,8 @@ export class UseCaseAddInventory {
         }
 
         const newInventory = {
-            code: data.code,
-            description: product.itemName,
+            code: product.item.itemCode,
+            description: product.item.itemName,
             quantity: data.quantity,
             invpool: 'install',
             invsn: data.invsn,
@@ -61,7 +62,7 @@ export class UseCaseAddInventory {
 
         const inventory = await validateCustom(newInventory, InventoryToaDTO, UnprocessableEntityException)
 
-        if (document.inventory.some(e => e.code === data.code)) {
+        if (document.inventory.some(e => e.code === data._id_stock)) {
             throw new BadRequestException('El producto ya fue agregado a la orden', true)
         }
 
@@ -80,7 +81,7 @@ export class UseCaseAddInventory {
 
             const pipeline = [{
                 $match: {
-                    itemCode: data.code,
+                    itemCode: product.item.itemCode,
                     state: StateStockSerialEmployee.POSESION,
                     keySearch: { $regex: 'Nuevo$', $options: 'i' },
                     identity: personel.identity,
@@ -99,7 +100,7 @@ export class UseCaseAddInventory {
             }
             this.transactions.push(transaction)
         }
-        
+
         return this.repository.executeTransactionBatch(this.transactions)
     }
 }

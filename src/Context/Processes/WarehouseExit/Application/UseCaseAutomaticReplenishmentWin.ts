@@ -163,8 +163,8 @@ export class UseCaseAutomaticReplenishmentWin extends AddDetail {
             newDoc.serial = orderStock.serial
             newDoc.state_consumption = StateInventory.PROCESADO
             newDoc.state_replacement = StateInventory.PENDIENTE
-            newDoc.stock_quantity_employee = []
             newDoc.resource_id = orderStock.resource_id
+            newDoc.invpool = orderStock.invpool
 
             const doc = await validateCustom(newDoc, OrderStockENTITY, UnprocessableEntityException)
 

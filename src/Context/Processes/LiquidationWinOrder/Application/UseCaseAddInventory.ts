@@ -2,10 +2,10 @@
 import {
     AuthUserDTO,
     CreateInventoryDTO,
+    EmployeeStockENTITY,
     EmployeeStockSerialENTITY,
     InventoryWinDTO,
     ProducType,
-    ProductENTITY,
     StateInternalOrderWin,
     StateOrderWin,
     StateStockSerialEmployee,
@@ -37,10 +37,13 @@ export class UseCaseAddInventory {
                 true
             )
         }
+        if (data.quantity <= 0) {
+            throw new BadRequestException('El campo cantidad debe ser mayor a 0', true)
+        }
 
-        const product = await this.repository.selectOne<ProductENTITY>([{ $match: { itemCode: data.code } }], collections.product)
+        const employeeStock = await this.repository.selectOne<EmployeeStockENTITY>([{ $match: { _id: data._id_stock } }], collections.employeeStock)
 
-        const isSerie = product.producType === ProducType.SERIE
+        const isSerie = employeeStock.item.producType === ProducType.SERIE
 
         if (isSerie) {
             if (data.invsn.trim() === '') {
@@ -52,18 +55,21 @@ export class UseCaseAddInventory {
         }
 
         const newInventory = {
-            code: data.code,
-            description: product.itemName,
+            code: employeeStock.item.itemCode,
+            description: employeeStock.item.itemName,
             quantity: data.quantity,
             invsn: data.invsn,
-            invpool: 'install'
+            invpool: 'install',
+            _id_stock: data._id_stock
         }
 
         const inventory = await validateCustom(newInventory, InventoryWinDTO, UnprocessableEntityException)
 
-        if (document.inventory.some(e => e.code === data.code && e.invsn === data.invsn)) {
+        if (document.inventory.some(e => e._id_stock === data._id_stock)) {
             throw new BadRequestException('El producto ya fue agregado a la orden', true)
         }
+
+        await this.validateAvailableStockEmployee(data._id_stock, inventory.quantity)
 
         const transaction: ITransaction<WINOrderENTITY> = {
             transaction: 'updateOne',
@@ -77,9 +83,10 @@ export class UseCaseAddInventory {
         if (isSerie) {
             const pipeline = [{
                 $match: {
-                    itemCode: data.code,
+                    isDeleted: false,
                     state: StateStockSerialEmployee.POSESION,
-                    keySearch: { $regex: 'Nuevo$', $options: 'i' },
+                    keySearch: employeeStock.keySearch,
+                    keyDetail: employeeStock.keyDetail,
                     identity: user.identity,
                     serial: data.invsn
                 }
@@ -102,5 +109,16 @@ export class UseCaseAddInventory {
         }
 
         return this.repository.executeTransactionBatch(this.transactions)
+    }
+
+    private async validateAvailableStockEmployee(_id: string, amount: number) {
+        const result = await this.repository.validateAvailableEmployeeStocks({ _ids: [_id] })
+        const available = result[0].available
+        if (amount > available) {
+            throw new BadRequestException(
+                `La cantidad a liquidar (${amount}) excede el stock disponible (${available}).`,
+                true
+            )
+        }
     }
 }

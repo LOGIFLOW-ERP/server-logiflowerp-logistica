@@ -6,7 +6,7 @@ import {
     collections,
     EmployeeStockENTITY,
     EmployeeStockSerialENTITY,
-    ProductOrderDTO,
+    ProducType,
     State,
     StateStockSerialEmployee,
     StockType
@@ -22,17 +22,21 @@ export class UseCaseGetDataLiquidationOrder {
         const pipelineEmployeeStock = [{
             $match: {
                 state: State.ACTIVO,
+                isDeleted: false,
                 stockType: StockType.NUEVO,
                 'employee.identity': user.identity
             }
         }]
         const responseEmployeeStock = await this.repository.select(pipelineEmployeeStock)
         const codes = [...new Set(responseEmployeeStock.map(es => es.item.itemCode))]
+        const keySearch = [...new Set(responseEmployeeStock.map(es => es.keySearch))]
+        const keyDetail = [...new Set(responseEmployeeStock.map(es => es.keyDetail))]
         const pipelineEmployeeStockSerials = [{
             $match: {
                 itemCode: { $in: codes },
                 state: StateStockSerialEmployee.POSESION,
-                keySearch: { $regex: 'Nuevo$', $options: 'i' },
+                keySearch: { $in: keySearch },
+                keyDetail: { $in: keyDetail },
                 identity: user.identity
             }
         }]
@@ -41,16 +45,20 @@ export class UseCaseGetDataLiquidationOrder {
     }
 
     private processMongoDocuments(docs: EmployeeStockENTITY[], employeeStockSerials: EmployeeStockSerialENTITY[]) {
-        const mapa = new Map<string, { item: ProductOrderDTO, serials: Pick<EmployeeStockSerialENTITY, 'serial' | 'itemCode'>[] }>()
-        docs.forEach(doc => {
-            const key = doc.item.itemCode
-            if (!mapa.has(key)) {
-                const serials = employeeStockSerials
-                    .filter(ess => ess.itemCode === key)
-                    .map(ess => ({ serial: ess.serial, itemCode: ess.itemCode }))
-                mapa.set(key, { item: doc.item, serials })
+        const result = docs.map(doc => {
+            const ess = doc.item.producType === ProducType.SERIE
+                ? employeeStockSerials.filter(
+                    ess => ess.itemCode === doc.item.itemCode &&
+                        ess.keySearch === doc.keySearch &&
+                        ess.keyDetail === doc.keyDetail &&
+                        ess.identity === doc.employee.identity
+                )
+                : []
+            return {
+                item: doc,
+                serials: ess
             }
         })
-        return Array.from(mapa.values())
+        return result
     }
 }
