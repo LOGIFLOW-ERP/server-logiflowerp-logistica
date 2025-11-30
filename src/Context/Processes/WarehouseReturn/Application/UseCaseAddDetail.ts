@@ -32,7 +32,7 @@ export class UseCaseAddDetail {
         const newDetail = await this.buildDetail(dto, productPrice)
         this.validateDetail(newDetail)
         await this.searchEmployeeStock(newDetail)
-        await this.validateAvailableStockWarehouse(dto.employeeStock._id, newDetail)
+        await this.validateAvailableStockEmployee(dto.employeeStock._id, newDetail)
         return this.repository.updateOne({ _id }, { $push: { detail: newDetail } })
     }
 
@@ -84,7 +84,7 @@ export class UseCaseAddDetail {
         }
     }
 
-    private async validateAvailableStockWarehouse(_id: string, newDetail: OrderDetailENTITY) {
+    private async validateAvailableStockEmployee(_id: string, newDetail: OrderDetailENTITY) {
         const result = await this.repository.validateAvailableEmployeeStocks({ _ids: [_id] })
         if (newDetail.amount > result[0].available) {
             throw new BadRequestException(
