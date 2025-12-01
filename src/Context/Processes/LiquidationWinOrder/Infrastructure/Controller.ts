@@ -9,6 +9,7 @@ import {
 } from 'inversify-express-utils'
 import {
     CreateInventoryDTO,
+    DeleteInventoryDTO,
     validateRequestBody as VRB,
     validateUUIDv4Param as VUUID,
 } from 'logiflowerp-sdk'
@@ -16,6 +17,7 @@ import { BadRequestException as BRE } from '@Config/exception'
 import { authorizeRoute } from '@Shared/Infrastructure/Middlewares'
 import {
     resolveCompanyAddInventory,
+    resolveCompanyDeleteInventory,
     resolveCompanyDeletePhotos,
     resolveCompanyFinalizeOrder,
     resolveCompanyGetAll,
@@ -37,7 +39,13 @@ export class LiquidationWinOrderController extends BaseHttpController {
     @httpPut('add-inventory/:_id', authorizeRoute, VRB.bind(null, CreateInventoryDTO, BRE), VUUID.bind(null, BRE))
     @resolveCompanyAddInventory
     private addInventory(@request() req: Request) {
-        return req.useCase.exec(req.params._id, req.body, req.user)
+        return req.useCase.exec(req.params._id, req.body)
+    }
+
+    @httpPut('delete-inventory/:_id', authorizeRoute, VRB.bind(null, DeleteInventoryDTO, BRE), VUUID.bind(null, BRE))
+    @resolveCompanyDeleteInventory
+    private deleteInventory(@request() req: Request) {
+        return req.useCase.exec(req.params._id, req.body)
     }
 
     @httpPut('send-review/:_id', authorizeRoute, VUUID.bind(null, BRE))
