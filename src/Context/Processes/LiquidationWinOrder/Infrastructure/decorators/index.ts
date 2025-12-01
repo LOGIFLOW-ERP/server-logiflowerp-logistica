@@ -4,3 +4,5 @@ export * from './resolveCompanyUploadPhotos';
 export * from './resolveCompanyDeletePhotos';
 export * from './resolveCompanySendReview';
 export * from './resolveCompanyFinalizeOrder';
+export * from './resolveCompanyDeleteInventory';
+
