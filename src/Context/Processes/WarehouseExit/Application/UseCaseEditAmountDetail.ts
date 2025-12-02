@@ -22,6 +22,11 @@ export class UseCaseEditAmountDetail extends AddDetail {
     async exec(_id: string, keyDetail: string, dto: EditAmountDetailDTO) {
         await this.searchDocument(_id)
         const detail = this.searchDetail(keyDetail)
+
+        if (detail.serials.length > dto.amount) {
+            throw new BadRequestException('La cantidad no puede ser menor a la cantidad de series.', true)
+        }
+
         const warehouseStock = await this._searchWarehouseStock(detail)
         const newDetail = await this.buildDetail(this.document, { amount: dto.amount, warehouseStock }, false, detail.amount)
         return this.repository.updateOne(
