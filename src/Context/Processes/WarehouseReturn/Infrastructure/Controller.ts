@@ -24,6 +24,7 @@ import {
     resolveCompanyDeleteOne,
     resolveCompanyDeleteSerial,
     resolveCompanyFind,
+    resolveCompanyFindIndividual,
     resolveCompanyGetAll,
     resolveCompanyInsertOne,
     resolveCompanyValidate,
@@ -34,6 +35,12 @@ export class WarehouseReturnController extends BaseHttpController {
     @httpPost('find', authorizeRoute)
     @resolveCompanyFind
     async find(@request() req: Request, @response() res: Response) {
+        await req.useCase.exec(req, res)
+    }
+
+    @httpPost('find-individual', authorizeRoute)
+    @resolveCompanyFindIndividual
+    private async findIndividual(@request() req: Request, @response() res: Response) {
         await req.useCase.exec(req, res)
     }
 

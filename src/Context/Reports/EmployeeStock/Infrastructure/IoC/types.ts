@@ -4,4 +4,5 @@ export const EMPLOYEE_STOCK_TYPES = {
     UseCaseReport: Symbol('UseCaseReport'),
     UseCaseReportIndividual: Symbol('UseCaseReportIndividual'),
     GetDataLiquidationOrder: Symbol('GetDataLiquidationOrder'),
+    UseCaseFindIndividual: Symbol('UseCaseFindIndividual'),
 }
