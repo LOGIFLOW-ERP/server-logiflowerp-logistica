@@ -23,7 +23,7 @@ import { SHARED_TYPES } from '@Shared/Infrastructure/IoC'
 
 const allowedInProd = /^https?:\/\/([a-z0-9-]+\.)*logiflowerp\.com$/i
 
-export async function serverConfig(app: Application) {
+export async function serverConfig(app: Application, rootPath: string) {
 
     app.use(resolveTenantBySubdomain)
     app.use(customLogger)
@@ -58,7 +58,7 @@ export async function serverConfig(app: Application) {
         credentials: true
     }))
 
-    authMiddleware(app)
+    authMiddleware(app, rootPath)
 
     app.use(json({ limit: '10mb' }))
     app.use(text({ limit: '10mb' }))
@@ -87,12 +87,14 @@ function customLogger(req: Request, res: Response, next: NextFunction) {
 
 }
 
-function authMiddleware(app: Application) {
+function authMiddleware(app: Application, rootPath: string) {
     app.use(async (req, _res, next) => {
         try {
             let serviceNoAuth: boolean = true
 
-            const publicRoutes: string[] = []
+            const publicRoutes: string[] = [
+                // `${rootPath}/reports/winReports/production`,
+            ]
             const url = req.originalUrl.toLowerCase()
 
             if (publicRoutes.some(route => route.toLowerCase() === url)) {
