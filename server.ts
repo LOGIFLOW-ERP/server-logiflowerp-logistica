@@ -27,7 +27,7 @@ const Bootstrap = async () => {
     const rootPath = `/api/${PREFIX}`
     const app = express()
     const server = new InversifyExpressServer(ContainerGlobal, null, { rootPath }, app)
-    server.setConfig(serverConfig)
+    server.setConfig((app) => serverConfig(app, rootPath))
     server.setErrorConfig(serverErrorConfig)
     const expressApp = server.build()
 

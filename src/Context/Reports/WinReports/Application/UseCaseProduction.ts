@@ -1,0 +1,142 @@
+import { inject, injectable } from 'inversify'
+import { WIN_ORDER_TYPES } from '@Processes/WinOrder/Infrastructure/IoC/types'
+import { IWINOrderMongoRepository } from '@Processes/WinOrder/Domain'
+import { Document } from 'mongodb';
+import { Request, Response } from 'express';
+
+@injectable()
+export class UseCaseProduction {
+    constructor(
+        @inject(WIN_ORDER_TYPES.RepositoryMongo) private readonly repository: IWINOrderMongoRepository,
+    ) { }
+
+    async exec(req: Request, res: Response) {
+        const { año, mes } = req.body
+        const fechaInicio = new Date(año, mes - 1, 1, 0, 0, 0)
+        const fechaFin = new Date(año, mes, 0, 23, 59, 59)
+
+        const estados = ["Finalizada", "Cancelada", "Regestión", "Anulada"]
+
+        const pipeline: Document[] = [
+            {
+                $match: {
+                    estado: { $in: estados },
+                    fecha_visita: { $gte: fechaInicio, $lte: fechaFin }
+                }
+            },
+            {
+                $group: {
+                    _id: {
+                        tecnico: "$tecnico",
+                        dia: { $dayOfMonth: "$fecha_visita" },
+                        estado: "$estado"
+                    },
+                    total: { $sum: 1 }
+                }
+            },
+            {
+                $sort: {
+                    "_id.tecnico": 1,
+                    "_id.dia": 1,
+                    "_id.estado": 1
+                }
+            },
+            {
+                $group: {
+                    _id: {
+                        tecnico: "$_id.tecnico",
+                        dia: "$_id.dia"
+                    },
+                    estados: {
+                        $push: {
+                            estado: "$_id.estado",
+                            total: "$total"
+                        }
+                    }
+                }
+            },
+            {
+                $project: {
+                    tecnico: "$_id.tecnico",
+                    dia: "$_id.dia",
+                    Finalizada: {
+                        $sum: {
+                            $map: {
+                                input: "$estados",
+                                as: "e",
+                                in: { $cond: [{ $eq: ["$$e.estado", "Finalizada"] }, "$$e.total", 0] }
+                            }
+                        }
+                    },
+                    Cancelada: {
+                        $sum: {
+                            $map: {
+                                input: "$estados",
+                                as: "e",
+                                in: { $cond: [{ $eq: ["$$e.estado", "Cancelada"] }, "$$e.total", 0] }
+                            }
+                        }
+                    },
+                    Regestion: {
+                        $sum: {
+                            $map: {
+                                input: "$estados",
+                                as: "e",
+                                in: { $cond: [{ $eq: ["$$e.estado", "Regestión"] }, "$$e.total", 0] }
+                            }
+                        }
+                    },
+                    Anulada: {
+                        $sum: {
+                            $map: {
+                                input: "$estados",
+                                as: "e",
+                                in: { $cond: [{ $eq: ["$$e.estado", "Anulada"] }, "$$e.total", 0] }
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                $addFields: {
+                    totalDia: {
+                        $add: ["$Finalizada", "$Cancelada", "$Regestion", "$Anulada"]
+                    }
+                }
+            },
+            {
+                $group: {
+                    _id: "$tecnico",
+                    produccion: {
+                        $push: {
+                            dia: "$dia",
+                            Finalizada: "$Finalizada",
+                            Cancelada: "$Cancelada",
+                            Regestion: "$Regestion",
+                            Anulada: "$Anulada",
+                            totalDia: "$totalDia"
+                        }
+                    },
+                    totalFinalizada: { $sum: "$Finalizada" },
+                    totalCancelada: { $sum: "$Cancelada" },
+                    totalRegestion: { $sum: "$Regestion" },
+                    totalAnulada: { $sum: "$Anulada" }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    tecnico: "$_id",
+                    resumenEstado: {
+                        Finalizada: "$totalFinalizada",
+                        Cancelada: "$totalCancelada",
+                        Regestion: "$totalRegestion",
+                        Anulada: "$totalAnulada"
+                    },
+                    produccion: 1
+                }
+            }
+        ]
+        return this.repository.find(pipeline, req, res)
+    }
+}
