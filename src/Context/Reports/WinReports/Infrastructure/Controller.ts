@@ -22,4 +22,10 @@ export class WINReportsController extends BaseHttpController {
     private async production(@request() req: Request, @response() res: Response) {
         await req.useCase.exec(req, res)
     }
+
+    @httpPost('production-zonas', authorizeRoute, VRB.bind(null, BodyReqReportProductionWinDTO, BRE))
+    @resolveCompanyProduction
+    private async productionZonas(@request() req: Request, @response() res: Response) {
+        await req.useCase.exec(req, res)
+    }
 }
