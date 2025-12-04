@@ -9,6 +9,7 @@ import {
 import {
     resolveCompanyFinalizeOrder,
     resolveCompanyFind,
+    resolveCompanyPendingOrder,
 } from './decorators'
 import { authorizeRoute } from '@Shared/Infrastructure/Middlewares'
 
@@ -22,6 +23,12 @@ export class WINOrderController extends BaseHttpController {
     @httpPut('finalize-order/:_id', authorizeRoute)
     @resolveCompanyFinalizeOrder
     private finalizeOrder(@request() req: Request) {
+        return req.useCase.exec(req.params._id, req.user)
+    }
+
+    @httpPut('pending-order/:_id', authorizeRoute)
+    @resolveCompanyPendingOrder
+    private pendingOrder(@request() req: Request) {
         return req.useCase.exec(req.params._id, req.user)
     }
 }

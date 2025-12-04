@@ -29,9 +29,10 @@ export class UseCaseSendReview {
             )
         }
 
-        if (document.fotos.length < 3) {
+        const minPhotos = 4
+        if (document.fotos.length < minPhotos) {
             throw new BadRequestException(
-                `La orden debe tener al menos 3 fotos antes de enviarse a revisión.`,
+                `La orden debe tener al menos ${minPhotos} fotos antes de enviarse a revisión.`,
                 true
             )
         }

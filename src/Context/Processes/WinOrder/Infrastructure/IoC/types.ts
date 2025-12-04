@@ -4,4 +4,5 @@ export const WIN_ORDER_TYPES = {
     RepositoryMongo: Symbol(`RepositoryMongo`),
     UseCaseFind: Symbol('UseCaseFind'),
     UseCaseFinalizeOrder: Symbol('UseCaseFinalizeOrder'),
+    UseCasePendingOrder: Symbol('UseCasePendingOrder'),
 }
