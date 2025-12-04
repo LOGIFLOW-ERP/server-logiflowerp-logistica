@@ -8,4 +8,6 @@ export * from './resolveCompanyGetAll';
 export * from './resolveCompanyInsertOne';
 export * from './resolveCompanyValidate';
 export * from './resolveCompanyFindIndividual';
+export * from './resolveCompanyInsertOneDraft';
+export * from './resolveCompanyRegister';
 

@@ -10,4 +10,6 @@ export const WAREHOUSE_RETURN_TYPES = {
     UseCaseAddSerial: Symbol('UseCaseAddSerial'),
     UseCaseDeleteSerial: Symbol('UseCaseDeleteSerial'),
     UseCaseFindIndividual: Symbol('UseCaseFindIndividual'),
+    UseCaseInsertOneDraft: Symbol('UseCaseInsertOneDraft'),
+    UseCaseRegister: Symbol('UseCaseRegister'),
 }
