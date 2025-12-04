@@ -29,7 +29,8 @@ export class UseCaseProduction {
                     _id: {
                         tecnico: "$tecnico",
                         dia: { $dayOfMonth: "$fecha_visita" },
-                        estado: "$estado"
+                        estado: "$estado",
+                        campaña: "$suscripcion.campaña" // NUEVO
                     },
                     total: { $sum: 1 }
                 }
@@ -50,6 +51,7 @@ export class UseCaseProduction {
                     estados: {
                         $push: {
                             estado: "$_id.estado",
+                            campaña: "$_id.campaña", // NUEVO
                             total: "$total"
                         }
                     }
@@ -60,11 +62,49 @@ export class UseCaseProduction {
                     tecnico: "$_id.tecnico",
                     dia: "$_id.dia",
                     Finalizada: {
+                        // $sum: {
+                        //     $map: {
+                        //         input: "$estados",
+                        //         as: "e",
+                        //         in: { $cond: [{ $eq: ["$$e.estado", "Finalizada"] }, "$$e.total", 0] }
+                        //     }
+                        // }
                         $sum: {
                             $map: {
                                 input: "$estados",
                                 as: "e",
-                                in: { $cond: [{ $eq: ["$$e.estado", "Finalizada"] }, "$$e.total", 0] }
+                                in: {
+                                    $cond: [
+                                        {
+                                            $and: [
+                                                { $eq: ["$$e.estado", "Finalizada"] },
+                                                { $regexMatch: { input: "$$e.campaña", regex: /^Aumento de velocidad/i } }
+                                            ]
+                                        },
+                                        "$$e.total",
+                                        0
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    Garantia: {
+                        $sum: {
+                            $map: {
+                                input: "$estados",
+                                as: "e",
+                                in: {
+                                    $cond: [
+                                        {
+                                            $and: [
+                                                { $eq: ["$$e.estado", "Finalizada"] },
+                                                { $not: { $regexMatch: { input: "$$e.campaña", regex: /^Aumento de velocidad/i } } }
+                                            ]
+                                        },
+                                        "$$e.total",
+                                        0
+                                    ]
+                                }
                             }
                         }
                     },
@@ -100,7 +140,7 @@ export class UseCaseProduction {
             {
                 $addFields: {
                     totalDia: {
-                        $add: ["$Finalizada", "$Cancelada", "$Regestion", "$Anulada"]
+                        $add: ["$Finalizada", "$Garantia", "$Cancelada", "$Regestion", "$Anulada"]
                     }
                 }
             },
@@ -111,6 +151,7 @@ export class UseCaseProduction {
                         $push: {
                             dia: "$dia",
                             Finalizada: "$Finalizada",
+                            Garantia: "$Garantia",
                             Cancelada: "$Cancelada",
                             Regestion: "$Regestion",
                             Anulada: "$Anulada",
@@ -118,6 +159,7 @@ export class UseCaseProduction {
                         }
                     },
                     totalFinalizada: { $sum: "$Finalizada" },
+                    totalGarantia: { $sum: "$Garantia" },
                     totalCancelada: { $sum: "$Cancelada" },
                     totalRegestion: { $sum: "$Regestion" },
                     totalAnulada: { $sum: "$Anulada" }
@@ -129,6 +171,7 @@ export class UseCaseProduction {
                     tecnico: "$_id",
                     resumenEstado: {
                         Finalizada: "$totalFinalizada",
+                        Garantia: "$totalGarantia",
                         Cancelada: "$totalCancelada",
                         Regestion: "$totalRegestion",
                         Anulada: "$totalAnulada"
