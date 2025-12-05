@@ -6,7 +6,8 @@ import {
     response,
 } from 'inversify-express-utils'
 import {
-    resolveCompanyProduction
+    resolveCompanyProduction,
+    resolveCompanyProductionZones
 } from './decorators'
 import {
     BodyReqReportProductionWinDTO,
@@ -23,9 +24,9 @@ export class WINReportsController extends BaseHttpController {
         await req.useCase.exec(req, res)
     }
 
-    @httpPost('production-zonas', authorizeRoute, VRB.bind(null, BodyReqReportProductionWinDTO, BRE))
-    @resolveCompanyProduction
-    private async productionZonas(@request() req: Request, @response() res: Response) {
+    @httpPost('production-zones', authorizeRoute, VRB.bind(null, BodyReqReportProductionWinDTO, BRE))
+    @resolveCompanyProductionZones
+    private async productionZones(@request() req: Request, @response() res: Response) {
         await req.useCase.exec(req, res)
     }
 }

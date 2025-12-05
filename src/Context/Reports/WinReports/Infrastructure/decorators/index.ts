@@ -1,2 +1,2 @@
 export * from './resolveCompanyProduction'
-export * from './resolveCompanyPrductionZonas'
+export * from './resolveCompanyPrductionZones'

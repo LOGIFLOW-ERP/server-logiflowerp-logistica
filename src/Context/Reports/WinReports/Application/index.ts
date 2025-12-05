@@ -1,2 +1,2 @@
 export * from './UseCaseProduction';
-export * from './UseCaseProductionZonas';
+export * from './UseCaseProductionZones';

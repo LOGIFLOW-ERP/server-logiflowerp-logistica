@@ -5,7 +5,7 @@ import { Document } from 'mongodb';
 import { Request, Response } from 'express';
 
 @injectable()
-export class UseCaseProductionZonas {
+export class UseCaseProductionZones {
     constructor(
         @inject(WIN_ORDER_TYPES.RepositoryMongo) private readonly repository: IWINOrderMongoRepository,
     ) { }
