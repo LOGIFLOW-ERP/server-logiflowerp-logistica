@@ -62,13 +62,6 @@ export class UseCaseProduction {
                     tecnico: "$_id.tecnico",
                     dia: "$_id.dia",
                     Finalizada: {
-                        // $sum: {
-                        //     $map: {
-                        //         input: "$estados",
-                        //         as: "e",
-                        //         in: { $cond: [{ $eq: ["$$e.estado", "Finalizada"] }, "$$e.total", 0] }
-                        //     }
-                        // }
                         $sum: {
                             $map: {
                                 input: "$estados",
@@ -78,7 +71,7 @@ export class UseCaseProduction {
                                         {
                                             $and: [
                                                 { $eq: ["$$e.estado", "Finalizada"] },
-                                                { $regexMatch: { input: "$$e.campaña", regex: /^Aumento de velocidad/i } }
+                                                { $not: { $regexMatch: { input: "$$e.campaña", regex: /^Aumento de velocidad/i } } }
                                             ]
                                         },
                                         "$$e.total",
@@ -98,7 +91,7 @@ export class UseCaseProduction {
                                         {
                                             $and: [
                                                 { $eq: ["$$e.estado", "Finalizada"] },
-                                                { $not: { $regexMatch: { input: "$$e.campaña", regex: /^Aumento de velocidad/i } } }
+                                                { $regexMatch: { input: "$$e.campaña", regex: /^Aumento de velocidad/i } }
                                             ]
                                         },
                                         "$$e.total",
