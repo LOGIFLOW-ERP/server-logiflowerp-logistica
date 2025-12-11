@@ -56,7 +56,6 @@ export class UseCaseFinalizeOrder {
 				state_consumption: StateInventory.PENDIENTE,
 				state_replacement: StateInventory.PENDIENTE,
 				isDeleted: false,
-				// stock_quantity_employee: [],
 				_id_stock: inv._id_stock,
 			} as any
 			const entity = await validateCustom(obj, OrderStockENTITY, UnprocessableEntityException)

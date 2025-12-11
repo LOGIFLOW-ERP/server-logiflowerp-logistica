@@ -1,6 +1,5 @@
 
 import {
-    AuthUserDTO,
     CreateInventoryDTO,
     EmployeeStockENTITY,
     EmployeeStockSerialENTITY,
@@ -65,7 +64,7 @@ export class UseCaseAddInventory {
 
         const inventory = await validateCustom(newInventory, InventoryWinDTO, UnprocessableEntityException)
 
-        if (document.inventory.some(e => e._id_stock === data._id_stock)) {
+        if (document.inventory.some(e => e._id_stock === data._id_stock && e.invsn === data.invsn)) {
             throw new BadRequestException('El producto ya fue agregado a la orden', true)
         }
 
