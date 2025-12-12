@@ -26,6 +26,7 @@ import { BadRequestException as BRE, UnprocessableEntityException } from '@Confi
 import { authorizeRoute } from '@Shared/Infrastructure/Middlewares'
 import {
     resolveCompanyAddDetail,
+    resolveCompanyAddDetailBySerial,
     resolveCompanyAddSerial,
     resolveCompanyAutomaticReplenishmentToa,
     resolveCompanyAutomaticReplenishmentWin,
@@ -53,19 +54,19 @@ export class WarehouseExitController extends BaseHttpController {
 
     @httpPost('find', authorizeRoute)
     @resolveCompanyFind
-    async find(@request() req: Request, @response() res: Response) {
+    private async find(@request() req: Request, @response() res: Response) {
         await req.useCase.exec(req, res)
     }
 
     @httpGet('', authorizeRoute)
     @resolveCompanyGetAll
-    async findAll(@request() req: Request, @response() res: Response) {
+    private async findAll(@request() req: Request, @response() res: Response) {
         await req.useCase.exec(req, res)
     }
 
     @httpPost('', authorizeRoute, VRB.bind(null, CreateWarehouseExitDTO, BRE))
     @resolveCompanyInsertOne
-    saveOne(@request() req: Request) {
+    private saveOne(@request() req: Request) {
         return req.useCase.exec(req.body, req.user)
     }
 
@@ -97,37 +98,37 @@ export class WarehouseExitController extends BaseHttpController {
 
     @httpPut('validate/:_id', authorizeRoute)
     @resolveCompanyValidate
-    validate(@request() req: Request) {
+    private validate(@request() req: Request) {
         return req.useCase.exec(req.params._id, req.user)
     }
 
     @httpPut('add-detail/:_id', authorizeRoute, VRB.bind(null, CreateWarehouseExitDetailDTO, BRE))
     @resolveCompanyAddDetail
-    addDetail(@request() req: Request) {
+    private addDetail(@request() req: Request) {
         return req.useCase.exec(req.params._id, req.body)
     }
 
     @httpPut('delete-detail/:_id', authorizeRoute)
     @resolveCompanyDeleteDetail
-    deleteDetail(@request() req: Request) {
+    private deleteDetail(@request() req: Request) {
         return req.useCase.exec(req.params._id, req.query.keyDetail)
     }
 
     @httpPut('add-serial/:_id', authorizeRoute, VRB.bind(null, StockSerialDTO, BRE))
     @resolveCompanyAddSerial
-    addSerial(@request() req: Request) {
+    private addSerial(@request() req: Request) {
         return req.useCase.exec(req.params._id, req.query.keyDetail, req.body)
     }
 
     @httpPut('delete-serial/:_id', authorizeRoute)
     @resolveCompanyDeleteSerial
-    deleteSerial(@request() req: Request) {
+    private deleteSerial(@request() req: Request) {
         return req.useCase.exec(req.params._id, req.query)
     }
 
     @httpDelete(':_id', authorizeRoute, VUUID.bind(null, BRE))
     @resolveCompanyDeleteOne
-    async deleteOne(@request() req: Request, @response() res: Response) {
+    private async deleteOne(@request() req: Request, @response() res: Response) {
         await req.useCase.exec(req.params._id)
         res.sendStatus(204)
     }
@@ -148,5 +149,11 @@ export class WarehouseExitController extends BaseHttpController {
     @resolveCompanyEditAmountDetail
     private editAmountDetail(@request() req: Request) {
         return req.useCase.exec(req.params._id, req.query.keyDetail, req.body)
+    }
+
+    @httpPut('add-detail-by-serial/:_id', authorizeRoute, VRB.bind(null, StockSerialDTO, BRE))
+    @resolveCompanyAddDetailBySerial
+    private addDetailBySerial(@request() req: Request) {
+        return req.useCase.exec(req.params._id, req.body)
     }
 }

@@ -11,3 +11,4 @@ export * from './resolveCompanyAutomaticReplenishmentToa';
 export * from './resolveCompanyAutomaticReplenishmentWin';
 export * from './resolveCompanyEditAmountDetail';
 export * from './resolveCompanyBulkExit';
+export * from './resolveCompanyAddDetailBySerial';
