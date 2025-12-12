@@ -13,4 +13,5 @@ export const WAREHOUSE_EXIT_TYPES = {
     UseCaseAutomaticReplenishmentWin: Symbol('UseCaseAutomaticReplenishmentWin'),
     UseCaseEditAmountDetail: Symbol('UseCaseEditAmountDetail'),
     UseCaseBulkExit: Symbol('UseCaseBulkExit'),
+    UseCaseAddDetailBySerial: Symbol('UseCaseAddDetailBySerial'),
 }
