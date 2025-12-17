@@ -25,7 +25,6 @@ import { UnprocessableEntityException } from '@Config/exception';
 import { WAREHOUSE_EXIT_TYPES } from '../Infrastructure/IoC';
 import { inject, injectable } from 'inversify';
 import { UseCaseInsertOne } from './UseCaseInsertOne';
-import fs from "fs";
 import { UseCaseAddDetail } from './UseCaseAddDetail';
 import { UseCaseAddSerial } from './UseCaseAddSerial';
 import { SHARED_TYPES } from '@Shared/Infrastructure/IoC';
@@ -211,8 +210,6 @@ export class UseCaseBulkExit {
             }
         }
 
-        // const obj = Object.fromEntries(mapa)
-        // fs.writeFileSync("logiflow_mapa.json", JSON.stringify(obj, null, 2), "utf-8")
         return { dataGroup: mapa, keysSearch: Array.from(keysSearch), keysDetail: Array.from(keysDetail) }
     }
 
