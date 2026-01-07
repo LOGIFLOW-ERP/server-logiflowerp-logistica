@@ -27,7 +27,7 @@ import {
     NotFoundException,
     UnprocessableEntityException
 } from '@Config/exception';
-import { validateDuplicateSerialEntry } from '@Shared/Infrastructure/Utils';
+import { validateDuplicateSerialReturn } from '@Shared/Infrastructure/Utils';
 
 @injectable()
 export class UseCaseValidate {
@@ -264,7 +264,7 @@ export class UseCaseValidate {
         if (detail.item.producType !== ProducType.SERIE) return
         for (const serial of detail.serials) {
             //#region Validar
-            validateDuplicateSerialEntry(
+            validateDuplicateSerialReturn(
                 this.dataWarehouseStockSerial,
                 warehouseStock.item.itemCode,
                 serial.serial

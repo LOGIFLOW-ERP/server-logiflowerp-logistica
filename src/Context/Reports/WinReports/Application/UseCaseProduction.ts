@@ -11,8 +11,16 @@ export class UseCaseProduction {
     ) { }
 
     async exec(req: Request, res: Response) {
-        const { año, mes } = req.body
-        const fechaInicio = new Date(año, mes - 1, 1, 0, 0, 0)
+        let { año, mes } = req.body
+        let añoFechaInicio = año
+        let mesFechaInicio = mes
+        if (mes === 0) {
+            añoFechaInicio -= 1
+            mesFechaInicio = 11
+        } else {
+            mesFechaInicio -= 1
+        }
+        const fechaInicio = new Date(añoFechaInicio, mesFechaInicio, 1, 0, 0, 0)
         const fechaFin = new Date(año, mes, 0, 23, 59, 59)
 
         const estados = ["Finalizada", "Cancelada", "Regestión", "Anulada"]
