@@ -13,8 +13,8 @@ export class UseCaseProductionZones {
     async exec(req: Request, res: Response) {
         const { año, mes } = req.body
 
-        const fechaInicio = new Date(año, mes - 1, 1, 0, 0, 0);
-        const fechaFin = new Date(año, mes, 0, 23, 59, 59);
+        const fechaInicio = new Date(año, mes, 1)
+        const fechaFin = new Date(año, mes + 1, 1)
         const estados = ["Finalizada", "Cancelada", "Regestión", "Anulada"];
 
         const pipeline: Document[] = [
