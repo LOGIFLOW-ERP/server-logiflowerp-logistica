@@ -1,6 +1,6 @@
 export * from './UseCaseFind';
 export * from './UseCaseReport';
 export * from './UseCaseReportIndividual';
-export * from './UseCaseGetDataLiquidationOrder';
+export * from './UseCaseGetDataLiquidationWinOrder';
 export * from './UseCaseFindIndividual';
 
