@@ -6,14 +6,16 @@ import {
     collections,
     EmployeeStockENTITY,
     EmployeeStockSerialENTITY,
+    ProductENTITY,
     ProducType,
+    ScrapingSystem,
     State,
     StateStockSerialEmployee,
     StockType
 } from 'logiflowerp-sdk';
 
 @injectable()
-export class UseCaseGetDataLiquidationOrder {
+export class UseCaseGetDataLiquidationWinOrder {
     constructor(
         @inject(EMPLOYEE_STOCK_TYPES.RepositoryMongo) private readonly repository: IEmployeeStockMongoRepository,
     ) { }
@@ -29,11 +31,24 @@ export class UseCaseGetDataLiquidationOrder {
         }]
         const responseEmployeeStock = await this.repository.select(pipelineEmployeeStock)
         const codes = [...new Set(responseEmployeeStock.map(es => es.item.itemCode))]
-        const keySearch = [...new Set(responseEmployeeStock.map(es => es.keySearch))]
-        const keyDetail = [...new Set(responseEmployeeStock.map(es => es.keyDetail))]
-        const pipelineEmployeeStockSerials = [{
+
+        const pipelineProducts = [{
             $match: {
                 itemCode: { $in: codes },
+                systems: ScrapingSystem.WIN,
+                state: State.ACTIVO,
+                isDeleted: false
+            }
+        }]
+        const responseProducts = await this.repository.select<ProductENTITY>(pipelineProducts, collections.product)
+
+        const employeeStocks = responseEmployeeStock.filter(es => responseProducts.some(p => p.itemCode === es.item.itemCode))
+
+        const keySearch = [...new Set(employeeStocks.map(es => es.keySearch))]
+        const keyDetail = [...new Set(employeeStocks.map(es => es.keyDetail))]
+
+        const pipelineEmployeeStockSerials = [{
+            $match: {
                 state: StateStockSerialEmployee.POSESION,
                 keySearch: { $in: keySearch },
                 keyDetail: { $in: keyDetail },
@@ -41,7 +56,7 @@ export class UseCaseGetDataLiquidationOrder {
             }
         }]
         const responseEmployeeStockSerials = await this.repository.select<EmployeeStockSerialENTITY>(pipelineEmployeeStockSerials, collections.employeeStockSerial)
-        return this.processMongoDocuments(responseEmployeeStock, responseEmployeeStockSerials)
+        return this.processMongoDocuments(employeeStocks, responseEmployeeStockSerials)
     }
 
     private processMongoDocuments(docs: EmployeeStockENTITY[], employeeStockSerials: EmployeeStockSerialENTITY[]) {

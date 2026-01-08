@@ -10,7 +10,7 @@ import { authorizeRoute } from '@Shared/Infrastructure/Middlewares'
 import {
     resolveCompanyFind,
     resolveCompanyFindIndividual,
-    resolveCompanyGetDataLiquidationOrder,
+    resolveCompanyGetDataLiquidationWinOrder,
     resolveCompanyReport,
     resolveCompanyReportIndividual,
 } from './decorators'
@@ -19,7 +19,7 @@ export class EmployeeStockController extends BaseHttpController {
 
     @httpPost('find', authorizeRoute)
     @resolveCompanyFind
-    async find(@request() req: Request, @response() res: Response) {
+    private async find(@request() req: Request, @response() res: Response) {
         await req.useCase.exec(req, res)
     }
 
@@ -31,19 +31,19 @@ export class EmployeeStockController extends BaseHttpController {
 
     @httpPost('report', authorizeRoute)
     @resolveCompanyReport
-    async report(@request() req: Request) {
+    private async report(@request() req: Request) {
         return await req.useCase.exec(req.body)
     }
 
     @httpPost('report-individual', authorizeRoute)
     @resolveCompanyReportIndividual
-    async reportIndividual(@request() req: Request) {
+    private async reportIndividual(@request() req: Request) {
         return await req.useCase.exec(req.body, req.user)
     }
 
-    @httpGet('get-data-liquidation-order', authorizeRoute)
-    @resolveCompanyGetDataLiquidationOrder
-    async getDataLiquidationOrder(@request() req: Request) {
+    @httpGet('get-data-liquidation-win-order', authorizeRoute)
+    @resolveCompanyGetDataLiquidationWinOrder
+    private async getDataLiquidationWinOrder(@request() req: Request) {
         return await req.useCase.exec(req.user)
     }
 }
